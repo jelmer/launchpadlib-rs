@@ -1,0 +1,17 @@
+[package]
+name = "launchpadlib"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/jelmer/launchpadlib-rs"
+readme = "README.md"
+description = "Rust library for accessing Launchpad.net"
+keywords = ["launchpad", "api", "rust"]
+categories = ["network-programming", "asynchronous", "api-bindings"]
+authors = ["Jelmer Vernooĳ <jelmer@jelmer.uk>"]
+
+[lib]
+
+[dependencies]
+reqwest = { version = "0.11.22", features = ["json"] }
+serde_json = "1.0.107"
