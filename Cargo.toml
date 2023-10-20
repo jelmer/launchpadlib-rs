@@ -9,9 +9,29 @@ description = "Rust library for accessing Launchpad.net"
 keywords = ["launchpad", "api", "rust"]
 categories = ["network-programming", "asynchronous", "api-bindings"]
 authors = ["Jelmer Vernooĳ <jelmer@jelmer.uk>"]
+build = "build.rs"
 
 [lib]
 
+[workspace.dependencies]
+wadl = { version = "0.1.4", default-features = false }
+
 [dependencies]
-reqwest = { version = "0.11.22", features = ["json"] }
+chrono = { version = "0.4.31", features = ["serde"] }
+debversion = { version = "0.2.2", features = ["serde"] }
+lazy_static = "1.4.0"
+reqwest = { version = "0.11.22", features = ["json", "blocking"] }
+serde = { version = "1.0.189", features = ["derive"] }
 serde_json = "1.0.107"
+url = { version = "2.4.1", features = ["serde"] }
+wadl = { workspace = true }
+
+[build-dependencies]
+wadl = { workspace = true, features = ["codegen"] }
+reqwest = { version = "0.11.22", features = ["blocking"] }
+
+[features]
+default = ["api-v1_0"]
+api-v1_0 = []
+api-devel = []
+api-beta = []
