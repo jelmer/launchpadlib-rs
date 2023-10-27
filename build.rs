@@ -260,16 +260,24 @@ fn main() {
     };
 
     for version in VERSIONS {
-        let url = format!("https://api.launchpad.net/{0}/", version);
-        let wadl = reqwest::blocking::Client::new()
-            .request(reqwest::Method::GET, &url)
-            .header("Accept", "application/vd.sun.wadl+xml")
-            .send()
-            .unwrap()
-            .error_for_status()
-            .unwrap()
-            .text()
-            .unwrap();
+        let wadl = if let Ok(text) = std::fs::read_to_string(format!(
+            "{}/wadl/{}.wadl",
+            env!("CARGO_MANIFEST_DIR"),
+            version
+        )) {
+            text
+        } else {
+            let url = format!("https://api.launchpad.net/{0}/", version);
+            reqwest::blocking::Client::new()
+                .request(reqwest::Method::GET, &url)
+                .header("Accept", "application/vd.sun.wadl+xml")
+                .send()
+                .unwrap()
+                .error_for_status()
+                .unwrap()
+                .text()
+                .unwrap()
+        };
 
         let wadl_app = wadl::parse_string(wadl.as_str()).unwrap();
         let code = wadl::codegen::generate(&wadl_app, &config);
