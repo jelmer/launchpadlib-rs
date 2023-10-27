@@ -15,17 +15,19 @@ include = ["wadl/*.wadl", "src/*.rs", "build.rs"]
 [lib]
 
 [workspace.dependencies]
-#wadl = { version = "0.1.4", default-features = false }
-wadl = { path = "../wadl-rs" }
+wadl = { version = "0.1.4", default-features = false }
+#wadl = { path = "../wadl-rs" }
 
 [dependencies]
 chrono = { version = "0.4.31", features = ["serde"] }
 debversion = { version = "0.2.2", features = ["serde"] }
+hmac = "0.12.1"
 lazy_static = "1.4.0"
-oauth2 = "4.4.2"
+rand = "0.8.5"
 reqwest = { version = "0.11.22", features = ["json", "blocking"] }
 serde = { version = "1.0.189", features = ["derive"] }
 serde_json = "1.0.107"
+sha1 = "0.10.6"
 url = { version = "2.4.1", features = ["serde"] }
 wadl = { workspace = true }
 

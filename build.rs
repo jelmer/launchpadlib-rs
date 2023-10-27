@@ -257,6 +257,7 @@ const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 fn main() {
     let config = wadl::codegen::Config {
         guess_type_name: Some(Box::new(guess_type_name)),
+        ..Default::default()
     };
 
     for version in VERSIONS {

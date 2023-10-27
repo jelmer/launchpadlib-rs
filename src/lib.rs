@@ -5,15 +5,16 @@
 //!
 //! ## Usage
 //! ```rust
-//! use launchpad_api::v1_0::get_service_root_by_url;
+//! use launchpadlib::v1_0::get_service_root_by_url;
 //! use url::Url;
 //!
 //! let url = Url::parse("https://api.launchpad.net/1.0/").unwrap();
 //! let service_root = get_service_root_by_url(&url).unwrap();
-//! println!("Service root: {:?}", service_root);
-//!
-//! let url = Url::parse("https://api.launchpad.net/1.0/ubuntu/+archive/primary").unwrap();
+//! let person = service_root.people()?.get_by_email("jelmer@jelmer.uk")?;
+//! println!("Person: {}", person.display_name());
+//! ```
 
+mod auth;
 use url::Url;
 use wadl::{Error, Resource};
 
