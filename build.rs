@@ -252,11 +252,23 @@ fn guess_type_name(param_name: &str) -> Option<String> {
     .map(|s| s.to_string())
 }
 
+fn accessor_rename(param_name: &str) -> Option<String> {
+    Some(
+        match param_name.strip_suffix("_link").unwrap_or(param_name) {
+            "self" => "self_",
+            n => n,
+        }
+        .to_string(),
+    )
+}
+
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
 fn main() {
+    #[allow(clippy::needless_update)]
     let config = wadl::codegen::Config {
         guess_type_name: Some(Box::new(guess_type_name)),
+        param_accessor_rename: Some(Box::new(accessor_rename)),
         ..Default::default()
     };
 

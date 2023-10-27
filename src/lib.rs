@@ -8,10 +8,11 @@
 //! use launchpadlib::v1_0::get_service_root_by_url;
 //! use url::Url;
 //!
-//! let url = Url::parse("https://api.launchpad.net/1.0/").unwrap();
-//! let service_root = get_service_root_by_url(&url).unwrap();
-//! let person = service_root.people()?.get_by_email("jelmer@jelmer.uk")?;
-//! println!("Person: {}", person.display_name());
+//! let url: Url = "https://api.launchpad.net/1.0/".parse().unwrap();
+//! let service_root = get_service_root_by_url(&url).unwrap().get().unwrap();
+//! let people = service_root.people_collection().unwrap().unwrap();
+//! let person = people.get_by_email("jelmer@jelmer.uk").unwrap();
+//! println!("Person: {}", person.display_name);
 //! ```
 
 mod auth;
