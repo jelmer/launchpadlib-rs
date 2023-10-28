@@ -122,7 +122,10 @@ pub fn generate_oauth1_authorization_header(
     // Extract the first part of the URL, with the scheme and host
     let realm = format!("{}://{}/", url.scheme(), url.host_str().unwrap());
 
-    let timestamp = timestamp.unwrap_or_else(|| Utc::now()).timestamp();
+    let timestamp = timestamp
+        .unwrap_or_else(|| Utc::now())
+        .timestamp()
+        .to_string();
 
     let nonce: String = rand::thread_rng().gen_range(100000..999999).to_string();
 
@@ -134,7 +137,7 @@ pub fn generate_oauth1_authorization_header(
     oauth_params.insert("oauth_token", token);
     oauth_params.insert("oauth_signature_method", "PLAINTEXT");
     oauth_params.insert("oauth_signature", signature.as_str());
-    oauth_params.insert("oauth_timestamp", &timestamp.to_string());
+    oauth_params.insert("oauth_timestamp", &timestamp);
     oauth_params.insert("oauth_nonce", &nonce);
     oauth_params.insert("oauth_version", "1.0");
 

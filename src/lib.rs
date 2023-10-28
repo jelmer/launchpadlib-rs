@@ -10,7 +10,7 @@
 //!
 //! let url: Url = "https://api.launchpad.net/1.0/".parse().unwrap();
 //! let service_root = get_service_root_by_url(&url).unwrap().get().unwrap();
-//! let people = service_root.people_collection().unwrap().unwrap();
+//! let people = service_root.people().unwrap().unwrap();
 //! let person = people.get_by_email("jelmer@jelmer.uk").unwrap();
 //! println!("Person: {}", person.display_name);
 //! ```
@@ -131,7 +131,7 @@ impl Connection {
     ) -> Result<reqwest::blocking::Response, reqwest::Error> {
         if let Some(token) = &self.token {
             let value = self.authorization_header(
-                &req.url(),
+                req.url(),
                 token.as_str(),
                 self.token_secret.as_ref().unwrap().as_str(),
             );
