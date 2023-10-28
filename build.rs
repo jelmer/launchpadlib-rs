@@ -253,13 +253,20 @@ fn guess_type_name(param_name: &str) -> Option<String> {
 }
 
 fn accessor_rename(param_name: &str) -> Option<String> {
-    Some(
-        match param_name.strip_suffix("_link").unwrap_or(param_name) {
-            "self" => "self_",
-            n => n,
-        }
-        .to_string(),
-    )
+    if let Some(param_name) = param_name.strip_suffix("_collection_link") {
+        Some(param_name.to_string())
+    } else if let Some(param_name) = param_name.strip_suffix("_link") {
+        Some(
+            if param_name == "self" {
+                "self_"
+            } else {
+                param_name
+            }
+            .to_string(),
+        )
+    } else {
+        None
+    }
 }
 
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];

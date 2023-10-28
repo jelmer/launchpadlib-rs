@@ -13,7 +13,7 @@ fn main() {
     let people = root
         .get()
         .unwrap()
-        .people_collection()
+        .people()
         .unwrap()
         .unwrap();
     let person = people.get_by_email("jelmer@jelmer.uk").unwrap();

@@ -1,10 +1,14 @@
+//! Signing of requests for Launchpad.
+//!
+//! See the documentation at https://help.launchpad.net/API/SigningRequests for details
+
 use hmac::{Hmac, Mac};
 
+use chrono::{DateTime, Utc};
 use sha1::Sha1;
 use std::collections::HashMap;
 use url::form_urlencoded;
 
-use chrono::Utc;
 use rand::Rng;
 
 /// Function to get the request token and request token secret
@@ -54,6 +58,7 @@ pub fn authorize_token(
     Ok(())
 }
 
+/// Exchange a request token for an access token
 pub fn exchange_request_token(
     consumer_key: &str,
     consumer_secret: Option<&str>,
@@ -105,17 +110,22 @@ fn calculate_plaintext_signature(consumer_secret: &str, token_secret: &str) -> S
     signature
 }
 
+/// Generate a string for use in the Authorize header:
 pub fn generate_oauth1_authorization_header(
     url: &url::Url,
     consumer_key: &str,
     consumer_secret: &str,
     token: &str,
     token_secret: &str,
+    timestamp: Option<DateTime<Utc>>,
 ) -> String {
     // Extract the first part of the URL, with the scheme and host
     let realm = format!("{}://{}/", url.scheme(), url.host_str().unwrap());
 
-    let timestamp = Utc::now().timestamp().to_string();
+    let timestamp = timestamp
+        .unwrap_or_else(|| Utc::now())
+        .timestamp()
+        .to_string();
 
     let nonce: String = rand::thread_rng().gen_range(100000..999999).to_string();
 
