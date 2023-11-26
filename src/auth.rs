@@ -11,7 +11,7 @@ use url::form_urlencoded;
 
 use rand::Rng;
 
-/// Function to get the request token and request token secret
+/// Get a request token and request token secret
 pub fn get_request_token(consumer_key: &str) -> Result<(String, String), reqwest::Error> {
     let mut params = HashMap::new();
     params.insert("oauth_consumer_key", consumer_key);
@@ -38,24 +38,19 @@ pub fn get_request_token(consumer_key: &str) -> Result<(String, String), reqwest
     Ok((request_token, request_token_secret))
 }
 
-pub fn authorize_token(
+/// Authorize a request token
+pub fn authorize_token_url(
     oauth_token: &str,
     oauth_callback: Option<&url::Url>,
-) -> Result<(), reqwest::Error> {
-    let mut params = HashMap::new();
-    params.insert("oauth_token", oauth_token);
+) -> Result<url::Url, url::ParseError> {
+    let mut url: url::Url = "https://launchpad.net/+authorize-token".parse()?;
+    url.query_pairs_mut().append_pair("oauth_token", oauth_token);
     if let Some(oauth_callback) = oauth_callback {
-        params.insert("oauth_callback", oauth_callback.as_str());
+        url.query_pairs_mut()
+            .append_pair("oauth_callback", oauth_callback.as_str());
     }
 
-    let client = reqwest::blocking::Client::new();
-    client
-        .post("https://launchpad.net/+authorize-token")
-        .form(&params)
-        .send()?
-        .error_for_status()?;
-
-    Ok(())
+    Ok(url)
 }
 
 /// Exchange a request token for an access token
