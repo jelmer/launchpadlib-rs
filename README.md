@@ -26,11 +26,7 @@ Bindings are generated from the wadl published by Launchpad.
 Limitations
 -----------
 
-* All current access is anonymous, authentication is not yet supported.
-* Documentation in the wadl file is in HTML and not yet properly
-  translated to rust doc strings
 * The only usable API is blocking at the moment
-* There are no tests at the moment
 
 Bugs
 ----

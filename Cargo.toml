@@ -22,7 +22,7 @@ wadl = { path = "../wadl-rs" }
 chrono = { version = "0.4.31", features = ["serde"] }
 debversion = { version = "0.2.2", features = ["serde"] }
 lazy_static = "1.4.0"
-log = "0.4.20"
+log = "0.4"
 percent-encoding = "2.3.1"
 rand = "0.8.5"
 reqwest = { version = "0.11.22", features = ["json", "blocking"] }

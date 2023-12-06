@@ -18,6 +18,7 @@
 
 pub mod auth;
 pub mod client;
+pub mod page;
 pub use client::Client;
 
 use url::Url;
@@ -79,4 +80,3 @@ pub mod v1_0 {
         }
     }
 }
-
