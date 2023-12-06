@@ -276,6 +276,7 @@ fn main() {
     let config = wadl::codegen::Config {
         guess_type_name: Some(Box::new(guess_type_name)),
         param_accessor_rename: Some(Box::new(accessor_rename)),
+        strip_code_examples: true,
         ..Default::default()
     };
 
