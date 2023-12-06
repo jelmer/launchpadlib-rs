@@ -2,7 +2,7 @@
 //!
 //! See the documentation at https://help.launchpad.net/API/SigningRequests for details
 
-use chrono::{DateTime, Utc};
+use chrono::{Utc};
 use std::collections::HashMap;
 use url::form_urlencoded;
 use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, percent_encode};
@@ -203,7 +203,7 @@ impl ToString for OAuthAuthorizationHeader {
             header.push_str(key);
             header.push_str("=\"");
             header.push_str(percent_encode(value.as_bytes(), RFC3986_UNRESERVED).to_string().as_str());
-            header.push_str("\"");
+            header.push('\"');
         };
 
         push_str(&mut header, "realm", &self.realm);
@@ -257,7 +257,7 @@ pub fn generate_oauth1_authorization_header(
 
 #[cfg(test)]
 mod tests {
-    use std::collections::HashMap;
+    
 
     #[test]
     fn test_generate_oauth1_authoriation_header() {

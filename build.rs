@@ -269,8 +269,8 @@ fn accessor_rename(param_name: &str) -> Option<String> {
 
 fn generate_representation_traits(
     name: &str,
-    representation: &wadl::ast::RepresentationDef,
-    config: &wadl::codegen::Config,
+    _representation: &wadl::ast::RepresentationDef,
+    _config: &wadl::codegen::Config,
 ) -> Option<Vec<String>> {
     if name.ends_with("Page") {
         let r = format!("{}Full", name.strip_suffix("Page").unwrap());

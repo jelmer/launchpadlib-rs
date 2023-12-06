@@ -1,5 +1,3 @@
-use crate::Resource;
-
 pub trait Page<R: Sized> {
    fn next(&self, client: &crate::client::Client) -> Result<Option<Self>, crate::Error> where Self: Sized;
    fn prev(&self, client: &crate::client::Client) -> Result<Option<Self>, crate::Error> where Self: Sized;

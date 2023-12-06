@@ -27,6 +27,8 @@ use wadl::{Error, Resource};
 #[cfg(feature = "api-devel")]
 pub mod devel {
     #![allow(unused_mut)]
+    #![allow(clippy::too_many_arguments)]
+    #![allow(clippy::wrong_self_convention)]
     use super::*;
     include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
 }
@@ -34,6 +36,8 @@ pub mod devel {
 #[cfg(feature = "api-beta")]
 pub mod beta {
     #![allow(unused_mut)]
+    #![allow(clippy::too_many_arguments)]
+    #![allow(clippy::wrong_self_convention)]
     use super::*;
     include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
 }
@@ -41,6 +45,8 @@ pub mod beta {
 #[cfg(feature = "api-v1_0")]
 pub mod v1_0 {
     #![allow(unused_mut)]
+    #![allow(clippy::too_many_arguments)]
+    #![allow(clippy::wrong_self_convention)]
     use super::*;
 
     include!(concat!(env!("OUT_DIR"), "/generated/1_0.rs"));
