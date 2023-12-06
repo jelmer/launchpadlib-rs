@@ -255,15 +255,37 @@ fn guess_type_name(param_name: &str) -> Option<String> {
 fn accessor_rename(param_name: &str) -> Option<String> {
     if let Some(param_name) = param_name.strip_suffix("_collection_link") {
         Some(param_name.to_string())
-    } else if let Some(param_name) = param_name.strip_suffix("_link") {
-        Some(
+    } else {
+        param_name.strip_suffix("_link").map(|param_name| {
             if param_name == "self" {
                 "self_"
             } else {
                 param_name
             }
-            .to_string(),
-        )
+            .to_string()
+        })
+    }
+}
+
+fn generate_representation_traits(
+    name: &str,
+    _representation: &wadl::ast::RepresentationDef,
+    _config: &wadl::codegen::Config,
+) -> Option<Vec<String>> {
+    if name.ends_with("Page") {
+        let r = format!("{}Full", name.strip_suffix("Page").unwrap());
+        let ret = vec![
+            "impl crate::page::Page<".to_string() + r.as_str() + "> for " + name + " {\n",
+            "    fn next(&self, client: &crate::client::Client) -> Result<Option<Self>, Error> { self.next().map(|x| x.get(client)).transpose() }\n".to_string(),
+            "    fn prev(&self, client: &crate::client::Client) -> Result<Option<Self>, Error> { self.prev().map(|x| x.get(client)).transpose() }\n".to_string(),
+            "    fn start(&self) -> usize { self.start }\n".to_string(),
+            "    fn total_size(&self) -> usize { self.total_size }\n".to_string(),
+            "    fn entries(&self) -> Vec<".to_string()
+                + r.as_str()
+                + "> { self.entries.iter().map(|v| serde_json::from_value(v.clone()).unwrap()).collect() }\n",
+            "}\n".to_string(),
+        ];
+        Some(ret)
     } else {
         None
     }
@@ -276,6 +298,8 @@ fn main() {
     let config = wadl::codegen::Config {
         guess_type_name: Some(Box::new(guess_type_name)),
         param_accessor_rename: Some(Box::new(accessor_rename)),
+        generate_representation_traits: Some(Box::new(generate_representation_traits)),
+        strip_code_examples: true,
         ..Default::default()
     };
 

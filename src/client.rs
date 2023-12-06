@@ -56,19 +56,24 @@ impl Client {
         })
     }
 
+    /// Generate an OAuth1 authorization header for the given URL.
     fn authorization_header(&self, url: &Url, token: &str, token_secret: &str) -> String {
         crate::auth::generate_oauth1_authorization_header(
             url,
             self.consumer_key.as_ref().unwrap().as_str(),
-            self.consumer_secret.as_ref().unwrap().as_str(),
+            self.consumer_secret.as_deref(),
             token,
             token_secret,
             None,
+            None
         )
     }
+}
+
+impl wadl::Client for Client {
 
     /// Perform a request, adding the appropriate OAuth1 headers.
-    pub fn request(
+    fn execute(
         &self,
         mut req: reqwest::blocking::Request,
     ) -> Result<reqwest::blocking::Response, reqwest::Error> {

@@ -26,14 +26,14 @@ Bindings are generated from the wadl published by Launchpad.
 Limitations
 -----------
 
-* All current access is anonymous, authentication is not yet supported.
-* Documentation in the wadl file is in HTML and not yet properly
-  translated to rust doc strings
-* The only usable API is blocking at the moment
-* There are no tests at the moment
+* There is only a blocking API available at the moment
 
 Bugs
 ----
 
 While bindings are generated from the entire WADL file, I have only
 used a small number of them. Please report bugs if you run into issues.
+
+Launchpad's WADL is incorrect in places, e.g. claiming that certain fields
+are optional while they will actually be set to null. See fixup.xsl for manual
+patches that are applied.

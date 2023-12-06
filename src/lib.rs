@@ -10,14 +10,15 @@
 //!
 //! let url: Url = "https://api.launchpad.net/1.0/".parse().unwrap();
 //! let client = launchpadlib::Client::anonymous("just+testing").unwrap();
-//! let service_root = client.get_service_root_by_url(&url).unwrap().get().unwrap();
-//! let people = service_root.people().unwrap().unwrap();
-//! let person = people.get_by_email("jelmer@jelmer.uk").unwrap();
+//! let service_root = get_service_root_by_url(&url).unwrap().get(&client).unwrap();
+//! let people = service_root.people().unwrap();
+//! let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
 //! println!("Person: {}", person.display_name);
 //! ```
 
 pub mod auth;
 pub mod client;
+pub mod page;
 pub use client::Client;
 
 use url::Url;
@@ -26,6 +27,8 @@ use wadl::{Error, Resource};
 #[cfg(feature = "api-devel")]
 pub mod devel {
     #![allow(unused_mut)]
+    #![allow(clippy::too_many_arguments)]
+    #![allow(clippy::wrong_self_convention)]
     use super::*;
     include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
 }
@@ -33,6 +36,8 @@ pub mod devel {
 #[cfg(feature = "api-beta")]
 pub mod beta {
     #![allow(unused_mut)]
+    #![allow(clippy::too_many_arguments)]
+    #![allow(clippy::wrong_self_convention)]
     use super::*;
     include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
 }
@@ -40,6 +45,8 @@ pub mod beta {
 #[cfg(feature = "api-v1_0")]
 pub mod v1_0 {
     #![allow(unused_mut)]
+    #![allow(clippy::too_many_arguments)]
+    #![allow(clippy::wrong_self_convention)]
     use super::*;
 
     include!(concat!(env!("OUT_DIR"), "/generated/1_0.rs"));
@@ -79,4 +86,3 @@ pub mod v1_0 {
         }
     }
 }
-
