@@ -10,9 +10,9 @@
 //!
 //! let url: Url = "https://api.launchpad.net/1.0/".parse().unwrap();
 //! let client = launchpadlib::Client::anonymous("just+testing").unwrap();
-//! let service_root = client.get_service_root_by_url(&url).unwrap().get().unwrap();
-//! let people = service_root.people().unwrap().unwrap();
-//! let person = people.get_by_email("jelmer@jelmer.uk").unwrap();
+//! let service_root = get_service_root_by_url(&url).unwrap().get(&client).unwrap();
+//! let people = service_root.people().unwrap();
+//! let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
 //! println!("Person: {}", person.display_name);
 //! ```
 

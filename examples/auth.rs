@@ -26,12 +26,13 @@ fn main() {
 
     let client = Client::authenticated(consumer_key, None, access_token.0.as_str(), access_token.1.as_str()).unwrap();
 
-    let root = client.get_service_root_by_url("https://api.launchpad.net/1.0/").unwrap();
+    let root = launchpadlib::v1_0::get_service_root_by_url(&url).unwrap();
     let person = root
-        .get()
+        .get(&client)
         .unwrap()
         .me()
         .unwrap()
+        .get(&client)
         .unwrap();
     println!("{:?}", person);
 
