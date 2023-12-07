@@ -20,16 +20,10 @@ fn main() {
     // Step 3: Exchange the request token for an access token
     let access_token = exchange_request_token(consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str())).unwrap();
 
-    let url: Url = "https://api.launchpad.net/1.0/"
-        .parse()
-        .unwrap();
-
     let client = Client::authenticated(consumer_key, None, access_token.0.as_str(), access_token.1.as_str()).unwrap();
 
-    let root = launchpadlib::v1_0::get_service_root_by_url(&url).unwrap();
+    let root = launchpadlib::v1_0::service_root(&client).unwrap();
     let person = root
-        .get(&client)
-        .unwrap()
         .me()
         .unwrap()
         .get(&client)

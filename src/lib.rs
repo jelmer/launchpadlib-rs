@@ -5,12 +5,10 @@
 //!
 //! ## Usage
 //! ```rust
-//! use launchpadlib::v1_0::get_service_root_by_url;
 //! use url::Url;
 //!
-//! let url: Url = "https://api.launchpad.net/1.0/".parse().unwrap();
 //! let client = launchpadlib::Client::anonymous("just+testing").unwrap();
-//! let service_root = get_service_root_by_url(&url).unwrap().get(&client).unwrap();
+//! let service_root = launchpadlib::v1_0::service_root(&client).unwrap();
 //! let people = service_root.people().unwrap();
 //! let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
 //! println!("Person: {}", person.display_name);
@@ -31,6 +29,19 @@ pub mod devel {
     #![allow(clippy::wrong_self_convention)]
     use super::*;
     include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
+
+    #[derive(Clone)]
+    struct ServiceRootResourceDevel;
+    impl Resource for ServiceRootResourceDevel {
+        fn url(&self) -> Url {
+            Url::parse("https://api.launchpad.net/devel/").unwrap()
+        }
+    }
+    impl ServiceRoot for ServiceRootResourceDevel {}
+
+    pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
+        ServiceRootResourceDevel.get(client)
+    }
 }
 
 #[cfg(feature = "api-beta")]
@@ -40,6 +51,20 @@ pub mod beta {
     #![allow(clippy::wrong_self_convention)]
     use super::*;
     include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
+
+    #[derive(Clone)]
+    struct ServiceRootResourceBeta;
+    impl Resource for ServiceRootResourceBeta {
+        fn url(&self) -> Url {
+            Url::parse("https://api.launchpad.net/beta/").unwrap()
+        }
+    }
+    impl ServiceRoot for ServiceRootResourceBeta {}
+
+
+    pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
+        ServiceRootResourceBeta.get(client)
+    }
 }
 
 #[cfg(feature = "api-v1_0")]
@@ -74,6 +99,10 @@ pub mod v1_0 {
         } else {
             Err(Error::InvalidUrl)
         }
+    }
+
+    pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
+        ServiceRootResource1_0.get(client)
     }
 
     pub fn get_resource_by_url(
