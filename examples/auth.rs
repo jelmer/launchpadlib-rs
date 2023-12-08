@@ -1,6 +1,5 @@
 use launchpadlib::auth::{get_request_token, authorize_token_url, exchange_request_token};
 use launchpadlib::Client;
-use url::Url;
 
 fn main() {
     // Step 0: Pick a consumer key

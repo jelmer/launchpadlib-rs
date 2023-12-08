@@ -8,32 +8,27 @@ use launchpadlib::Resource;
 use launchpadlib::v1_0::ServiceRoot;
 
 fn main() {
-    let url = "https://api.launchpad.net/v1_0/".parse().unwrap();
-    let root = launchpadlib::devel::get_service_root_by_url(&url).unwrap();
-    let people = root
-        .get()
-        .unwrap()
-        .people()
-        .unwrap()
-        .unwrap();
-    let person = people.get_by_email("jelmer@jelmer.uk").unwrap();
-    println!("{:?}", person);
+    use url::Url;
+
+    let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    let service_root = launchpadlib::v1_0::service_root(&client).unwrap();
+    let people = service_root.people().unwrap();
+    let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
+    println!("Person: {}", person.display_name);
 }
 ```
 
 Bindings are generated from the wadl published by Launchpad.
 
-Limitations
------------
+Limitations and bugs
+--------------------
 
 * There is only a blocking API available at the moment
+* While bindings are generated from the entire WADL file, I have only used a
+  small number of them. Please report bugs if you run into issues.
+* Launchpad's WADL is incorrect in places, e.g. claiming that certain fields
+  are optional while they will actually be set to null. Any problems with the
+  WADL will impact the usability of the rust bindings.
 
-Bugs
-----
-
-While bindings are generated from the entire WADL file, I have only
-used a small number of them. Please report bugs if you run into issues.
-
-Launchpad's WADL is incorrect in places, e.g. claiming that certain fields
-are optional while they will actually be set to null. See fixup.xsl for manual
-patches that are applied.
+  See fixup.xsl for manual patches that are applied; this file is
+  almost certainly incomplete.
