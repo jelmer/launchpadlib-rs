@@ -14,7 +14,8 @@ fn main() {
     let service_root = launchpadlib::v1_0::service_root(&client).unwrap();
     let people = service_root.people().unwrap();
     let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
-    println!("Person: {}", person.display_name);
+    let ssh_keys = person.sshkeys(&client).unwrap().map(|k| k.keytext).collect::<Vec<_>>();
+    println!("SSH Keys: {:?}", ssh_keys);
 }
 ```
 

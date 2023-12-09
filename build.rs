@@ -36,6 +36,7 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "base_version" => Some("debversion::Version"),
         "binary_package_name" => Some("String"),
         "binary_package_version" => Some("debversion::Version"),
+        "branch_name" => Some("String"),
         "body_text" => Some("String"),
         "bug_reported_acknowledgement" => Some("bool"),
         "bug_reporting_guidelines" => Some("String"),
@@ -66,6 +67,7 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "conflicts" => Some("Vec<String>"),
         "contact_details" => Some("String"),
         "content" => Some("String"),
+        "content_type" => Some("String"),
         "count" => Some("usize"),
         "country_dns_mirror" => Some("String"),
         "custom_file_urls" => Some("Vec<url::Url>"),
@@ -95,6 +97,7 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "exported_in_languagepacks" => Some("bool"),
         "failnotes" => Some("String"),
         "features" => Some("Vec<String>"),
+        "filename" | "file_extension" => Some("String"),
         "find_all_tags" => Some("bool"),
         "fingerprint" => Some("String"),
         "freshmeat_project" => Some("String"),
@@ -103,13 +106,13 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "git_path" => Some("String"),
         "git_ref_pattern" => Some("String"),
         "git_refs" => Some("Vec<String>"),
-        "has_lp_plugin" => Some("bool"),
+        t if t.starts_with("has_") => Some("bool"),
         "heat" => Some("f64"),
         "hide_email_addresses" => Some("bool"),
         "homepage_content" => Some("Option<String>"),
         "id" => Some("String"),
         "importances" => Some("Vec<String>"),
-        "include_long_descriptions" => Some("bool"),
+        t if t.starts_with("include_") => Some("bool"),
         "index_compressors" => Some("Vec<String>"),
         "information_types" => Some("Vec<String>"),
         "iso3166code2" => Some("String"),
@@ -166,7 +169,7 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "priority" => Some("String"),
         "priority_name" => Some("String"),
         "private_bugs" => Some("bool"),
-        "programming_language" => Some("String"),
+        "programming_lang" | "programming_language" => Some("String"),
         "project_reviewed" => Some("bool"),
         "properties" => Some("Vec<String>"),
         "proposed_not_automatic" => Some("bool"),
@@ -223,12 +226,14 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "supports_ppas" => Some("bool"),
         "supports_virtualized" => Some("bool"),
         "suppress_subscription_notifications" => Some("bool"),
+        "tag" => Some("String"),
         "tags" => Some("Vec<String>"),
         "target_architectures" => Some("Vec<String>"),
         "target_default" => Some("bool"),
         "target_git_path" => Some("String"),
         "target_revision_id" => Some("String"),
         "team_description" => Some("String"),
+        "text" => Some("String"),
         "time_zone" => Some("String"),
         "token" => Some("String"),
         "translation_domain" => Some("String"),
@@ -252,19 +257,21 @@ fn guess_type_name(param_name: &str) -> Option<String> {
     .map(|s| s.to_string())
 }
 
-fn accessor_rename(param_name: &str) -> Option<String> {
-    if let Some(param_name) = param_name.strip_suffix("_collection_link") {
-        Some(param_name.to_string())
-    } else {
-        param_name.strip_suffix("_link").map(|param_name| {
-            if param_name == "self" {
-                "self_"
-            } else {
-                param_name
-            }
-            .to_string()
-        })
+fn accessor_rename(param_name: &str, type_name: &str) -> Option<String> {
+    if let Some(prefix) = param_name.strip_suffix("_collection_link") {
+        if !type_name.contains("PageResource") {
+            return Some(prefix.to_string());
+        }
     }
+
+    param_name.strip_suffix("_link").map(|param_name| {
+        if param_name == "self" {
+            "self_"
+        } else {
+            param_name
+        }
+        .to_string()
+    })
 }
 
 fn generate_representation_traits(
@@ -275,9 +282,10 @@ fn generate_representation_traits(
     if name.ends_with("Page") {
         let r = format!("{}Full", name.strip_suffix("Page").unwrap());
         let ret = vec![
-            "impl crate::page::Page<".to_string() + r.as_str() + "> for " + name + " {\n",
-            "    fn next(&self, client: &crate::client::Client) -> Result<Option<Self>, Error> { self.next().map(|x| x.get(client)).transpose() }\n".to_string(),
-            "    fn prev(&self, client: &crate::client::Client) -> Result<Option<Self>, Error> { self.prev().map(|x| x.get(client)).transpose() }\n".to_string(),
+            "impl crate::page::Page for ".to_string() + name + " {\n",
+            "    type Item = ".to_string() + r.as_str() + ";\n",
+            "    fn next<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<Self>, Error> { self.next_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
+            "    fn prev<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<Self>, Error> { self.prev_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
             "    fn start(&self) -> usize { self.start }\n".to_string(),
             "    fn total_size(&self) -> usize { self.total_size }\n".to_string(),
             "    fn entries(&self) -> Vec<".to_string()
@@ -291,6 +299,84 @@ fn generate_representation_traits(
     }
 }
 
+fn accessor_visibility(_param_name: &str, param_type: &str) -> Option<String> {
+    if param_type.ends_with("PageResource") {
+        Some("".to_string())
+    } else {
+        Some("pub".to_string())
+    }
+}
+
+fn resource_type_visibility(resource_type_name: &str) -> Option<String> {
+    if resource_type_name.ends_with("PageResource") || resource_type_name.ends_with("Page") {
+        Some("".to_string())
+    } else {
+        Some("pub".to_string())
+    }
+}
+
+fn extend_accessor(accessor_name: &str, type_name: &str) -> Vec<String> {
+    if let Some(field_name) = accessor_name.strip_suffix("_collection") {
+        // find the bit in between the last < and the first >
+        let bn = type_name.rfind('<').map(|i| &type_name[i + 1..]).unwrap_or(type_name).trim_end_matches('>');
+        let inner_type = &bn[bn.rfind(' ').map_or(0, |x| x+1)..];
+        let pr = if let Some(prefix) = inner_type.strip_suffix("PageResource") {
+            prefix.to_string()
+        } else {
+            return vec![];
+        };
+        let page_type = match pr.as_str() {
+            "People" => "Person".to_string(),
+            t if t.ends_with("Countries") || t.ends_with("Repositories") || t.ends_with("Entries") => format!("{}y", t.strip_suffix("ies").unwrap()),
+            t if t.ends_with("ieses") => format!("{}ies", t.strip_suffix("ieses").unwrap()),
+            "Archives" | "Bugs" | "BugTrackers" | "CharmBases" | "CharmRecipes" | "Distributions" | "Builders" | "Languages" | "Cves" | "Projects" | "Processors" | "Polls" | "Packagesets" | "Specifications" | "Snaps" | "SnapBases" | "Questions" => pr.strip_suffix('s').unwrap().to_string(),
+            t if t.ends_with("Blobs") || t.ends_with("Groups") => t.strip_suffix('s').unwrap().to_string(),
+            "Livefses" => "Livefs".to_string(),
+            "Branches" => "Branch".to_string(),
+            t => t.to_string()
+        } + "Page";
+        if type_name.starts_with("Option<") {
+            vec![
+                    format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<crate::page::PagedCollection<'a, {}>>, Error> {{\n", field_name, page_type),
+                    format!("        self.{}_collection().map(|x| Ok(crate::page::PagedCollection::new(client, x.get(client)?))).transpose()\n", field_name),
+                    format!("    }}\n"),
+            ]
+        } else {
+            vec![
+                format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", field_name, page_type),
+                format!("        Ok(crate::page::PagedCollection::new(client, self.{}_collection().get(client)?))\n", field_name),
+                format!("    }}\n"),
+            ]
+        }
+    } else {
+        vec![]
+    }
+}
+
+fn extend_method(name: &str, ret_type: &str) -> Vec<String> {
+    if name == "get" && ret_type.contains("Page") {
+        vec![
+            format!("    fn iter<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", ret_type),
+            format!("        Ok(crate::page::PagedCollection::new(client, self.get(client)?))\n"),
+            format!("    }}\n"),
+        ]
+    } else {
+        vec![]
+    }
+}
+
+fn map_type_for_response(method: &str, type_name: &str) -> Option<(String, String)> {
+    if !type_name.ends_with("Page") {
+        return None;
+    }
+
+    if method == "get" {
+        return None;
+    }
+
+    Some((format!("crate::page::PagedCollection<'a, {}>", type_name), format!("|x| crate::page::PagedCollection::new(client, x)")))
+}
+
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
 fn main() {
@@ -300,6 +386,11 @@ fn main() {
         param_accessor_rename: Some(Box::new(accessor_rename)),
         generate_representation_traits: Some(Box::new(generate_representation_traits)),
         strip_code_examples: true,
+        accessor_visibility: Some(Box::new(accessor_visibility)),
+        resource_type_visibility: Some(Box::new(resource_type_visibility)),
+        extend_accessor: Some(Box::new(extend_accessor)),
+        extend_method: Some(Box::new(extend_method)),
+        map_type_for_response: Some(Box::new(map_type_for_response)),
         ..Default::default()
     };
 
@@ -311,7 +402,7 @@ fn main() {
         )) {
             text
         } else {
-            let url = format!("https://api.launchpad.net/{0}/", version);
+            let url = format!("https://api.launchpad.net/{}/", version);
             reqwest::blocking::Client::new()
                 .request(reqwest::Method::GET, &url)
                 .header("Accept", "application/vd.sun.wadl+xml")

@@ -1,6 +1,6 @@
 //! Signing of requests for Launchpad.
 //!
-//! See the documentation at https://help.launchpad.net/API/SigningRequests for details
+//! See the documentation at <https://help.launchpad.net/API/SigningRequests> for details
 
 use chrono::{Utc};
 use std::collections::HashMap;
