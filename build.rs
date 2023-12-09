@@ -275,6 +275,7 @@ fn accessor_rename(param_name: &str, type_name: &str) -> Option<String> {
 }
 
 fn generate_representation_traits(
+    def: &wadl::ast::RepresentationDef,
     name: &str,
     _representation: &wadl::ast::RepresentationDef,
     _config: &wadl::codegen::Config,
@@ -316,11 +317,19 @@ fn method_visibility(method_name: &str, return_type: &str) -> Option<String> {
 }
 
 fn resource_type_visibility(resource_type_name: &str) -> Option<String> {
-    if resource_type_name.ends_with("PageResource") || resource_type_name.ends_with("Page") {
+    if resource_type_name.ends_with("PageResource") {
         Some("".to_string())
     } else {
         Some("pub".to_string())
     }
+}
+
+fn representation_visibility(representation_name: &str) -> Option<String> {
+     if representation_name.ends_with("Page") {
+        Some("".to_string())
+     } else {
+        Some("pub".to_string())
+     }
 }
 
 fn extend_accessor(accessor_name: &str, type_name: &str) -> Vec<String> {
@@ -396,6 +405,7 @@ fn main() {
         generate_representation_traits: Some(Box::new(generate_representation_traits)),
         strip_code_examples: true,
         accessor_visibility: Some(Box::new(accessor_visibility)),
+        representation_visibility: Some(Box::new(representation_visibility)),
         resource_type_visibility: Some(Box::new(resource_type_visibility)),
         extend_accessor: Some(Box::new(extend_accessor)),
         extend_method: Some(Box::new(extend_method)),
