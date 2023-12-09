@@ -307,6 +307,14 @@ fn accessor_visibility(_param_name: &str, param_type: &str) -> Option<String> {
     }
 }
 
+fn method_visibility(method_name: &str, return_type: &str) -> Option<String> {
+    if !(method_name == "get" && return_type.ends_with("Page")) {
+        Some("pub".to_string())
+    } else {
+        Some("".to_string())
+    }
+}
+
 fn resource_type_visibility(resource_type_name: &str) -> Option<String> {
     if resource_type_name.ends_with("PageResource") || resource_type_name.ends_with("Page") {
         Some("".to_string())
@@ -353,10 +361,11 @@ fn extend_accessor(accessor_name: &str, type_name: &str) -> Vec<String> {
     }
 }
 
-fn extend_method(name: &str, ret_type: &str) -> Vec<String> {
-    if name == "get" && ret_type.contains("Page") {
+fn extend_method(resource_type: &str, name: &str, ret_type: &str) -> Vec<String> {
+    if !resource_type.ends_with("-page-resource") && name == "get" && ret_type.contains("Page") {
         vec![
-            format!("    fn iter<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", ret_type),
+            format!("    /// Get a paged collection of {}.\n", ret_type),
+            format!("    pub fn iter<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", ret_type),
             format!("        Ok(crate::page::PagedCollection::new(client, self.get(client)?))\n"),
             format!("    }}\n"),
         ]
@@ -390,6 +399,7 @@ fn main() {
         resource_type_visibility: Some(Box::new(resource_type_visibility)),
         extend_accessor: Some(Box::new(extend_accessor)),
         extend_method: Some(Box::new(extend_method)),
+        method_visibility: Some(Box::new(method_visibility)),
         map_type_for_response: Some(Box::new(map_type_for_response)),
         ..Default::default()
     };

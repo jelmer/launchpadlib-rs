@@ -77,33 +77,26 @@ pub mod v1_0 {
 
     include!(concat!(env!("OUT_DIR"), "/generated/1_0.rs"));
 
-    #[derive(Clone)]
-    struct ServiceRootResource1_0;
-    impl Resource for ServiceRootResource1_0 {
-        fn url(&self) -> Url {
-            Url::parse("https://api.launchpad.net/1.0/").unwrap()
-        }
-    }
-    impl ServiceRoot for ServiceRootResource1_0 {}
-
     lazy_static::lazy_static! {
+        static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/1.0/").unwrap());
         static ref STATIC_RESOURCES: std::collections::HashMap<Url, Box<dyn Resource + Send + Sync>> = {
             let mut m = std::collections::HashMap::new();
-            m.insert(ServiceRootResource1_0.url(), Box::new(ServiceRootResource1_0) as Box<dyn Resource + Send + Sync>);
+            let root = ServiceRoot(Url::parse("https://api.launchpad.net/1.0/").unwrap());
+            m.insert(root.url().clone(), Box::new(root) as Box<dyn Resource + Send + Sync>);
             m
         };
     }
 
-    pub fn get_service_root_by_url(url: &'_ Url) -> Result<&'static (dyn ServiceRoot), Error> {
-        if url == &ServiceRootResource1_0.url() {
-            Ok(&ServiceRootResource1_0)
+    pub fn get_service_root_by_url(url: &'_ Url) -> Result<&'static ServiceRoot, Error> {
+        if url == ROOT.url() {
+            Ok(&ROOT)
         } else {
             Err(Error::InvalidUrl)
         }
     }
 
     pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
-        ServiceRootResource1_0.get(client)
+        ROOT.get(client)
     }
 
     pub fn get_resource_by_url(
