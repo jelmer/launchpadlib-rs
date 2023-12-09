@@ -275,7 +275,7 @@ fn accessor_rename(param_name: &str, type_name: &str) -> Option<String> {
 }
 
 fn generate_representation_traits(
-    def: &wadl::ast::RepresentationDef,
+    _def: &wadl::ast::RepresentationDef,
     name: &str,
     _representation: &wadl::ast::RepresentationDef,
     _config: &wadl::codegen::Config,
@@ -324,15 +324,7 @@ fn resource_type_visibility(resource_type_name: &str) -> Option<String> {
     }
 }
 
-fn representation_visibility(representation_name: &str) -> Option<String> {
-     if representation_name.ends_with("Page") {
-        Some("".to_string())
-     } else {
-        Some("pub".to_string())
-     }
-}
-
-fn extend_accessor(accessor_name: &str, type_name: &str) -> Vec<String> {
+fn extend_accessor(param: &wadl::ast::Param, accessor_name: &str, type_name: &str, config: &wadl::codegen::Config) -> Vec<String> {
     if let Some(field_name) = accessor_name.strip_suffix("_collection") {
         // find the bit in between the last < and the first >
         let bn = type_name.rfind('<').map(|i| &type_name[i + 1..]).unwrap_or(type_name).trim_end_matches('>');
@@ -342,6 +334,10 @@ fn extend_accessor(accessor_name: &str, type_name: &str) -> Vec<String> {
         } else {
             return vec![];
         };
+        let mut lines = vec![];
+        for doc in &param.doc {
+            lines.extend(wadl::codegen::generate_doc(doc, 1, config));
+        }
         let page_type = match pr.as_str() {
             "People" => "Person".to_string(),
             t if t.ends_with("Countries") || t.ends_with("Repositories") || t.ends_with("Entries") => format!("{}y", t.strip_suffix("ies").unwrap()),
@@ -352,7 +348,7 @@ fn extend_accessor(accessor_name: &str, type_name: &str) -> Vec<String> {
             "Branches" => "Branch".to_string(),
             t => t.to_string()
         } + "Page";
-        if type_name.starts_with("Option<") {
+        lines.extend(if type_name.starts_with("Option<") {
             vec![
                     format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<crate::page::PagedCollection<'a, {}>>, Error> {{\n", field_name, page_type),
                     format!("        self.{}_collection().map(|x| Ok(crate::page::PagedCollection::new(client, x.get(client)?))).transpose()\n", field_name),
@@ -364,13 +360,14 @@ fn extend_accessor(accessor_name: &str, type_name: &str) -> Vec<String> {
                 format!("        Ok(crate::page::PagedCollection::new(client, self.{}_collection().get(client)?))\n", field_name),
                 format!("    }}\n"),
             ]
-        }
+        });
+        lines
     } else {
         vec![]
     }
 }
 
-fn extend_method(resource_type: &str, name: &str, ret_type: &str) -> Vec<String> {
+fn extend_method(resource_type: &str, name: &str, ret_type: &str, _config: &wadl::codegen::Config) -> Vec<String> {
     if !resource_type.ends_with("-page-resource") && name == "get" && ret_type.contains("Page") {
         vec![
             format!("    /// Get a paged collection of {}.\n", ret_type),
@@ -392,7 +389,15 @@ fn map_type_for_response(method: &str, type_name: &str) -> Option<(String, Strin
         return None;
     }
 
-    Some((format!("crate::page::PagedCollection<'a, {}>", type_name), format!("|x| crate::page::PagedCollection::new(client, x)")))
+    Some((format!("crate::page::PagedCollection<'a, {}>", type_name), "|x| crate::page::PagedCollection::new(client, x)".to_string()))
+}
+
+fn deprecated_param(param: &wadl::ast::Param) -> bool {
+    if let Some(doc) = param.doc.as_ref() {
+        doc.content.contains("[DEPRECATED]")
+    } else {
+        false
+    }
 }
 
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
@@ -405,12 +410,12 @@ fn main() {
         generate_representation_traits: Some(Box::new(generate_representation_traits)),
         strip_code_examples: true,
         accessor_visibility: Some(Box::new(accessor_visibility)),
-        representation_visibility: Some(Box::new(representation_visibility)),
         resource_type_visibility: Some(Box::new(resource_type_visibility)),
         extend_accessor: Some(Box::new(extend_accessor)),
         extend_method: Some(Box::new(extend_method)),
         method_visibility: Some(Box::new(method_visibility)),
         map_type_for_response: Some(Box::new(map_type_for_response)),
+        deprecated_param: Some(Box::new(deprecated_param)),
         ..Default::default()
     };
 
