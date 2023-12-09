@@ -7,11 +7,15 @@
 //! ```rust
 //! use url::Url;
 //!
+//! #[cfg(feature = "api-v1_0")]
+//! {
 //! let client = launchpadlib::Client::anonymous("just+testing").unwrap();
 //! let service_root = launchpadlib::v1_0::service_root(&client).unwrap();
 //! let people = service_root.people().unwrap();
 //! let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
-//! println!("Person: {}", person.display_name);
+//! let ssh_keys = person.sshkeys(&client).unwrap().map(|k| k.unwrap().keytext).collect::<Vec<_>>();
+//! println!("SSH Keys: {:?}", ssh_keys);
+//! }
 //! ```
 
 pub mod auth;
@@ -27,20 +31,17 @@ pub mod devel {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
+    #![allow(dead_code)]
     use super::*;
+    use crate::page::AsTotalSize;
     include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
 
-    #[derive(Clone)]
-    struct ServiceRootResourceDevel;
-    impl Resource for ServiceRootResourceDevel {
-        fn url(&self) -> Url {
-            Url::parse("https://api.launchpad.net/devel/").unwrap()
-        }
+    lazy_static::lazy_static! {
+        static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/devel/").unwrap());
     }
-    impl ServiceRoot for ServiceRootResourceDevel {}
 
     pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
-        ServiceRootResourceDevel.get(client)
+        ROOT.get(client)
     }
 }
 
@@ -49,21 +50,17 @@ pub mod beta {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
+    #![allow(dead_code)]
     use super::*;
+    use crate::page::AsTotalSize;
     include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
 
-    #[derive(Clone)]
-    struct ServiceRootResourceBeta;
-    impl Resource for ServiceRootResourceBeta {
-        fn url(&self) -> Url {
-            Url::parse("https://api.launchpad.net/beta/").unwrap()
-        }
+    lazy_static::lazy_static! {
+        static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/beta/").unwrap());
     }
-    impl ServiceRoot for ServiceRootResourceBeta {}
-
 
     pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
-        ServiceRootResourceBeta.get(client)
+        ROOT.get(client)
     }
 }
 
@@ -72,37 +69,32 @@ pub mod v1_0 {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
+    #![allow(dead_code)]
     use super::*;
+    use crate::page::AsTotalSize;
 
     include!(concat!(env!("OUT_DIR"), "/generated/1_0.rs"));
 
-    #[derive(Clone)]
-    struct ServiceRootResource1_0;
-    impl Resource for ServiceRootResource1_0 {
-        fn url(&self) -> Url {
-            Url::parse("https://api.launchpad.net/1.0/").unwrap()
-        }
-    }
-    impl ServiceRoot for ServiceRootResource1_0 {}
-
     lazy_static::lazy_static! {
+        static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/1.0/").unwrap());
         static ref STATIC_RESOURCES: std::collections::HashMap<Url, Box<dyn Resource + Send + Sync>> = {
             let mut m = std::collections::HashMap::new();
-            m.insert(ServiceRootResource1_0.url(), Box::new(ServiceRootResource1_0) as Box<dyn Resource + Send + Sync>);
+            let root = ServiceRoot(Url::parse("https://api.launchpad.net/1.0/").unwrap());
+            m.insert(root.url().clone(), Box::new(root) as Box<dyn Resource + Send + Sync>);
             m
         };
     }
 
-    pub fn get_service_root_by_url(url: &'_ Url) -> Result<&'static (dyn ServiceRoot), Error> {
-        if url == &ServiceRootResource1_0.url() {
-            Ok(&ServiceRootResource1_0)
+    pub fn get_service_root_by_url(url: &'_ Url) -> Result<&'static ServiceRoot, Error> {
+        if url == ROOT.url() {
+            Ok(&ROOT)
         } else {
             Err(Error::InvalidUrl)
         }
     }
 
     pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
-        ServiceRootResource1_0.get(client)
+        ROOT.get(client)
     }
 
     pub fn get_resource_by_url(

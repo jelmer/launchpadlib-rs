@@ -15,8 +15,7 @@ include = ["wadl/*.wadl", "src/*.rs", "build.rs"]
 [lib]
 
 [workspace.dependencies]
-wadl = { version = "0.1.7", default-features = false }
-#wadl = { path = "../wadl-rs" }
+wadl = { version = "0.2.0", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.31", features = ["serde"] }
@@ -43,3 +42,11 @@ default = ["api-v1_0"]
 api-v1_0 = []
 api-devel = []
 api-beta = []
+
+[[example]]
+required-features = ["api-v1_0"]
+name = "auth"
+
+[[example]]
+required-features = ["api-v1_0"]
+name = "ssh-keys"
