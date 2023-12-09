@@ -42,3 +42,11 @@ default = ["api-v1_0"]
 api-v1_0 = []
 api-devel = []
 api-beta = []
+
+[[example]]
+required-features = ["api-v1_0"]
+name = "auth"
+
+[[example]]
+required-features = ["api-v1_0"]
+name = "ssh-keys"

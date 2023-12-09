@@ -3,7 +3,7 @@ pub trait Page {
    fn next(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error> where Self: Sized;
    fn prev(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error> where Self: Sized;
    fn start(&self) -> usize;
-   fn total_size(&self) -> usize;
+   fn total_size(&self) -> Option<usize>;
    fn entries(&self) -> Vec<Self::Item>;
 }
 
@@ -14,28 +14,38 @@ pub struct PagedCollection<'a, P: Page> {
 }
 
 impl<'a, P: Page> PagedCollection<'a, P> {
-    pub fn len(&self) -> usize {
+    pub fn len(&self) -> Option<usize> {
         self.page.total_size()
     }
 
     pub fn is_empty(&self) -> bool {
-        self.len() == 0
+        self.len() == Some(0) || (self.len().is_none() && self.page.entries().is_empty() && self.page.start() == 0)
     }
 
     /// Get the item at the given index.
     ///
     /// This will fetch pages as needed to satisfy the request.
     pub fn get(&mut self, index: usize) -> Result<Option<P::Item>, crate::Error> {
-        if index >= self.len() {
-            return Ok(None);
+        if let Some(total_size) = self.len() {
+            if index >= total_size {
+                return Ok(None);
+            }
         }
 
         while index < self.page.start() {
-            self.page = self.page.prev(self.client)?.unwrap();
+            self.page = if let Some(page) = self.page.prev(self.client)? {
+                page
+            } else {
+                return Ok(None);
+            };
         }
 
         while index >= self.page.start() + self.page.entries().len() {
-            self.page = self.page.next(self.client)?.unwrap();
+            self.page = if let Some(page) = self.page.next(self.client)? {
+                page
+            } else {
+                return Ok(None);
+            };
         }
 
         let mut entries = self.page.entries();
@@ -120,8 +130,8 @@ mod tests {
             self.start
         }
 
-        fn total_size(&self) -> usize {
-            self.entries.entries.len()
+        fn total_size(&self) -> Option<usize> {
+            Some(self.entries.entries.len())
         }
 
         fn entries(&self) -> Vec<Self::Item> {
@@ -142,7 +152,7 @@ mod tests {
         };
         let collection = super::PagedCollection::new(&client, page);
 
-        assert_eq!(collection.len(), 3);
+        assert_eq!(collection.len(), Some(3));
         assert!(!collection.is_empty());
         assert_eq!(vec!["a", "b", "c"], collection.collect::<Result<Vec<_>, _>>().unwrap());
     }
@@ -160,10 +170,26 @@ mod tests {
         };
         let mut collection = super::PagedCollection::new(&client, page);
 
-        assert_eq!(collection.len(), 0);
+        assert_eq!(collection.len(), Some(0));
         assert_eq!(collection.is_empty(), true);
 
         assert_eq!(collection.next().is_none(), true);
     }
 
+}
+
+pub(crate) trait AsTotalSize {
+    fn as_total_size(self) -> Option<usize>;
+}
+
+impl AsTotalSize for Option<usize> {
+    fn as_total_size(self) -> Option<usize> {
+        self
+    }
+}
+
+impl AsTotalSize for usize {
+    fn as_total_size(self) -> Option<usize> {
+        Some(self)
+    }
 }

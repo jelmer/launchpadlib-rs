@@ -288,7 +288,7 @@ fn generate_representation_traits(
             "    fn next<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<Self>, Error> { self.next_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
             "    fn prev<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<Self>, Error> { self.prev_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
             "    fn start(&self) -> usize { self.start }\n".to_string(),
-            "    fn total_size(&self) -> usize { self.total_size }\n".to_string(),
+            "    fn total_size(&self) -> Option<usize> { self.total_size.as_total_size() }\n".to_string(),
             "    fn entries(&self) -> Vec<".to_string()
                 + r.as_str()
                 + "> { self.entries.iter().map(|v| serde_json::from_value(v.clone()).unwrap()).collect() }\n",
