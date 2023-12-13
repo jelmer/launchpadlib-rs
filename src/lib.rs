@@ -43,6 +43,11 @@ pub mod devel {
     pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
+
+    pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
+        let url = Url::parse(&format!("https://{}/devel/", host)).unwrap();
+        ServiceRoot(url).get(client)
+    }
 }
 
 #[cfg(feature = "api-beta")]
@@ -61,6 +66,11 @@ pub mod beta {
 
     pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
+    }
+
+    pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
+        let url = Url::parse(&format!("https://{}/beta/", host)).unwrap();
+        ServiceRoot(url).get(client)
     }
 }
 
@@ -97,6 +107,11 @@ pub mod v1_0 {
         ROOT.get(client)
     }
 
+    pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
+        let url = Url::parse(&format!("https://{}/1.0/", host)).unwrap();
+        ServiceRoot(url).get(client)
+    }
+
     pub fn get_resource_by_url(
         url: &'_ Url,
     ) -> std::result::Result<&'static (dyn Resource + Send + Sync), Error> {
@@ -111,5 +126,42 @@ pub mod v1_0 {
     fn test_parse_person() {
         let json = include_str!("../testdata/person.json");
         let person: PersonFull = serde_json::from_str(json).unwrap();
+        assert_eq!(person.display_name, "Jelmer Vernooĳ");
+    }
+
+    impl Bugs {
+        pub fn get_by_id(&self, client: &dyn wadl::Client, id: u32) -> std::result::Result<BugFull, Error> {
+            let url = self.url().join(id.to_string().as_str()).unwrap();
+            Bug(url).get(client)
+        }
+    }
+
+    impl Projects {
+        pub fn get_by_name(&self, client: &dyn wadl::Client, name: &str) -> std::result::Result<ProjectFull, Error> {
+            let url = self.url().join(name).unwrap();
+            Project(url).get(client)
+        }
+    }
+
+    impl ProjectGroups {
+        pub fn get_by_name(
+            &self,
+            client: &dyn wadl::Client,
+            name: &str,
+        ) -> std::result::Result<ProjectGroupFull, Error> {
+            let url = self.url().join(name).unwrap();
+            ProjectGroup(url).get(client)
+        }
+    }
+
+    impl Distributions {
+        pub fn get_by_name(
+            &self,
+            client: &dyn wadl::Client,
+            name: &str,
+        ) -> std::result::Result<DistributionFull, Error> {
+            let url = self.url().join(name).unwrap();
+            Distribution(url).get(client)
+        }
     }
 }
