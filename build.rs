@@ -1,4 +1,4 @@
-fn guess_type_name(param_name: &str) -> Option<String> {
+fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
     match param_name {
         n if n.ends_with("_count") => Some("usize"),
         n if n.ends_with("_url") => Some("url::Url"),
@@ -130,7 +130,6 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "latitude" | "longitude" => Some("Option<f64>"),
         "license_approved" => Some("bool"),
         "license_info" => Some("String"),
-        "licenses" => Some("Vec<String>"),
         "manual" => Some("String"),
         "merged_revision_id" => Some("String"),
         "merged_revno" => Some("i64"),
@@ -227,7 +226,6 @@ fn guess_type_name(param_name: &str) -> Option<String> {
         "supports_virtualized" => Some("bool"),
         "suppress_subscription_notifications" => Some("bool"),
         "tag" => Some("String"),
-        "tags" => Some("Vec<String>"),
         "target_architectures" => Some("Vec<String>"),
         "target_default" => Some("bool"),
         "target_git_path" => Some("String"),
@@ -285,8 +283,8 @@ fn generate_representation_traits(
         let ret = vec![
             "impl crate::page::Page for ".to_string() + name + " {\n",
             "    type Item = ".to_string() + r.as_str() + ";\n",
-            "    fn next<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<Self>, Error> { self.next_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
-            "    fn prev<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<Self>, Error> { self.prev_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
+            "    fn next<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<Option<Self>, Error> { self.next_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
+            "    fn prev<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<Option<Self>, Error> { self.prev_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
             "    fn start(&self) -> usize { self.start }\n".to_string(),
             "    fn total_size(&self) -> Option<usize> { self.total_size.as_total_size() }\n".to_string(),
             "    fn entries(&self) -> Vec<".to_string()
@@ -325,6 +323,7 @@ fn resource_type_visibility(resource_type_name: &str) -> Option<String> {
 }
 
 fn extend_accessor(param: &wadl::ast::Param, accessor_name: &str, type_name: &str, config: &wadl::codegen::Config) -> Vec<String> {
+    // if the accessor name ends with _collection, we need to generate a more idiomatic accessor
     if let Some(field_name) = accessor_name.strip_suffix("_collection") {
         // find the bit in between the last < and the first >
         let bn = type_name.rfind('<').map(|i| &type_name[i + 1..]).unwrap_or(type_name).trim_end_matches('>');
@@ -350,13 +349,13 @@ fn extend_accessor(param: &wadl::ast::Param, accessor_name: &str, type_name: &st
         } + "Page";
         lines.extend(if type_name.starts_with("Option<") {
             vec![
-                    format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<Option<crate::page::PagedCollection<'a, {}>>, Error> {{\n", field_name, page_type),
+                    format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<Option<crate::page::PagedCollection<'a, {}>>, Error> {{\n", field_name, page_type),
                     format!("        self.{}_collection().map(|x| Ok(crate::page::PagedCollection::new(client, x.get(client)?))).transpose()\n", field_name),
                     format!("    }}\n"),
             ]
         } else {
             vec![
-                format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", field_name, page_type),
+                format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", field_name, page_type),
                 format!("        Ok(crate::page::PagedCollection::new(client, self.{}_collection().get(client)?))\n", field_name),
                 format!("    }}\n"),
             ]
@@ -371,7 +370,7 @@ fn extend_method(resource_type: &str, name: &str, ret_type: &str, _config: &wadl
     if !resource_type.ends_with("-page-resource") && name == "get" && ret_type.contains("Page") {
         vec![
             format!("    /// Get a paged collection of {}.\n", ret_type),
-            format!("    pub fn iter<'a>(&'a self, client: &'a dyn wadl::Client) -> Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", ret_type),
+            format!("    pub fn iter<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", ret_type),
             format!("        Ok(crate::page::PagedCollection::new(client, self.get(client)?))\n"),
             format!("    }}\n"),
         ]
@@ -400,12 +399,79 @@ fn deprecated_param(param: &wadl::ast::Param) -> bool {
     }
 }
 
+fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>) -> String {
+    let options = param.options.as_ref().unwrap().keys().collect::<std::collections::HashSet<_>>();
+    let name = match param.name.as_str() {
+        "status" => {
+            match param.doc.as_ref().unwrap().content.as_str().trim() {
+                n if n.contains("The new status of the merge proposal.") => "MergeProposalStatus".to_string(),
+                n if n.contains("The status of this publishing record") => "PublishingRecordStatus".to_string(),
+                n if n.contains("Return only items that have this status.") => "PackageUploadStatus".to_string(),
+                n if n.contains("The state of this membership") => "TeamMembershipStatus".to_string(),
+                n if n.contains("The status of this subscription") => "ArchiveSubscriptionStatus".to_string(),
+                _ if options == ["Nominated", "Approved", "Declined"].into_iter().collect::<std::collections::HashSet<_>>() => "BugNominationStatus".to_string(),
+                _ if options == ["Completed", "Pending", "Failed"].into_iter().collect::<std::collections::HashSet<_>>() => "CharmRecipeStatus".to_string(),
+                _ if options.contains("Won't Fix") => "BugTaskStatus".to_string(),
+                n if n.contains("Whether or not the vulnerability has been reviewed and") => "CveStatus".to_string(),
+                n if n.contains("The current status of a mirror") => "MirrorStatus".to_string(),
+                n if n.contains("The current status of this difference") => "DistroSeriesDifferenceStatus".to_string(),
+                _ => {
+                    let mut name = "Status".to_string();
+                    while exists(name.as_str()) {
+                        name.push('_');
+                    }
+                    name
+                }
+            }
+        }
+        "lifecycle_status" => {
+            if param.doc.as_ref().unwrap().content.as_str().contains("Cve") {
+                "CveLifecycleStatus".to_string()
+            } else if options == ["Experimental", "Development", "Mature", "Merged", "Abandoned"].into_iter().collect::<std::collections::HashSet<_>>() {
+                "BranchLifecycleStatus".to_string()
+            } else if options == ["Started", "Not started", "Complete"].into_iter().collect::<std::collections::HashSet<_>>() {
+                "SpecificationLifecycleStatus".to_string()
+            } else {
+                panic!("Unknown lifecycle_status options: {:?}", options);
+            }
+        },
+        "type" => {
+            if param.doc.as_ref().unwrap().content.as_str().contains("Attachment Type") {
+                "AttachmentType".to_string()
+            } else {
+                "Type".to_string()
+            }
+        },
+        "order_by" => {
+            if options.contains("by branch name") {
+                "BranchOrderBy".to_string()
+            } else if options.contains("by repository name") {
+                "RepositoryOrderBy".to_string()
+            } else if options.contains("by opening date") {
+                "PollOrderBy".to_string()
+            } else {
+                panic!("Unknown order_by options: {:?}", options);
+            }
+        },
+        "repository_format" => {
+            if options.iter().any(|o| o.contains("Bazaar")) {
+                "BazaarRepositoryFormat".to_string()
+            } else {
+                "ArchiveRepositoryFormat".to_string()
+            }
+        }
+        n => wadl::codegen::camel_case_name(n)
+    };
+
+    name
+}
+
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
 fn main() {
     #[allow(clippy::needless_update)]
     let config = wadl::codegen::Config {
-        guess_type_name: Some(Box::new(guess_type_name)),
+        override_type_name: Some(Box::new(override_type_name)),
         param_accessor_rename: Some(Box::new(accessor_rename)),
         generate_representation_traits: Some(Box::new(generate_representation_traits)),
         strip_code_examples: true,
@@ -416,6 +482,7 @@ fn main() {
         method_visibility: Some(Box::new(method_visibility)),
         map_type_for_response: Some(Box::new(map_type_for_response)),
         deprecated_param: Some(Box::new(deprecated_param)),
+        options_enum_name: Some(Box::new(options_enum_name)),
         ..Default::default()
     };
 

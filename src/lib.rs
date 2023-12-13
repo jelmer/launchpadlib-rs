@@ -40,7 +40,7 @@ pub mod devel {
         static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/devel/").unwrap());
     }
 
-    pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
+    pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 }
@@ -59,7 +59,7 @@ pub mod beta {
         static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/beta/").unwrap());
     }
 
-    pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
+    pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 }
@@ -85,7 +85,7 @@ pub mod v1_0 {
         };
     }
 
-    pub fn get_service_root_by_url(url: &'_ Url) -> Result<&'static ServiceRoot, Error> {
+    pub fn get_service_root_by_url(url: &'_ Url) -> std::result::Result<&'static ServiceRoot, Error> {
         if url == ROOT.url() {
             Ok(&ROOT)
         } else {
@@ -93,17 +93,23 @@ pub mod v1_0 {
         }
     }
 
-    pub fn service_root(client: &dyn wadl::Client) -> Result<ServiceRootJson, Error> {
+    pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 
     pub fn get_resource_by_url(
         url: &'_ Url,
-    ) -> Result<&'static (dyn Resource + Send + Sync), Error> {
+    ) -> std::result::Result<&'static (dyn Resource + Send + Sync), Error> {
         if let Some(resource) = STATIC_RESOURCES.get(url) {
             Ok(resource.as_ref())
         } else {
             Err(Error::InvalidUrl)
         }
+    }
+
+    #[test]
+    fn test_parse_person() {
+        let json = include_str!("../testdata/person.json");
+        let person: PersonFull = serde_json::from_str(json).unwrap();
     }
 }
