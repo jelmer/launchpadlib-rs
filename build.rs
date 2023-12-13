@@ -1,9 +1,8 @@
-fn override_type_name(type_name: &str, param_name: &str) -> Option<String> {
+fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
     match param_name {
         n if n.ends_with("_count") => Some("usize"),
         n if n.ends_with("_url") => Some("url::Url"),
         n if n.starts_with("is_") => Some("bool"),
-        n if n.starts_with("date_") => Some("chrono::NaiveDate"),
         "http_etag" => Some("String"),
         "description" => Some("String"),
         "scopes" => Some("Vec<String>"),
