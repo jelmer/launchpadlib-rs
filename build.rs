@@ -326,6 +326,7 @@ fn resource_type_visibility(resource_type_name: &str) -> Option<String> {
 }
 
 fn extend_accessor(param: &wadl::ast::Param, accessor_name: &str, type_name: &str, config: &wadl::codegen::Config) -> Vec<String> {
+    // if the accessor name ends with _collection, we need to generate a more idiomatic accessor
     if let Some(field_name) = accessor_name.strip_suffix("_collection") {
         // find the bit in between the last < and the first >
         let bn = type_name.rfind('<').map(|i| &type_name[i + 1..]).unwrap_or(type_name).trim_end_matches('>');
@@ -402,7 +403,7 @@ fn deprecated_param(param: &wadl::ast::Param) -> bool {
 }
 
 fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>) -> String {
-    let options = param.r#type.as_options().unwrap().keys().collect::<std::collections::HashSet<_>>();
+    let options = param.options.as_ref().unwrap().keys().collect::<std::collections::HashSet<_>>();
     let name = match param.name.as_str() {
         "status" => {
             match param.doc.as_ref().unwrap().content.as_str().trim() {
@@ -434,7 +435,7 @@ fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>
             } else if options == ["Started", "Not started", "Complete"].into_iter().collect::<std::collections::HashSet<_>>() {
                 "SpecificationLifecycleStatus".to_string()
             } else {
-                panic!("Unknown lifecycle_status options: {:?}", param.r#type.as_options().unwrap());
+                panic!("Unknown lifecycle_status options: {:?}", options);
             }
         },
         "type" => {
@@ -456,7 +457,7 @@ fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>
             }
         },
         "repository_format" => {
-            if param.r#type.as_options().unwrap().iter().any(|(k, _v)| k.contains("Bazaar")) {
+            if options.iter().any(|o| o.contains("Bazaar")) {
                 "BazaarRepositoryFormat".to_string()
             } else {
                 "ArchiveRepositoryFormat".to_string()
