@@ -2,7 +2,7 @@
 //!
 //! See the documentation at <https://help.launchpad.net/API/SigningRequests> for details
 
-use chrono::{Utc};
+use chrono::Utc;
 use std::collections::HashMap;
 use url::form_urlencoded;
 use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, percent_encode};
@@ -257,8 +257,6 @@ pub fn generate_oauth1_authorization_header(
 
 #[cfg(test)]
 mod tests {
-    
-
     #[test]
     fn test_generate_oauth1_authoriation_header() {
         let ret = super::generate_oauth1_authorization_header(
@@ -306,4 +304,20 @@ mod tests {
             ("9kDgVhXlcVn52HGgCWxq".to_string(), "9kDgVhXlcVn52HGgCWxq".to_string()),
             ret);
     }
+}
+
+pub fn cmdline_access_token(consumer_key: &str) -> Result<(String, String), reqwest::Error> {
+    // Step 1: Get a request token
+    let req_token = get_request_token(consumer_key)?;
+
+    // Step 2: Get the user to authorize the request token
+    let auth_url = authorize_token_url(req_token.0.as_str(), None).unwrap();
+
+    println!("Please authorize the request token at {}", auth_url);
+    println!("Once done, press enter to continue...");
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input).unwrap();
+
+    // Step 3: Exchange the request token for an access token
+    exchange_request_token(consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str()))
 }

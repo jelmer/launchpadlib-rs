@@ -31,6 +31,7 @@ serde = { version = "1.0.189", features = ["derive"] }
 serde_json = "1.0.107"
 url = { version = "2.4.1", features = ["serde"] }
 wadl = { workspace = true }
+clap = { version = "4", features = ["derive"], optional = true }
 
 [build-dependencies]
 wadl = { workspace = true, features = ["codegen"] }
@@ -44,6 +45,7 @@ default = ["api-v1_0"]
 api-v1_0 = []
 api-devel = []
 api-beta = []
+cli = ["dep:clap"]
 
 [[example]]
 required-features = ["api-v1_0"]
@@ -52,3 +54,7 @@ name = "auth"
 [[example]]
 required-features = ["api-v1_0"]
 name = "ssh-keys"
+
+[[bin]]
+required-features = ["api-v1_0", "cli"]
+name = "lp-attach"
