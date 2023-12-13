@@ -71,23 +71,22 @@ impl Client {
 }
 
 impl wadl::Client for Client {
-
-    /// Perform a request, adding the appropriate OAuth1 headers.
-    fn execute(
-        &self,
-        mut req: reqwest::blocking::Request,
-    ) -> Result<reqwest::blocking::Response, reqwest::Error> {
-        if let Some(token) = &self.token {
-            let value = self.authorization_header(
-                req.url(),
+    fn request(&self, method: reqwest::Method, url: url::Url) -> reqwest::blocking::RequestBuilder {
+        let auth_header =         if let Some(token) = &self.token {
+            Some(self.authorization_header(
+                &url,
                 token.as_str(),
                 self.token_secret.as_ref().unwrap().as_str(),
-            );
-            req.headers_mut().insert(
-                reqwest::header::AUTHORIZATION,
-                reqwest::header::HeaderValue::from_str(value.as_str()).unwrap(),
-            );
+            ))
+        } else {
+            None
+        };
+        let mut builder = self.client.request(method, url);
+
+        if let Some(value) = auth_header {
+            builder = builder.header(reqwest::header::AUTHORIZATION, value);
         }
-        self.client.execute(req)
+
+        builder
     }
 }
