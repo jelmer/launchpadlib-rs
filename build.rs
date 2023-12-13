@@ -1,4 +1,4 @@
-fn guess_type_name(param_name: &str) -> Option<String> {
+fn override_type_name(type_name: &str, param_name: &str) -> Option<String> {
     match param_name {
         n if n.ends_with("_count") => Some("usize"),
         n if n.ends_with("_url") => Some("url::Url"),
@@ -474,7 +474,7 @@ const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 fn main() {
     #[allow(clippy::needless_update)]
     let config = wadl::codegen::Config {
-        guess_type_name: Some(Box::new(guess_type_name)),
+        override_type_name: Some(Box::new(override_type_name)),
         param_accessor_rename: Some(Box::new(accessor_rename)),
         generate_representation_traits: Some(Box::new(generate_representation_traits)),
         strip_code_examples: true,
