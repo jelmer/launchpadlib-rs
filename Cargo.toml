@@ -10,13 +10,13 @@ keywords = ["launchpad", "api", "rust"]
 categories = ["network-programming", "asynchronous", "api-bindings"]
 authors = ["Jelmer Vernooĳ <jelmer@jelmer.uk>"]
 build = "build.rs"
-include = ["wadl/*.wadl", "src/*.rs", "build.rs", "examples/*.rs"]
+include = ["wadl/*.wadl", "src/*.rs", "build.rs", "examples/*.rs", "testdata/*"]
 
 [lib]
 
 [workspace.dependencies]
-wadl = { version = "0.2.1", default-features = false }
-#wadl = { path = "../wadl-rs", default-features = false }
+#wadl = { version = "0.2.1", default-features = false }
+wadl = { path = "../wadl-rs", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.31", features = ["serde"] }
