@@ -126,7 +126,7 @@ pub mod v1_0 {
     fn test_parse_person() {
         let json = include_str!("../testdata/person.json");
         let person: PersonFull = serde_json::from_str(json).unwrap();
-        assert_eq!(person.displayname, "Jelmer Vernooĳ");
+        assert_eq!(person.display_name, "Jelmer Vernooĳ");
     }
 
     impl Bugs {
