@@ -465,6 +465,10 @@ fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>
     name
 }
 
+fn reformat_docstring(text: &str) -> String {
+    text.replace("[DEPRECATED]", "")
+}
+
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
 fn main() {
@@ -482,6 +486,7 @@ fn main() {
         map_type_for_response: Some(Box::new(map_type_for_response)),
         deprecated_param: Some(Box::new(deprecated_param)),
         options_enum_name: Some(Box::new(options_enum_name)),
+        reformat_docstring: Some(Box::new(reformat_docstring)),
         ..Default::default()
     };
 
