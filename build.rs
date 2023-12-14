@@ -110,7 +110,6 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         "heat" => Some("f64"),
         "hide_email_addresses" => Some("bool"),
         "homepage_content" => Some("Option<String>"),
-        "id" => Some("String"),
         "importances" => Some("Vec<String>"),
         t if t.starts_with("include_") => Some("bool"),
         "index_compressors" => Some("Vec<String>"),

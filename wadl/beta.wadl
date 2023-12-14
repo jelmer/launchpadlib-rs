@@ -8751,7 +8751,7 @@ Date Last Updated
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_made_private" path="$['date_made_private']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_made_private" path="$['date_made_private']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date Made Private
 </wadl:doc>
@@ -8766,7 +8766,7 @@ including the steps required to reproduce it.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="duplicate_of_link" path="$['duplicate_of_link']">
+      <wadl:param style="plain" required="false" name="duplicate_of_link" path="$['duplicate_of_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Duplicate Of
 </wadl:doc>
@@ -8784,7 +8784,7 @@ The 'heat' of the bug
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Bug ID
 </wadl:doc>
@@ -8804,7 +8804,7 @@ Bug ID
         <wadl:option value="Proprietary"/>
         <wadl:option value="Embargoed"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="latest_patch_uploaded" path="$['latest_patch_uploaded']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="latest_patch_uploaded" path="$['latest_patch_uploaded']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date when the most recent patch was uploaded.
 </wadl:doc>
@@ -8876,7 +8876,7 @@ Subscriptions
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#bug_subscription-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="tags" path="$['tags']">
+      <wadl:param style="plain" required="true" name="tags" path="$['tags']" repeating="true">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Tags</p>
 <p>Space-separated keywords for classifying this bug report.</p>
@@ -8934,7 +8934,7 @@ Vulnerability instances related to this bug.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#vulnerability-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="who_made_private_link" path="$['who_made_private_link']">
+      <wadl:param style="plain" required="false" name="who_made_private_link" path="$['who_made_private_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Who Made Private</p>
 <p>The person who set this bug private.</p>
