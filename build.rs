@@ -4,6 +4,7 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         n if n.ends_with("_url") => Some("url::Url"),
         n if n.starts_with("is_") => Some("bool"),
         "http_etag" => Some("String"),
+        "affected" => Some("bool"),
         "description" => Some("String"),
         "scopes" => Some("Vec<String>"),
         "start" | "total_size" => Some("usize"),
