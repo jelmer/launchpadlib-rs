@@ -59,3 +59,11 @@ name = "ssh-keys"
 [[bin]]
 required-features = ["api-v1_0", "cli"]
 name = "lp-attach"
+
+[[bin]]
+required-features = ["api-v1_0", "cli"]
+name = "lp-set-dupe"
+
+[[bin]]
+required-features = ["api-v1_0", "cli"]
+name = "lp-list-bugs"
