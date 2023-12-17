@@ -158,6 +158,17 @@ pub mod v1_0 {
         let json = include_str!("../testdata/bug.json");
         let bug: BugFull = serde_json::from_str(json).unwrap();
         assert_eq!(bug.title, "Microsoft has a majority market share");
+
+        let json = include_str!("../testdata/bug2.json");
+        let bug: BugFull = serde_json::from_str(json).unwrap();
+        assert_eq!(bug.name, None);
+        assert_eq!(bug.id, 2039729);
+    }
+
+    #[test]
+    fn test_parse_bug_tasks() {
+        let json = include_str!("../testdata/bug_tasks.json");
+        let bug_tasks: BugTaskPage= serde_json::from_str(json).unwrap();
     }
 
     impl Bugs {
