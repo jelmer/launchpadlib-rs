@@ -1525,9 +1525,7 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 
 [[package]]
 name = "wadl"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3006c0161ae019c1546a123484fe2baf2bc4499dda3895322766d8012e2e12c"
+version = "0.2.1"
 dependencies = [
  "form_urlencoded",
  "html2md",

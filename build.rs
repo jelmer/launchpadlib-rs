@@ -4,6 +4,7 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         n if n.ends_with("_url") => Some("url::Url"),
         n if n.starts_with("is_") => Some("bool"),
         "http_etag" => Some("String"),
+        "affected" => Some("bool"),
         "description" => Some("String"),
         "scopes" => Some("Vec<String>"),
         "start" | "total_size" => Some("usize"),
@@ -110,7 +111,6 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         "heat" => Some("f64"),
         "hide_email_addresses" => Some("bool"),
         "homepage_content" => Some("Option<String>"),
-        "id" => Some("String"),
         "importances" => Some("Vec<String>"),
         t if t.starts_with("include_") => Some("bool"),
         "index_compressors" => Some("Vec<String>"),
@@ -466,6 +466,10 @@ fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>
     name
 }
 
+fn reformat_docstring(text: &str) -> String {
+    text.replace("[DEPRECATED]", "")
+}
+
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
 fn main() {
@@ -483,6 +487,7 @@ fn main() {
         map_type_for_response: Some(Box::new(map_type_for_response)),
         deprecated_param: Some(Box::new(deprecated_param)),
         options_enum_name: Some(Box::new(options_enum_name)),
+        reformat_docstring: Some(Box::new(reformat_docstring)),
         ..Default::default()
     };
 

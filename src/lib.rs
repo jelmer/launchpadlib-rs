@@ -40,10 +40,18 @@ pub mod devel {
         static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/devel/").unwrap());
     }
 
+    /// Get the default service root
     pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 
+    /// Get the service root for a specific host
+    ///
+    /// # Example
+    /// ```rust
+    /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    /// let root = launchpadlib::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
+    /// ```
     pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/devel/", host)).unwrap();
         ServiceRoot(url).get(client)
@@ -64,10 +72,18 @@ pub mod beta {
         static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/beta/").unwrap());
     }
 
+    /// Get the default service root
     pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 
+    /// Get the service root for a specific host
+    ///
+    /// # Example
+    /// ```rust
+    /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    /// let root = launchpadlib::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
+    /// ```
     pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/beta/", host)).unwrap();
         ServiceRoot(url).get(client)
@@ -103,10 +119,18 @@ pub mod v1_0 {
         }
     }
 
+    /// Get the default service root
     pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 
+    /// Get the service root for a specific host
+    ///
+    /// # Example
+    /// ```rust
+    /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    /// let root = launchpadlib::v1_0::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
+    /// ```
     pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/1.0/", host)).unwrap();
         ServiceRoot(url).get(client)
@@ -129,9 +153,24 @@ pub mod v1_0 {
         assert_eq!(person.display_name, "Jelmer Vernooĳ");
     }
 
+    #[test]
+    fn test_parse_bug() {
+        let json = include_str!("../testdata/bug.json");
+        let bug: BugFull = serde_json::from_str(json).unwrap();
+        assert_eq!(bug.title, "Microsoft has a majority market share");
+    }
+
     impl Bugs {
+        /// Get a bug by its id
+        ///
+        /// # Example
+        /// ```rust
+        /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+        /// let root = launchpadlib::v1_0::service_root(&client).unwrap();
+        /// let bug = root.bugs().unwrap().get_by_id(&client, 1).unwrap();
+        /// ```
         pub fn get_by_id(&self, client: &dyn wadl::Client, id: u32) -> std::result::Result<BugFull, Error> {
-            let url = self.url().join(id.to_string().as_str()).unwrap();
+            let url = self.url().join(format!("bugs/{}", id).as_str()).unwrap();
             Bug(url).get(client)
         }
     }
