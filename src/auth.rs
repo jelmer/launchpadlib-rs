@@ -51,11 +51,17 @@ fn parse_token_response(response_text: &[u8]) -> (String, String) {
 }
 
 /// Get a request token and request token secret
-pub fn get_request_token(consumer_key: &str) -> Result<(String, String), reqwest::Error> {
+pub fn get_request_token(instance: Option<&str>, consumer_key: &str) -> Result<(String, String), reqwest::Error> {
     let mut params = HashMap::new();
     params.insert("oauth_consumer_key", consumer_key);
     params.insert("oauth_signature_method", "PLAINTEXT");
     params.insert("oauth_signature", "&");
+
+    let mut url = url::Url::parse(REQUEST_TOKEN_URL).unwrap();
+
+    if let Some(instance) = instance {
+        url.set_host(Some(instance)).unwrap();
+    }
 
     let client = reqwest::blocking::Client::new();
     let response = client
@@ -68,10 +74,16 @@ pub fn get_request_token(consumer_key: &str) -> Result<(String, String), reqwest
 
 /// Authorize a request token
 pub fn authorize_token_url(
+    instance: Option<&str>,
     oauth_token: &str,
     oauth_callback: Option<&url::Url>,
 ) -> Result<url::Url, url::ParseError> {
-    let mut url: url::Url = "https://launchpad.net/+authorize-token".parse()?;
+    let mut url: url::Url = "https://launchpad.net/+authorize-token".parse().unwrap();
+
+    if let Some(instance) = instance {
+        url.set_host(Some(instance)).unwrap();
+    }
+
     url.query_pairs_mut().append_pair("oauth_token", oauth_token);
     if let Some(oauth_callback) = oauth_callback {
         url.query_pairs_mut()
@@ -83,6 +95,7 @@ pub fn authorize_token_url(
 
 /// Exchange a request token for an access token
 pub fn exchange_request_token(
+    instance: Option<&str>,
     consumer_key: &str,
     consumer_secret: Option<&str>,
     request_token: &str,
@@ -99,10 +112,16 @@ pub fn exchange_request_token(
     );
     params.insert("oauth_signature", signature.as_str());
 
+    let mut url = url::Url::parse("https://launchpad.net/+access-token").unwrap();
+
+    if let Some(instance) = instance {
+        url.set_host(Some(instance)).unwrap();
+    }
+
     // Make a POST request to exchange the request token for an access token
     let client = reqwest::blocking::Client::new();
     let response = client
-        .post("https://launchpad.net/+access-token")
+        .post(url)
         .form(&params)
         .send()?;
 
@@ -276,6 +295,7 @@ mod tests {
     #[test]
     fn test_authorize_token_url() {
         let ret = super::authorize_token_url(
+            None,
             "9kDgVhXlcVn52HGgCWxq",
             None,
         );
@@ -285,6 +305,7 @@ mod tests {
             ret.unwrap().as_str());
 
         let ret = super::authorize_token_url(
+            None,
             "9kDgVhXlcVn52HGgCWxq",
             Some(&"https://example.com/".parse().unwrap()),
         );
@@ -306,12 +327,12 @@ mod tests {
     }
 }
 
-pub fn cmdline_access_token(consumer_key: &str) -> Result<(String, String), reqwest::Error> {
+pub fn cmdline_access_token(instance: Option<&str>, consumer_key: &str) -> Result<(String, String), reqwest::Error> {
     // Step 1: Get a request token
-    let req_token = get_request_token(consumer_key)?;
+    let req_token = get_request_token(instance, consumer_key)?;
 
     // Step 2: Get the user to authorize the request token
-    let auth_url = authorize_token_url(req_token.0.as_str(), None).unwrap();
+    let auth_url = authorize_token_url(instance, req_token.0.as_str(), None).unwrap();
 
     println!("Please authorize the request token at {}", auth_url);
     println!("Once done, press enter to continue...");
@@ -319,5 +340,5 @@ pub fn cmdline_access_token(consumer_key: &str) -> Result<(String, String), reqw
     std::io::stdin().read_line(&mut input).unwrap();
 
     // Step 3: Exchange the request token for an access token
-    exchange_request_token(consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str()))
+    exchange_request_token(instance, consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str()))
 }

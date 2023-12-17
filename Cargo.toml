@@ -15,7 +15,7 @@ include = ["wadl/*.wadl", "src/*.rs", "build.rs", "examples/*.rs", "testdata/*"]
 [lib]
 
 [workspace.dependencies]
-wadl = { version = "0.2.2", default-features = false }
+wadl = { version = "0.2.6", default-features = false }
 #wadl = { path = "../wadl-rs", default-features = false }
 
 [dependencies]
@@ -42,7 +42,7 @@ reqwest = { version = "0.11.22", features = ["blocking"] }
 maplit = "1.0.2"
 
 [features]
-default = ["api-v1_0"]
+default = ["api-v1_0", "cli"]
 api-v1_0 = []
 api-devel = []
 api-beta = []
@@ -59,3 +59,11 @@ name = "ssh-keys"
 [[bin]]
 required-features = ["api-v1_0", "cli"]
 name = "lp-attach"
+
+[[bin]]
+required-features = ["api-v1_0", "cli"]
+name = "lp-set-dupe"
+
+[[bin]]
+required-features = ["api-v1_0", "cli"]
+name = "lp-list-bugs"

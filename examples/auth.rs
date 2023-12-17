@@ -6,10 +6,10 @@ fn main() {
     let consumer_key = "your_consumer_key";
 
     // Step 1: Get a request token
-    let req_token = get_request_token(consumer_key).unwrap();
+    let req_token = get_request_token(None, consumer_key).unwrap();
 
     // Step 2: Get the user to authorize the request token
-    let auth_url = authorize_token_url(req_token.0.as_str(), None).unwrap();
+    let auth_url = authorize_token_url(None, req_token.0.as_str(), None).unwrap();
 
     println!("Please authorize the request token at {}", auth_url);
     println!("Once done, press enter to continue...");
@@ -17,7 +17,7 @@ fn main() {
     std::io::stdin().read_line(&mut input).unwrap();
 
     // Step 3: Exchange the request token for an access token
-    let access_token = exchange_request_token(consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str())).unwrap();
+    let access_token = exchange_request_token(None, consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str())).unwrap();
 
     let client = Client::authenticated(consumer_key, None, access_token.0.as_str(), access_token.1.as_str()).unwrap();
 

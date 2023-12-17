@@ -11387,7 +11387,7 @@ The messages related to this object, in reverse order of creation (so newest fir
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#message-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="name" path="$['name']">
+      <wadl:param style="plain" required="false" name="name" path="$['name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Nickname</p>
 <p>A short and unique name.

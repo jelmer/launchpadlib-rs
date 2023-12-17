@@ -1,4 +1,4 @@
-fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
+fn override_type_name(type_name: &str, param_name: &str) -> Option<String> {
     match param_name {
         n if n.ends_with("_count") => Some("usize"),
         n if n.ends_with("_url") => Some("url::Url"),
@@ -15,7 +15,6 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         "authorized_size" => Some("usize"),
         "display_name" | "displayname" => Some("String"),
         "external_dependencies" => Some("String"),
-        "name" => Some("String"),
         "private" => Some("bool"),
         "publish" => Some("bool"),
         "reference" => Some("String"),
@@ -74,6 +73,7 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         "custom_file_urls" => Some("Vec<url::Url>"),
         "cvs_module" => Some("String"),
         "cvs_root" => Some("String"),
+        "data" if type_name == "HostedFile" => Some("*reqwest::blocking::multipart::Part"),
         "deb_version_template" => Some("String"),
         "default_branch" => Some("String"),
         "default_membership_period" => Some("usize"),
@@ -83,7 +83,6 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         "diffstat" => Some("String"),
         "display_arches" => Some("Vec<String>"),
         "display_version" => Some("String"),
-        "distroseries" => Some("String"),
         "distro_series_name" => Some("String"),
         "domain_name" => Some("String"),
         "email" => Some("String"),
@@ -99,6 +98,7 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         "failnotes" => Some("String"),
         "features" => Some("Vec<String>"),
         "filename" | "file_extension" => Some("String"),
+        "file_content" => Some("*reqwest::blocking::multipart::Part"),
         "find_all_tags" => Some("bool"),
         "fingerprint" => Some("String"),
         "freshmeat_project" => Some("String"),
@@ -199,6 +199,7 @@ fn override_type_name(_type_name: &str, param_name: &str) -> Option<String> {
         "security_contact" => Some("String"),
         "security_related" => Some("bool"),
         "sequence" => Some("usize"),
+        "send_notifications" => Some("bool"),
         "signing_key_fingerprint" => Some("String"),
         "sourceforge_project" => Some("String"),
         "source_git_path" => Some("String"),
@@ -470,6 +471,15 @@ fn reformat_docstring(text: &str) -> String {
     text.replace("[DEPRECATED]", "")
 }
 
+fn convert_to_multipart(type_name: &str, expr: &str) -> Option<String> {
+    let inner_type = type_name.trim_start_matches("Vec<").trim_end_matches('>').trim_start_matches("Option<").trim_end_matches('>');
+    if inner_type == "reqwest::blocking::multipart::Part" {
+        Some(expr.replace('&', "").replace(".url().to_string()", ""))
+    } else {
+        None
+    }
+}
+
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
 fn main() {
@@ -488,6 +498,7 @@ fn main() {
         deprecated_param: Some(Box::new(deprecated_param)),
         options_enum_name: Some(Box::new(options_enum_name)),
         reformat_docstring: Some(Box::new(reformat_docstring)),
+        convert_to_multipart: Some(Box::new(convert_to_multipart)),
         ..Default::default()
     };
 

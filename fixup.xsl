@@ -25,8 +25,8 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- Mark duplicate_of_link, who_made_private_link, latest_patch_uploaded and date_made_private params as optional -->
-  <xsl:template match="wadl:representation[@id='bug-full']/wadl:param[@name='duplicate_of_link' or @name='latest_patch_uploaded' or @name='who_made_private_link' or @name='date_made_private']">
+  <!-- Mark name, duplicate_of_link, who_made_private_link, latest_patch_uploaded and date_made_private params as optional -->
+  <xsl:template match="wadl:representation[@id='bug-full']/wadl:param[@name='duplicate_of_link' or @name='latest_patch_uploaded' or @name='who_made_private_link' or @name='date_made_private' or @name = 'name']">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:attribute name="required">false</xsl:attribute>
