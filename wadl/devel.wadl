@@ -47759,7 +47759,7 @@ Former members of the team.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#person-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="default_membership_period" path="$['default_membership_period']">
+      <wadl:param style="plain" required="false" name="default_membership_period" path="$['default_membership_period']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Subscription period</p>
 <p>Number of days a new subscription lasts before expiring. You can customize the length of an individual subscription when approving it. Leave this empty or set to 0 for subscriptions to never expire.</p>
@@ -47767,7 +47767,7 @@ Former members of the team.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="default_renewal_period" path="$['default_renewal_period']">
+      <wadl:param style="plain" required="false" name="default_renewal_period" path="$['default_renewal_period']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Self renewal period</p>
 <p>Number of days members can renew their own membership. The number can be from 1 to 3650 (10 years).</p>
@@ -47775,7 +47775,7 @@ Former members of the team.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="description" path="$['description']">
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Description</p>
 <p>Details about interests and goals. Use plain text, paragraphs are preserved and URLs are linked.</p>
@@ -47974,7 +47974,7 @@ All TeamMemberships for Teams this Team or Person is an active member of.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#archive-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="preferred_email_address_link" path="$['preferred_email_address_link']">
+      <wadl:param style="plain" required="false" name="preferred_email_address_link" path="$['preferred_email_address_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Preferred email address</p>
 <p>The preferred email address for this person. The one we'll use to communicate with them.</p>
@@ -48070,7 +48070,7 @@ the "Rosetta pt_BR Translators":</p>
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#team-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="team_description" path="$['team_description']">
+      <wadl:param style="plain" required="false" name="team_description" path="$['team_description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Team Description</p>
 <p>Obsolete. Use description.</p>

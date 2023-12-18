@@ -5,7 +5,6 @@ fn override_type_name(type_name: &str, param_name: &str) -> Option<String> {
         n if n.starts_with("is_") => Some("bool"),
         "http_etag" => Some("String"),
         "affected" => Some("bool"),
-        "description" => Some("String"),
         "scopes" => Some("Vec<String>"),
         "start" | "total_size" => Some("usize"),
         "entries" => Some("Vec<serde_json::Value>"),

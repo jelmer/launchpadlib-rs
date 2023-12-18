@@ -69,3 +69,6 @@ name = "lp-set-dupe"
 [[bin]]
 required-features = ["api-v1_0", "cli"]
 name = "lp-list-bugs"
+
+[package.metadata.cargo-all-features]
+max_combination_size = 2
