@@ -43,8 +43,8 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- Mark description param as optional in team-full -->
-  <xsl:template match="wadl:representation[@id='team-full']/wadl:param[@name='description' or @name='team_description' or @name='preferred_email_address_link' or @name='default_membership_period' or @name='default_renewal_period']">
+  <!-- Mark various params as optional in team-full -->
+  <xsl:template match="wadl:representation[@id='team-full']/wadl:param[@name='description' or @name='team_description' or @name='preferred_email_address_link' or @name='default_membership_period' or @name='default_renewal_period' or @name='archive_link']">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:attribute name="required">false</xsl:attribute>

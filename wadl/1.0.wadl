@@ -34048,7 +34048,7 @@ List of this team's admins.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="archive_link" path="$['archive_link']">
+      <wadl:param style="plain" required="false" name="archive_link" path="$['archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Default PPA</p>
 <p>The PPA named 'ppa' owned by this person.</p>

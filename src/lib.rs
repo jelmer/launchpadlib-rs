@@ -158,6 +158,9 @@ pub mod v1_0 {
         let json = include_str!("../testdata/team.json");
         let team: TeamFull = serde_json::from_str(json).unwrap();
         assert_eq!(team.display_name, "awsome-core");
+
+        let json = include_str!("../testdata/team2.json");
+        let team: TeamFull = serde_json::from_str(json).unwrap();
     }
 
     #[test]
@@ -228,6 +231,7 @@ pub mod v1_0 {
     }
 
     impl People {
+        /// Get a person or team by name
         pub fn get_by_name(&self, client: &dyn wadl::Client, name: &str) -> std::result::Result<PersonOrTeam, Error> {
             let url = self.url().join(&format!("~{}", name)).unwrap();
 
