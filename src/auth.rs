@@ -3,9 +3,9 @@
 //! See the documentation at <https://help.launchpad.net/API/SigningRequests> for details
 
 use chrono::Utc;
+use percent_encoding::{percent_encode, AsciiSet, NON_ALPHANUMERIC};
 use std::collections::HashMap;
 use url::form_urlencoded;
-use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, percent_encode};
 
 use rand::Rng;
 
@@ -15,6 +15,12 @@ const REQUEST_TOKEN_URL: &str = "https://launchpad.net/+request-token";
 pub enum Error {
     Request(reqwest::Error),
     Parse(String),
+
+    Io(std::io::Error),
+    Url(url::ParseError),
+
+    #[cfg(feature = "keyring")]
+    Keyring(keyring::Error),
 }
 
 impl From<reqwest::Error> for Error {
@@ -23,11 +29,34 @@ impl From<reqwest::Error> for Error {
     }
 }
 
+impl From<std::io::Error> for Error {
+    fn from(error: std::io::Error) -> Self {
+        Error::Io(error)
+    }
+}
+
+impl From<url::ParseError> for Error {
+    fn from(error: url::ParseError) -> Self {
+        Error::Url(error)
+    }
+}
+
+#[cfg(feature = "keyring")]
+impl From<keyring::Error> for Error {
+    fn from(error: keyring::Error) -> Self {
+        Error::Keyring(error)
+    }
+}
+
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match &self {
             Error::Request(error) => write!(f, "Request error: {}", error),
             Error::Parse(error) => write!(f, "Parse error: {}", error),
+            Error::Io(error) => write!(f, "IO error: {}", error),
+            Error::Url(error) => write!(f, "URL error: {}", error),
+            #[cfg(feature = "keyring")]
+            Error::Keyring(error) => write!(f, "Keyring error: {}", error),
         }
     }
 }
@@ -51,7 +80,10 @@ fn parse_token_response(response_text: &[u8]) -> (String, String) {
 }
 
 /// Get a request token and request token secret
-pub fn get_request_token(instance: Option<&str>, consumer_key: &str) -> Result<(String, String), reqwest::Error> {
+pub fn get_request_token(
+    instance: Option<&str>,
+    consumer_key: &str,
+) -> Result<(String, String), reqwest::Error> {
     let mut params = HashMap::new();
     params.insert("oauth_consumer_key", consumer_key);
     params.insert("oauth_signature_method", "PLAINTEXT");
@@ -64,10 +96,7 @@ pub fn get_request_token(instance: Option<&str>, consumer_key: &str) -> Result<(
     }
 
     let client = reqwest::blocking::Client::new();
-    let response = client
-        .post(REQUEST_TOKEN_URL)
-        .form(&params)
-        .send()?;
+    let response = client.post(REQUEST_TOKEN_URL).form(&params).send()?;
 
     Ok(parse_token_response(&response.bytes()?))
 }
@@ -84,7 +113,8 @@ pub fn authorize_token_url(
         url.set_host(Some(instance)).unwrap();
     }
 
-    url.query_pairs_mut().append_pair("oauth_token", oauth_token);
+    url.query_pairs_mut()
+        .append_pair("oauth_token", oauth_token);
     if let Some(oauth_callback) = oauth_callback {
         url.query_pairs_mut()
             .append_pair("oauth_callback", oauth_callback.as_str());
@@ -106,10 +136,7 @@ pub fn exchange_request_token(
     params.insert("oauth_token", request_token);
     params.insert("oauth_consumer_key", consumer_key);
     params.insert("oauth_signature_method", "PLAINTEXT");
-    let signature = calculate_plaintext_signature(
-        consumer_secret,
-        request_token_secret
-    );
+    let signature = calculate_plaintext_signature(consumer_secret, request_token_secret);
     params.insert("oauth_signature", signature.as_str());
 
     let mut url = url::Url::parse("https://launchpad.net/+access-token").unwrap();
@@ -120,20 +147,21 @@ pub fn exchange_request_token(
 
     // Make a POST request to exchange the request token for an access token
     let client = reqwest::blocking::Client::new();
-    let response = client
-        .post(url)
-        .form(&params)
-        .send()?;
+    let response = client.post(url).form(&params).send()?;
 
     // Parse the response to get the access token and access token secret
     Ok(parse_token_response(&response.bytes()?))
 }
 
-fn calculate_plaintext_signature(consumer_secret: Option<&str>, token_secret: Option<&str>) -> String {
+fn calculate_plaintext_signature(
+    consumer_secret: Option<&str>,
+    token_secret: Option<&str>,
+) -> String {
     let consumer_secret = consumer_secret.unwrap_or("");
     let token_secret = token_secret.unwrap_or("");
 
-    let consumer_secret = percent_encode(consumer_secret.as_bytes(), RFC3986_UNRESERVED).to_string();
+    let consumer_secret =
+        percent_encode(consumer_secret.as_bytes(), RFC3986_UNRESERVED).to_string();
     let token_secret = percent_encode(token_secret.as_bytes(), RFC3986_UNRESERVED).to_string();
 
     format!("{}&{}", consumer_secret, token_secret)
@@ -153,9 +181,15 @@ struct OAuthAuthorizationHeader {
 /// See https://oauth.net/core/1.0/#encoding_parameters
 ///
 /// Launchpad seems to also not encode "+", ":" and "/" on their example page
-const RFC3986_UNRESERVED: &AsciiSet = &NON_ALPHANUMERIC.remove(b'-').remove(b'.').remove(b'_').remove(b'~').remove(b'+').remove(b'/').remove(b'+').remove(b':');
-
-
+const RFC3986_UNRESERVED: &AsciiSet = &NON_ALPHANUMERIC
+    .remove(b'-')
+    .remove(b'.')
+    .remove(b'_')
+    .remove(b'~')
+    .remove(b'+')
+    .remove(b'/')
+    .remove(b'+')
+    .remove(b':');
 
 impl std::str::FromStr for OAuthAuthorizationHeader {
     type Err = Error;
@@ -176,8 +210,12 @@ impl std::str::FromStr for OAuthAuthorizationHeader {
 
         for part in s.split(", ") {
             let mut parts = part.split('=');
-            let key = parts.next().ok_or_else(|| Error::Parse("Missing key".to_string()))?;
-            let value = parts.next().ok_or_else(|| Error::Parse("Missing value".to_string()))?;
+            let key = parts
+                .next()
+                .ok_or_else(|| Error::Parse("Missing key".to_string()))?;
+            let value = parts
+                .next()
+                .ok_or_else(|| Error::Parse("Missing value".to_string()))?;
             let value = value.trim_matches('"');
 
             let value = percent_encoding::percent_decode_str(value)
@@ -221,14 +259,22 @@ impl ToString for OAuthAuthorizationHeader {
             }
             header.push_str(key);
             header.push_str("=\"");
-            header.push_str(percent_encode(value.as_bytes(), RFC3986_UNRESERVED).to_string().as_str());
+            header.push_str(
+                percent_encode(value.as_bytes(), RFC3986_UNRESERVED)
+                    .to_string()
+                    .as_str(),
+            );
             header.push('\"');
         };
 
         push_str(&mut header, "realm", &self.realm);
         push_str(&mut header, "oauth_consumer_key", &self.oauth_consumer_key);
         push_str(&mut header, "oauth_token", &self.oauth_token);
-        push_str(&mut header, "oauth_signature_method", &self.oauth_signature_method);
+        push_str(
+            &mut header,
+            "oauth_signature_method",
+            &self.oauth_signature_method,
+        );
         push_str(&mut header, "oauth_signature", &self.oauth_signature);
         push_str(&mut header, "oauth_timestamp", &self.oauth_timestamp);
         push_str(&mut header, "oauth_nonce", &self.oauth_nonce);
@@ -258,7 +304,8 @@ pub fn generate_oauth1_authorization_header(
 
     let nonce: String = nonce.map_or_else(
         || rand::thread_rng().gen_range(100000..999999).to_string(),
-        |nonce| nonce.to_string());
+        |nonce| nonce.to_string(),
+    );
 
     let signature = calculate_plaintext_signature(consumer_secret, Some(token_secret));
 
@@ -271,7 +318,8 @@ pub fn generate_oauth1_authorization_header(
         oauth_timestamp: timestamp,
         oauth_nonce: nonce,
         oauth_version: "1.0".to_string(),
-    }.to_string()
+    }
+    .to_string()
 }
 
 #[cfg(test)]
@@ -279,14 +327,14 @@ mod tests {
     #[test]
     fn test_generate_oauth1_authoriation_header() {
         let ret = super::generate_oauth1_authorization_header(
-                &"https://api.launchpad.net/".
-                    parse::<url::Url>().unwrap(),
-                "just+testing",
-                None,
-                "PsK9cpbll1KwehhRDckr",
-                "M2hsnmsfEIAjS3bTWg6t8X2GKhlm152PRDjLLmtQdr9C8KFZWPl9c8QbLfWddE0qpz5L56pMKKFKEfv1",
-                Some(chrono::NaiveDateTime::from_timestamp(1217548916, 0)),
-                Some(51769993));
+            &"https://api.launchpad.net/".parse::<url::Url>().unwrap(),
+            "just+testing",
+            None,
+            "PsK9cpbll1KwehhRDckr",
+            "M2hsnmsfEIAjS3bTWg6t8X2GKhlm152PRDjLLmtQdr9C8KFZWPl9c8QbLfWddE0qpz5L56pMKKFKEfv1",
+            Some(chrono::NaiveDateTime::from_timestamp(1217548916, 0)),
+            Some(51769993),
+        );
 
         assert_eq!(
             "OAuth realm=\"https://api.launchpad.net/\", oauth_consumer_key=\"just+testing\", oauth_token=\"PsK9cpbll1KwehhRDckr\", oauth_signature_method=\"PLAINTEXT\", oauth_signature=\"%26M2hsnmsfEIAjS3bTWg6t8X2GKhlm152PRDjLLmtQdr9C8KFZWPl9c8QbLfWddE0qpz5L56pMKKFKEfv1\", oauth_timestamp=\"1217548916\", oauth_nonce=\"51769993\", oauth_version=\"1.0\"", ret.as_str());
@@ -294,15 +342,12 @@ mod tests {
 
     #[test]
     fn test_authorize_token_url() {
-        let ret = super::authorize_token_url(
-            None,
-            "9kDgVhXlcVn52HGgCWxq",
-            None,
-        );
+        let ret = super::authorize_token_url(None, "9kDgVhXlcVn52HGgCWxq", None);
 
         assert_eq!(
             "https://launchpad.net/+authorize-token?oauth_token=9kDgVhXlcVn52HGgCWxq",
-            ret.unwrap().as_str());
+            ret.unwrap().as_str()
+        );
 
         let ret = super::authorize_token_url(
             None,
@@ -322,12 +367,63 @@ mod tests {
         );
 
         assert_eq!(
-            ("9kDgVhXlcVn52HGgCWxq".to_string(), "9kDgVhXlcVn52HGgCWxq".to_string()),
-            ret);
+            (
+                "9kDgVhXlcVn52HGgCWxq".to_string(),
+                "9kDgVhXlcVn52HGgCWxq".to_string()
+            ),
+            ret
+        );
     }
 }
 
-pub fn cmdline_access_token(instance: Option<&str>, consumer_key: &str) -> Result<(String, String), reqwest::Error> {
+#[cfg(feature = "keyring")]
+pub fn keyring_access_token(
+    instance: Option<&str>,
+    consumer_key: &str,
+) -> Result<(String, String), Error> {
+    let entry = keyring::Entry::new(instance.unwrap_or("launchpad.net"), "oauth1")?;
+
+    let req_token = match entry.get_password() {
+        Ok(token) => {
+            let (token, secret) = parse_token_response(token.as_bytes());
+            (token, secret)
+        }
+        Err(keyring::Error::NoEntry) => {
+            // Step 1: Get a request token
+            let req_token = get_request_token(instance, consumer_key)?;
+
+            // Step 2: Get the user to authorize the request token
+            let auth_url = authorize_token_url(instance, req_token.0.as_str(), None)?;
+
+            println!("Please authorize the request token at {}", auth_url);
+            println!("Once done, press enter to continue...");
+            let mut input = String::new();
+            std::io::stdin().read_line(&mut input)?;
+
+            entry.set_password(&format!(
+                "oauth_token={}&oauth_token_secret={}",
+                req_token.0, req_token.1
+            ))?;
+
+            req_token
+        }
+        Err(e) => return Err(e.into()),
+    };
+
+    // Step 3: Exchange the request token for an access token
+    Ok(exchange_request_token(
+        instance,
+        consumer_key,
+        None,
+        req_token.0.as_str(),
+        Some(req_token.1.as_str()),
+    )?)
+}
+
+pub fn cmdline_access_token(
+    instance: Option<&str>,
+    consumer_key: &str,
+) -> Result<(String, String), reqwest::Error> {
     // Step 1: Get a request token
     let req_token = get_request_token(instance, consumer_key)?;
 
@@ -340,5 +436,27 @@ pub fn cmdline_access_token(instance: Option<&str>, consumer_key: &str) -> Resul
     std::io::stdin().read_line(&mut input).unwrap();
 
     // Step 3: Exchange the request token for an access token
-    exchange_request_token(instance, consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str()))
+    exchange_request_token(
+        instance,
+        consumer_key,
+        None,
+        req_token.0.as_str(),
+        Some(req_token.1.as_str()),
+    )
+}
+
+#[cfg(feature = "keyring")]
+pub fn get_access_token(
+    instance: Option<&str>,
+    consumer_key: &str,
+) -> Result<(String, String), Error> {
+    keyring_access_token(instance, consumer_key)
+}
+
+#[cfg(not(feature = "keyring"))]
+pub fn get_access_token(
+    instance: Option<&str>,
+    consumer_key: &str,
+) -> Result<(String, String), reqwest::Error> {
+    cmdline_access_token(instance, consumer_key)
 }

@@ -33,6 +33,7 @@ serde_json = "1.0.107"
 url = { version = "2.4.1", features = ["serde"] }
 wadl = { workspace = true }
 clap = { version = "4", features = ["derive"], optional = true }
+keyring = { version = "2.1.0", optional = true }
 
 [build-dependencies]
 wadl = { workspace = true, features = ["codegen"] }
@@ -47,6 +48,7 @@ api-v1_0 = []
 api-devel = []
 api-beta = []
 cli = ["dep:clap"]
+keyring = ["dep:keyring"]
 
 [[example]]
 required-features = ["api-v1_0"]
