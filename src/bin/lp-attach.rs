@@ -41,16 +41,20 @@ pub const CONSUMER_KEY: &str = "lp-attach";
 fn main() {
     let args = Args::parse();
 
-    let access_token = launchpadlib::auth::cmdline_access_token(args.instance.as_deref(), CONSUMER_KEY).unwrap();
+    let access_token = launchpadlib::auth::get_access_token(args.instance.as_deref(), CONSUMER_KEY)
+        .expect("Failed to get access token");
 
-    let client = launchpadlib::Client::authenticated(CONSUMER_KEY, None, &access_token.0, &access_token.1).unwrap();
+    let client =
+        launchpadlib::Client::authenticated(CONSUMER_KEY, None, &access_token.0, &access_token.1)
+            .unwrap();
 
     let root = if let Some(host) = args.instance {
         let host = format!("api.{}", host);
         launchpadlib::v1_0::service_root_for_host(&client, &host)
     } else {
         launchpadlib::v1_0::service_root(&client)
-    }.unwrap();
+    }
+    .unwrap();
 
     let bugs = root.bugs().unwrap();
 
@@ -65,7 +69,9 @@ fn main() {
     } else {
         let io = std::io::stdin();
         reqwest::blocking::multipart::Part::reader(io)
-    .file_name("attachment").mime_str("application/octet-stream").unwrap()
+            .file_name("attachment")
+            .mime_str("application/octet-stream")
+            .unwrap()
     };
 
     bug.add_attachment(
@@ -76,5 +82,7 @@ fn main() {
         args.url.as_ref(),
         args.is_patch.as_ref(),
         args.content_type.as_deref(),
-        args.description.as_deref()).unwrap();
+        args.description.as_deref(),
+    )
+    .unwrap();
 }
