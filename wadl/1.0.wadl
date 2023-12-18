@@ -9075,7 +9075,7 @@ Return the list of possible duplicates for this BugTask.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="assignee_link" path="$['assignee_link']">
+      <wadl:param style="plain" required="false" name="assignee_link" path="$['assignee_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Assigned to
 </wadl:doc>
@@ -9099,7 +9099,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_watch_link" path="$['bug_watch_link']">
+      <wadl:param style="plain" required="false" name="bug_watch_link" path="$['bug_watch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Remote Bug Details</p>
 <p>Select the bug watch that represents this task in the relevant bug tracker. If none of the bug watches represents this particular bug task, leave it as (None). Linking the remote bug watch with the task in this way means that a change in the remote bug status will change the status of this bug task in Launchpad.</p>
@@ -9107,7 +9107,7 @@ The target as presented in mail notifications
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#bug_watch"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_assigned" path="$['date_assigned']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_assigned" path="$['date_assigned']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Assigned</p>
 <p>The date on which this task was assigned to someone.</p>
@@ -9115,7 +9115,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_closed" path="$['date_closed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_closed" path="$['date_closed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Closed</p>
 <p>The date on which this task was marked Fix Released, Invalid, Won't Fix, Expired or Opinion.</p>
@@ -9123,7 +9123,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_confirmed" path="$['date_confirmed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_confirmed" path="$['date_confirmed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Confirmed</p>
 <p>The date on which this task was marked Confirmed.</p>
@@ -9139,7 +9139,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_fix_committed" path="$['date_fix_committed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_fix_committed" path="$['date_fix_committed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Fix Committed</p>
 <p>The date on which this task was marked Fix Committed.</p>
@@ -9147,7 +9147,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_fix_released" path="$['date_fix_released']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_fix_released" path="$['date_fix_released']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Fix Released</p>
 <p>The date on which this task was marked Fix Released.</p>
@@ -9155,7 +9155,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_in_progress" path="$['date_in_progress']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_in_progress" path="$['date_in_progress']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date In Progress</p>
 <p>The date on which this task was marked In Progress.</p>
@@ -9163,7 +9163,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_incomplete" path="$['date_incomplete']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_incomplete" path="$['date_incomplete']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Incomplete</p>
 <p>The date on which this task was marked Incomplete.</p>
@@ -9171,7 +9171,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_left_closed" path="$['date_left_closed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_left_closed" path="$['date_left_closed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date left closed</p>
 <p>The date on which this task was last reopened.</p>
@@ -9179,7 +9179,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_left_new" path="$['date_left_new']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_left_new" path="$['date_left_new']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date left new</p>
 <p>The date on which this task was marked with a status higher than New.</p>
@@ -9187,7 +9187,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_triaged" path="$['date_triaged']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_triaged" path="$['date_triaged']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Triaged</p>
 <p>The date on which this task was marked Triaged.</p>
@@ -9214,7 +9214,7 @@ True or False depending on whether or not there is more work required on this bu
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="milestone_link" path="$['milestone_link']">
+      <wadl:param style="plain" required="false" name="milestone_link" path="$['milestone_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Milestone
 </wadl:doc>
@@ -34048,7 +34048,7 @@ List of this team's admins.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="archive_link" path="$['archive_link']">
+      <wadl:param style="plain" required="false" name="archive_link" path="$['archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Default PPA</p>
 <p>The PPA named 'ppa' owned by this person.</p>
@@ -34076,7 +34076,7 @@ Former members of the team.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="default_membership_period" path="$['default_membership_period']">
+      <wadl:param style="plain" required="false" name="default_membership_period" path="$['default_membership_period']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Subscription period</p>
 <p>Number of days a new subscription lasts before expiring. You can customize the length of an individual subscription when approving it. Leave this empty or set to 0 for subscriptions to never expire.</p>
@@ -34084,7 +34084,7 @@ Former members of the team.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="default_renewal_period" path="$['default_renewal_period']">
+      <wadl:param style="plain" required="false" name="default_renewal_period" path="$['default_renewal_period']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Self renewal period</p>
 <p>Number of days members can renew their own membership. The number can be from 1 to 3650 (10 years).</p>
@@ -34092,7 +34092,7 @@ Former members of the team.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="description" path="$['description']">
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Description</p>
 <p>Details about interests and goals. Use plain text, paragraphs are preserved and URLs are linked.</p>
@@ -34303,7 +34303,7 @@ All TeamMemberships for Teams this Team or Person is an active member of.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="preferred_email_address_link" path="$['preferred_email_address_link']">
+      <wadl:param style="plain" required="false" name="preferred_email_address_link" path="$['preferred_email_address_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Preferred email address</p>
 <p>The preferred email address for this person. The one we'll use to communicate with them.</p>
@@ -34399,7 +34399,7 @@ the "Rosetta pt_BR Translators":</p>
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#team-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="team_description" path="$['team_description']">
+      <wadl:param style="plain" required="false" name="team_description" path="$['team_description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Team Description</p>
 <p>Obsolete. Use description.</p>

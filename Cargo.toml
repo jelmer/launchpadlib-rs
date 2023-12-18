@@ -15,8 +15,7 @@ include = ["wadl/*.wadl", "src/*.rs", "build.rs", "examples/*.rs", "testdata/*"]
 [lib]
 
 [workspace.dependencies]
-wadl = { version = "0.2.6", default-features = false }
-#wadl = { path = "../wadl-rs", default-features = false }
+wadl = { version = "0.2.7", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.31", features = ["serde"] }
@@ -69,3 +68,10 @@ name = "lp-set-dupe"
 [[bin]]
 required-features = ["api-v1_0", "cli"]
 name = "lp-list-bugs"
+
+[[bin]]
+required-features = ["api-v1_0", "cli"]
+name = "lp-check-membership"
+
+[package.metadata.cargo-all-features]
+max_combination_size = 2

@@ -154,6 +154,16 @@ pub mod v1_0 {
     }
 
     #[test]
+    fn test_parse_team() {
+        let json = include_str!("../testdata/team.json");
+        let team: TeamFull = serde_json::from_str(json).unwrap();
+        assert_eq!(team.display_name, "awsome-core");
+
+        let json = include_str!("../testdata/team2.json");
+        let team: TeamFull = serde_json::from_str(json).unwrap();
+    }
+
+    #[test]
     fn test_parse_bug() {
         let json = include_str!("../testdata/bug.json");
         let bug: BugFull = serde_json::from_str(json).unwrap();
@@ -212,6 +222,30 @@ pub mod v1_0 {
         ) -> std::result::Result<DistributionFull, Error> {
             let url = self.url().join(name).unwrap();
             Distribution(url).get(client)
+        }
+    }
+
+    pub enum PersonOrTeam {
+        Person(Person),
+        Team(Team),
+    }
+
+    impl People {
+        /// Get a person or team by name
+        pub fn get_by_name(&self, client: &dyn wadl::Client, name: &str) -> std::result::Result<PersonOrTeam, Error> {
+            let url = self.url().join(&format!("~{}", name)).unwrap();
+
+            let wadl = wadl::get_wadl_resource_by_href(client, &url)?;
+
+            let types = wadl.r#type.iter().filter_map(|t| t.id()).collect::<Vec<_>>();
+
+            if types.contains(&"person") {
+                Ok(PersonOrTeam::Person(Person(url)))
+            } else if types.contains(&"team") {
+                Ok(PersonOrTeam::Team(Team(url)))
+            } else {
+                Err(Error::InvalidUrl)
+            }
         }
     }
 }

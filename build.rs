@@ -1,14 +1,26 @@
-fn override_type_name(type_name: &str, param_name: &str) -> Option<String> {
+fn override_type_name(container: &wadl::codegen::ParamContainer, type_name: &str, param_name: &str) -> Option<String> {
+    if param_name == "entries" {
+        return match container {
+            wadl::codegen::ParamContainer::Representation(rd) => {
+                match rd.id.as_deref() {
+                    Some(n) => Some(format!("Vec<{}>", map_page_to_full(wadl::codegen::camel_case_name(n).as_str()))),
+                    _ => {
+                        panic!("Unknown representation id: {}", rd.id.as_deref().unwrap_or_default());
+                    }
+                }
+            }
+            _ => Some("Vec<serde_json::Value>".to_string()),
+        };
+    }
+
     match param_name {
         n if n.ends_with("_count") => Some("usize"),
         n if n.ends_with("_url") => Some("url::Url"),
         n if n.starts_with("is_") => Some("bool"),
         "http_etag" => Some("String"),
         "affected" => Some("bool"),
-        "description" => Some("String"),
         "scopes" => Some("Vec<String>"),
         "start" | "total_size" => Some("usize"),
-        "entries" => Some("Vec<serde_json::Value>"),
         "component_name" => Some("String"),
         "pocket" => Some("String"),
         "title" => Some("String"),
@@ -273,6 +285,15 @@ fn accessor_rename(param_name: &str, type_name: &str) -> Option<String> {
     })
 }
 
+fn map_page_to_full(name: &str) -> String {
+    format!("{}Full", name.strip_suffix("Page").unwrap())
+}
+
+#[test]
+fn test_map_page_to_full() {
+    assert_eq!(map_page_to_full("FooPage"), "FooFull");
+}
+
 fn generate_representation_traits(
     _def: &wadl::ast::RepresentationDef,
     name: &str,
@@ -280,7 +301,7 @@ fn generate_representation_traits(
     _config: &wadl::codegen::Config,
 ) -> Option<Vec<String>> {
     if name.ends_with("Page") {
-        let r = format!("{}Full", name.strip_suffix("Page").unwrap());
+        let r = map_page_to_full(name);
         let ret = vec![
             "impl crate::page::Page for ".to_string() + name + " {\n",
             "    type Item = ".to_string() + r.as_str() + ";\n",
@@ -290,7 +311,7 @@ fn generate_representation_traits(
             "    fn total_size(&self) -> Option<usize> { self.total_size.as_total_size() }\n".to_string(),
             "    fn entries(&self) -> Vec<".to_string()
                 + r.as_str()
-                + "> { self.entries.iter().map(|v| serde_json::from_value(v.clone()).unwrap()).collect() }\n",
+                + "> { self.entries.clone() }\n",
             "}\n".to_string(),
         ];
         Some(ret)
