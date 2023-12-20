@@ -11,7 +11,7 @@ pub struct Client {
 
 impl Client {
     /// Create a new client with no credentials.
-    pub fn anonymous(consumer_key: &str) -> Result<Self, Error> {
+    pub fn anonymous(consumer_key: &str) -> Self {
         Self::new(Some(consumer_key), None, None, None, None)
     }
 
@@ -21,7 +21,7 @@ impl Client {
         consumer_secret: Option<&str>,
         token: &str,
         token_secret: &str,
-    ) -> Result<Self, Error> {
+    ) -> Self {
         Self::new(
             Some(consumer_key),
             consumer_secret,
@@ -31,9 +31,9 @@ impl Client {
         )
     }
 
-    pub fn authenticated(instance: Option<&str>, consumer_key: &str) -> Result<Self, Error> {
+    pub fn authenticated(instance: Option<&str>, consumer_key: &str) -> Result<Self, crate::auth::Error> {
         let (token, token_secret) = crate::auth::get_access_token(instance, consumer_key)?;
-        Self::from_tokens(consumer_key, None, &token, &token_secret)
+        Ok(Self::from_tokens(consumer_key, None, &token, &token_secret))
     }
 
     pub fn new(
@@ -42,7 +42,7 @@ impl Client {
         token: Option<&str>,
         token_secret: Option<&str>,
         user_agent: Option<&str>,
-    ) -> Result<Self, Error> {
+    ) -> Self {
         let user_agent = user_agent.unwrap_or(concat!(
             env!("CARGO_PKG_NAME"),
             "/",
@@ -50,15 +50,15 @@ impl Client {
         ));
         let client = reqwest::blocking::Client::builder()
             .user_agent(user_agent)
-            .build()?;
+            .build().unwrap();
 
-        Ok(Self {
+        Self {
             client,
             token: token.map(|x| x.to_string()),
             token_secret: token_secret.map(|x| x.to_string()),
             consumer_key: consumer_key.map(|x| x.to_string()),
             consumer_secret: consumer_secret.map(|x| x.to_string()),
-        })
+        }
     }
 
     /// Generate an OAuth1 authorization header for the given URL.
@@ -77,15 +77,11 @@ impl Client {
 
 impl wadl::Client for Client {
     fn request(&self, method: reqwest::Method, url: url::Url) -> reqwest::blocking::RequestBuilder {
-        let auth_header =         if let Some(token) = &self.token {
-            Some(self.authorization_header(
+        let auth_header =         self.token.as_ref().map(|token| self.authorization_header(
                 &url,
                 token.as_str(),
                 self.token_secret.as_ref().unwrap().as_str(),
-            ))
-        } else {
-            None
-        };
+            ));
         let mut builder = self.client.request(method, url);
 
         if let Some(value) = auth_header {

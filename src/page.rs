@@ -141,7 +141,7 @@ mod tests {
 
     #[test]
     fn test_iter() {
-        let client = crate::client::Client::anonymous("just testing").unwrap();
+        let client = crate::client::Client::anonymous("just testing");
         let master = DummyMaster {
             entries: vec!["a", "b", "c"],
             chunk_size: 2,
@@ -159,7 +159,7 @@ mod tests {
 
     #[test]
     fn test_empty() {
-        let client = crate::client::Client::anonymous("just testing").unwrap();
+        let client = crate::client::Client::anonymous("just testing");
         let master: DummyMaster<&str> = DummyMaster::<&str> {
             entries: vec![],
             chunk_size: 2,

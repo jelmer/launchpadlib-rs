@@ -10,7 +10,7 @@ use launchpadlib::v1_0::ServiceRoot;
 fn main() {
     use url::Url;
 
-    let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    let client = launchpadlib::Client::anonymous("just+testing");
     let service_root = launchpadlib::v1_0::service_root(&client).unwrap();
     let people = service_root.people().unwrap();
     let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();

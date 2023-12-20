@@ -19,7 +19,7 @@ fn main() {
     // Step 3: Exchange the request token for an access token
     let access_token = exchange_request_token(None, consumer_key, None, req_token.0.as_str(), Some(req_token.1.as_str())).unwrap();
 
-    let client = Client::from_tokens(consumer_key, None, access_token.0.as_str(), access_token.1.as_str()).unwrap();
+    let client = Client::from_tokens(consumer_key, None, access_token.0.as_str(), access_token.1.as_str());
 
     let root = launchpadlib::v1_0::service_root(&client).unwrap();
     let person = root
