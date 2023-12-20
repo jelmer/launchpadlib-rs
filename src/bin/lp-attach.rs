@@ -41,12 +41,8 @@ pub const CONSUMER_KEY: &str = "lp-attach";
 fn main() {
     let args = Args::parse();
 
-    let access_token = launchpadlib::auth::get_access_token(args.instance.as_deref(), CONSUMER_KEY)
-        .expect("Failed to get access token");
-
     let client =
-        launchpadlib::Client::authenticated(CONSUMER_KEY, None, &access_token.0, &access_token.1)
-            .unwrap();
+        launchpadlib::Client::authenticated(args.instance.as_deref(), CONSUMER_KEY).unwrap();
 
     let root = if let Some(host) = args.instance {
         let host = format!("api.{}", host);
