@@ -9,7 +9,7 @@
 //!
 //! #[cfg(feature = "api-v1_0")]
 //! {
-//! let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+//! let client = launchpadlib::Client::anonymous("just+testing");
 //! let service_root = launchpadlib::v1_0::service_root(&client).unwrap();
 //! let people = service_root.people().unwrap();
 //! let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
@@ -49,7 +49,7 @@ pub mod devel {
     ///
     /// # Example
     /// ```rust
-    /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    /// let client = launchpadlib::Client::anonymous("just+testing");
     /// let root = launchpadlib::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
     pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
@@ -81,7 +81,7 @@ pub mod beta {
     ///
     /// # Example
     /// ```rust
-    /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    /// let client = launchpadlib::Client::anonymous("just+testing");
     /// let root = launchpadlib::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
     pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
@@ -128,7 +128,7 @@ pub mod v1_0 {
     ///
     /// # Example
     /// ```rust
-    /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+    /// let client = launchpadlib::Client::anonymous("just+testing");
     /// let root = launchpadlib::v1_0::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
     pub fn service_root_for_host(client: &dyn wadl::Client, host: &str) -> std::result::Result<ServiceRootJson, Error> {
@@ -186,7 +186,7 @@ pub mod v1_0 {
         ///
         /// # Example
         /// ```rust
-        /// let client = launchpadlib::Client::anonymous("just+testing").unwrap();
+        /// let client = launchpadlib::Client::anonymous("just+testing");
         /// let root = launchpadlib::v1_0::service_root(&client).unwrap();
         /// let bug = root.bugs().unwrap().get_by_id(&client, 1).unwrap();
         /// ```

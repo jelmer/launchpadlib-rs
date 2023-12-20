@@ -21,9 +21,8 @@ pub const CONSUMER_KEY: &str = "lp-set-dupe";
 fn main() {
     let args = Args::parse();
 
-    let access_token = launchpadlib::auth::cmdline_access_token(args.instance.as_deref(), CONSUMER_KEY).unwrap();
-
-    let client = launchpadlib::Client::authenticated(CONSUMER_KEY, None, &access_token.0, &access_token.1).unwrap();
+    let client =
+        launchpadlib::Client::authenticated(args.instance.as_deref(), CONSUMER_KEY).unwrap();
 
     let root = if let Some(host) = args.instance {
         let host = format!("api.{}", host);
