@@ -1,5 +1,4 @@
 use url::Url;
-use crate::Error;
 
 pub struct Client {
     client: reqwest::blocking::Client,
