@@ -10,7 +10,7 @@ keywords = ["launchpad", "api", "rust"]
 categories = ["network-programming", "asynchronous", "api-bindings"]
 authors = ["Jelmer Vernooĳ <jelmer@jelmer.uk>"]
 build = "build.rs"
-include = ["wadl/*.wadl", "src/*.rs", "build.rs", "examples/*.rs", "testdata/*"]
+include = ["wadl/*.wadl", "src/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs", "testdata/*"]
 
 [lib]
 
