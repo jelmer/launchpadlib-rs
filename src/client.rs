@@ -30,7 +30,10 @@ impl Client {
         )
     }
 
-    pub fn authenticated(instance: Option<&str>, consumer_key: &str) -> Result<Self, crate::auth::Error> {
+    pub fn authenticated(
+        instance: Option<&str>,
+        consumer_key: &str,
+    ) -> Result<Self, crate::auth::Error> {
         let (token, token_secret) = crate::auth::get_access_token(instance, consumer_key)?;
         Ok(Self::from_tokens(consumer_key, None, &token, &token_secret))
     }
@@ -49,7 +52,8 @@ impl Client {
         ));
         let client = reqwest::blocking::Client::builder()
             .user_agent(user_agent)
-            .build().unwrap();
+            .build()
+            .unwrap();
 
         Self {
             client,
@@ -69,18 +73,20 @@ impl Client {
             token,
             token_secret,
             None,
-            None
+            None,
         )
     }
 }
 
 impl wadl::Client for Client {
     fn request(&self, method: reqwest::Method, url: url::Url) -> reqwest::blocking::RequestBuilder {
-        let auth_header =         self.token.as_ref().map(|token| self.authorization_header(
+        let auth_header = self.token.as_ref().map(|token| {
+            self.authorization_header(
                 &url,
                 token.as_str(),
                 self.token_secret.as_ref().unwrap().as_str(),
-            ));
+            )
+        });
         let mut builder = self.client.request(method, url);
 
         if let Some(value) = auth_header {
