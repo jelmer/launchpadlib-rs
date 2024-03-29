@@ -15,7 +15,7 @@ include = ["wadl/*.wadl", "src/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs
 [lib]
 
 [workspace.dependencies]
-wadl = { version = "0.2.7", default-features = false }
+wadl = { version = "0.3.0", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.37", features = ["serde"] }
@@ -26,17 +26,17 @@ log = "0.4"
 mime = "0.3.17"
 percent-encoding = "2.3.1"
 rand = "0.8.5"
-reqwest = { version = "0.11.22", features = ["json", "blocking"] }
+reqwest = { version = "0.12", features = ["json", "blocking", "multipart"] }
 serde = { version = "1.0.189", features = ["derive"] }
 serde_json = "1.0.107"
 url = { version = "2.4.1", features = ["serde"] }
 wadl = { workspace = true }
-clap = { version = "4", features = ["derive"], optional = true }
+clap = { version = ">=4,<4.5", features = ["derive"], optional = true }
 keyring = { version = "2.3.2", optional = true }
 
 [build-dependencies]
 wadl = { workspace = true, features = ["codegen"] }
-reqwest = { version = "0.11.22", features = ["blocking"] }
+reqwest = { version = "0.12", features = ["blocking"] }
 
 [dev-dependencies]
 maplit = "1.0.2"
