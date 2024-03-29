@@ -18,7 +18,7 @@ include = ["wadl/*.wadl", "src/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs
 wadl = { version = "0.2.7", default-features = false }
 
 [dependencies]
-chrono = { version = "0.4.31", features = ["serde"] }
+chrono = { version = "0.4.37", features = ["serde"] }
 debversion = { version = "0.2.2", features = ["serde"] }
 form_urlencoded = "1.2.1"
 lazy_static = "1.4.0"
