@@ -29,7 +29,7 @@ rand = "0.8.5"
 reqwest = { version = "0.12", features = ["json", "blocking", "multipart"] }
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
-url = { version = "2.5.1", features = ["serde"] }
+url = { version = "2.5.2", features = ["serde"] }
 wadl = { workspace = true }
 clap = { version = ">=4, <4.6", features = ["derive"], optional = true }
 keyring = { version = "2.3.3", optional = true }
