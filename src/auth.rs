@@ -299,6 +299,7 @@ pub fn generate_oauth1_authorization_header(
 
     let timestamp = timestamp
         .unwrap_or_else(|| Utc::now().naive_utc())
+        .and_utc()
         .timestamp()
         .to_string();
 
