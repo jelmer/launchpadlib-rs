@@ -32,7 +32,7 @@ serde_json = "1.0.128"
 url = { version = "2.5.2", features = ["serde"] }
 wadl = { workspace = true }
 clap = { version = "4", features = ["derive"], optional = true }
-keyring = { version = "3.2.1", optional = true }
+keyring = { version = "3.3.0", optional = true }
 
 [build-dependencies]
 wadl = { workspace = true, features = ["codegen"] }
