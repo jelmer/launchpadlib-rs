@@ -1,7 +1,10 @@
 use clap::Parser;
 
 #[derive(Parser)]
-#[clap(name = "lp-check-membership", about = "Check if a user is a member of a team")]
+#[clap(
+    name = "lp-check-membership",
+    about = "Check if a user is a member of a team"
+)]
 struct Args {
     /// Person's user name
     person: String,
@@ -27,7 +30,8 @@ fn main() {
         launchpadlib::v1_0::service_root_for_host(&client, &host)
     } else {
         launchpadlib::v1_0::service_root(&client)
-    }.unwrap();
+    }
+    .unwrap();
 
     let people = root.people().unwrap();
 
