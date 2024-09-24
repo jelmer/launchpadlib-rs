@@ -1,17 +1,19 @@
 //! Pagination support.
 
+use crate::Error;
+
 /// A page of items.
 pub trait Page {
     /// The type of item in the page.
     type Item;
 
     /// Return the next page, if any.
-    fn next(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error>
+    fn next(&self, client: &dyn wadl::Client) -> Result<Option<Self>, Error>
     where
         Self: Sized;
 
     /// Return the previous page, if any.
-    fn prev(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error>
+    fn prev(&self, client: &dyn wadl::Client) -> Result<Option<Self>, Error>
     where
         Self: Sized;
 
@@ -47,7 +49,7 @@ impl<'a, P: Page> PagedCollection<'a, P> {
     /// Get the item at the given index.
     ///
     /// This will fetch pages as needed to satisfy the request.
-    pub fn get(&mut self, index: usize) -> Result<Option<P::Item>, crate::Error> {
+    pub fn get(&mut self, index: usize) -> Result<Option<P::Item>, Error> {
         if let Some(total_size) = self.len() {
             if index >= total_size {
                 return Ok(None);
@@ -90,7 +92,7 @@ impl<'a, P: Page> PagedCollection<'a, P> {
 }
 
 impl<P: Page> Iterator for PagedCollection<'_, P> {
-    type Item = Result<P::Item, crate::Error>;
+    type Item = Result<P::Item, Error>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(next) = self.pending.pop() {
@@ -127,7 +129,7 @@ mod tests {
     impl<I: Clone> Page for DummyPage<I> {
         type Item = I;
 
-        fn next(&self, _: &dyn wadl::Client) -> Result<Option<Self>, crate::Error> {
+        fn next(&self, _: &dyn wadl::Client) -> Result<Option<Self>, Error> {
             if self.start + self.entries.chunk_size >= self.entries.entries.len() {
                 Ok(None)
             } else {
@@ -138,7 +140,7 @@ mod tests {
             }
         }
 
-        fn prev(&self, _: &dyn wadl::Client) -> Result<Option<Self>, crate::Error> {
+        fn prev(&self, _: &dyn wadl::Client) -> Result<Option<Self>, Error> {
             if self.start == 0 {
                 Ok(None)
             } else {
@@ -208,6 +210,7 @@ mod tests {
     }
 }
 
+#[allow(dead_code)]
 pub(crate) trait AsTotalSize {
     fn as_total_size(self) -> Option<usize>;
 }

@@ -373,7 +373,7 @@ fn extend_accessor(
             return vec![];
         };
         let mut lines = vec![];
-        for doc in &param.doc {
+        if let Some(doc) = param.doc.as_ref() {
             lines.extend(wadl::codegen::generate_doc(doc, 1, config));
         }
         let page_type = match pr.as_str() {

@@ -341,7 +341,11 @@ mod tests {
             None,
             "PsK9cpbll1KwehhRDckr",
             "M2hsnmsfEIAjS3bTWg6t8X2GKhlm152PRDjLLmtQdr9C8KFZWPl9c8QbLfWddE0qpz5L56pMKKFKEfv1",
-            Some(chrono::DateTime::from_timestamp(1217548916, 0).unwrap().naive_utc()),
+            Some(
+                chrono::DateTime::from_timestamp(1217548916, 0)
+                    .unwrap()
+                    .naive_utc(),
+            ),
             Some(51769993),
         );
 
@@ -386,6 +390,7 @@ mod tests {
 }
 
 #[cfg(feature = "keyring")]
+/// Obtain an access token from either the keyring, or by prompting the user
 pub fn keyring_access_token(
     instance: Option<&str>,
     consumer_key: &str,
