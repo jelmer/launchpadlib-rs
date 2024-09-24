@@ -1,14 +1,22 @@
-fn override_type_name(container: &wadl::codegen::ParamContainer, type_name: &str, param_name: &str) -> Option<String> {
+fn override_type_name(
+    container: &wadl::codegen::ParamContainer,
+    type_name: &str,
+    param_name: &str,
+) -> Option<String> {
     if param_name == "entries" {
         return match container {
-            wadl::codegen::ParamContainer::Representation(rd) => {
-                match rd.id.as_deref() {
-                    Some(n) => Some(format!("Vec<{}>", map_page_to_full(wadl::codegen::camel_case_name(n).as_str()))),
-                    _ => {
-                        panic!("Unknown representation id: {}", rd.id.as_deref().unwrap_or_default());
-                    }
+            wadl::codegen::ParamContainer::Representation(rd) => match rd.id.as_deref() {
+                Some(n) => Some(format!(
+                    "Vec<{}>",
+                    map_page_to_full(wadl::codegen::camel_case_name(n).as_str())
+                )),
+                _ => {
+                    panic!(
+                        "Unknown representation id: {}",
+                        rd.id.as_deref().unwrap_or_default()
+                    );
                 }
-            }
+            },
             _ => Some("Vec<serde_json::Value>".to_string()),
         };
     }
@@ -344,12 +352,21 @@ fn resource_type_visibility(resource_type_name: &str) -> Option<String> {
     }
 }
 
-fn extend_accessor(param: &wadl::ast::Param, accessor_name: &str, type_name: &str, config: &wadl::codegen::Config) -> Vec<String> {
+fn extend_accessor(
+    param: &wadl::ast::Param,
+    accessor_name: &str,
+    type_name: &str,
+    config: &wadl::codegen::Config,
+) -> Vec<String> {
     // if the accessor name ends with _collection, we need to generate a more idiomatic accessor
     if let Some(field_name) = accessor_name.strip_suffix("_collection") {
         // find the bit in between the last < and the first >
-        let bn = type_name.rfind('<').map(|i| &type_name[i + 1..]).unwrap_or(type_name).trim_end_matches('>');
-        let inner_type = &bn[bn.rfind(' ').map_or(0, |x| x+1)..];
+        let bn = type_name
+            .rfind('<')
+            .map(|i| &type_name[i + 1..])
+            .unwrap_or(type_name)
+            .trim_end_matches('>');
+        let inner_type = &bn[bn.rfind(' ').map_or(0, |x| x + 1)..];
         let pr = if let Some(prefix) = inner_type.strip_suffix("PageResource") {
             prefix.to_string()
         } else {
@@ -361,13 +378,24 @@ fn extend_accessor(param: &wadl::ast::Param, accessor_name: &str, type_name: &st
         }
         let page_type = match pr.as_str() {
             "People" => "Person".to_string(),
-            t if t.ends_with("Countries") || t.ends_with("Repositories") || t.ends_with("Entries") => format!("{}y", t.strip_suffix("ies").unwrap()),
+            t if t.ends_with("Countries")
+                || t.ends_with("Repositories")
+                || t.ends_with("Entries") =>
+            {
+                format!("{}y", t.strip_suffix("ies").unwrap())
+            }
             t if t.ends_with("ieses") => format!("{}ies", t.strip_suffix("ieses").unwrap()),
-            "Archives" | "Bugs" | "BugTrackers" | "CharmBases" | "CharmRecipes" | "Distributions" | "Builders" | "Languages" | "Cves" | "Projects" | "Processors" | "Polls" | "Packagesets" | "Specifications" | "Snaps" | "SnapBases" | "Questions" => pr.strip_suffix('s').unwrap().to_string(),
-            t if t.ends_with("Blobs") || t.ends_with("Groups") => t.strip_suffix('s').unwrap().to_string(),
+            "Archives" | "Bugs" | "BugTrackers" | "CharmBases" | "CharmRecipes"
+            | "Distributions" | "Builders" | "Languages" | "Cves" | "Projects" | "Processors"
+            | "Polls" | "Packagesets" | "Specifications" | "Snaps" | "SnapBases" | "Questions" => {
+                pr.strip_suffix('s').unwrap().to_string()
+            }
+            t if t.ends_with("Blobs") || t.ends_with("Groups") => {
+                t.strip_suffix('s').unwrap().to_string()
+            }
             "Livefses" => "Livefs".to_string(),
             "Branches" => "Branch".to_string(),
-            t => t.to_string()
+            t => t.to_string(),
         } + "Page";
         lines.extend(if type_name.starts_with("Option<") {
             vec![
@@ -388,7 +416,12 @@ fn extend_accessor(param: &wadl::ast::Param, accessor_name: &str, type_name: &st
     }
 }
 
-fn extend_method(resource_type: &str, name: &str, ret_type: &str, _config: &wadl::codegen::Config) -> Vec<String> {
+fn extend_method(
+    resource_type: &str,
+    name: &str,
+    ret_type: &str,
+    _config: &wadl::codegen::Config,
+) -> Vec<String> {
     if !resource_type.ends_with("-page-resource") && name == "get" && ret_type.contains("Page") {
         vec![
             format!("    /// Get a paged collection of {}.\n", ret_type),
@@ -410,7 +443,10 @@ fn map_type_for_response(method: &str, type_name: &str) -> Option<(String, Strin
         return None;
     }
 
-    Some((format!("crate::page::PagedCollection<'a, {}>", type_name), "|x| crate::page::PagedCollection::new(client, x)".to_string()))
+    Some((
+        format!("crate::page::PagedCollection<'a, {}>", type_name),
+        "|x| crate::page::PagedCollection::new(client, x)".to_string(),
+    ))
 }
 
 fn deprecated_param(param: &wadl::ast::Param) -> bool {
@@ -422,48 +458,96 @@ fn deprecated_param(param: &wadl::ast::Param) -> bool {
 }
 
 fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>) -> String {
-    let options = param.options.as_ref().unwrap().keys().collect::<std::collections::HashSet<_>>();
+    let options = param
+        .options
+        .as_ref()
+        .unwrap()
+        .keys()
+        .collect::<std::collections::HashSet<_>>();
     let name = match param.name.as_str() {
-        "status" => {
-            match param.doc.as_ref().unwrap().content.as_str().trim() {
-                n if n.contains("The new status of the merge proposal.") => "MergeProposalStatus".to_string(),
-                n if n.contains("The status of this publishing record") => "PublishingRecordStatus".to_string(),
-                n if n.contains("Return only items that have this status.") => "PackageUploadStatus".to_string(),
-                n if n.contains("The state of this membership") => "TeamMembershipStatus".to_string(),
-                n if n.contains("The status of this subscription") => "ArchiveSubscriptionStatus".to_string(),
-                _ if options == ["Nominated", "Approved", "Declined"].into_iter().collect::<std::collections::HashSet<_>>() => "BugNominationStatus".to_string(),
-                _ if options == ["Completed", "Pending", "Failed"].into_iter().collect::<std::collections::HashSet<_>>() => "CharmRecipeStatus".to_string(),
-                _ if options.contains("Won't Fix") => "BugTaskStatus".to_string(),
-                n if n.contains("Whether or not the vulnerability has been reviewed and") => "CveStatus".to_string(),
-                n if n.contains("The current status of a mirror") => "MirrorStatus".to_string(),
-                n if n.contains("The current status of this difference") => "DistroSeriesDifferenceStatus".to_string(),
-                _ => {
-                    let mut name = "Status".to_string();
-                    while exists(name.as_str()) {
-                        name.push('_');
-                    }
-                    name
-                }
+        "status" => match param.doc.as_ref().unwrap().content.as_str().trim() {
+            n if n.contains("The new status of the merge proposal.") => {
+                "MergeProposalStatus".to_string()
             }
-        }
+            n if n.contains("The status of this publishing record") => {
+                "PublishingRecordStatus".to_string()
+            }
+            n if n.contains("Return only items that have this status.") => {
+                "PackageUploadStatus".to_string()
+            }
+            n if n.contains("The state of this membership") => "TeamMembershipStatus".to_string(),
+            n if n.contains("The status of this subscription") => {
+                "ArchiveSubscriptionStatus".to_string()
+            }
+            _ if options
+                == ["Nominated", "Approved", "Declined"]
+                    .into_iter()
+                    .collect::<std::collections::HashSet<_>>() =>
+            {
+                "BugNominationStatus".to_string()
+            }
+            _ if options
+                == ["Completed", "Pending", "Failed"]
+                    .into_iter()
+                    .collect::<std::collections::HashSet<_>>() =>
+            {
+                "CharmRecipeStatus".to_string()
+            }
+            _ if options.contains("Won't Fix") => "BugTaskStatus".to_string(),
+            n if n.contains("Whether or not the vulnerability has been reviewed and") => {
+                "CveStatus".to_string()
+            }
+            n if n.contains("The current status of a mirror") => "MirrorStatus".to_string(),
+            n if n.contains("The current status of this difference") => {
+                "DistroSeriesDifferenceStatus".to_string()
+            }
+            _ => {
+                let mut name = "Status".to_string();
+                while exists(name.as_str()) {
+                    name.push('_');
+                }
+                name
+            }
+        },
         "lifecycle_status" => {
             if param.doc.as_ref().unwrap().content.as_str().contains("Cve") {
                 "CveLifecycleStatus".to_string()
-            } else if options == ["Experimental", "Development", "Mature", "Merged", "Abandoned"].into_iter().collect::<std::collections::HashSet<_>>() {
+            } else if options
+                == [
+                    "Experimental",
+                    "Development",
+                    "Mature",
+                    "Merged",
+                    "Abandoned",
+                ]
+                .into_iter()
+                .collect::<std::collections::HashSet<_>>()
+            {
                 "BranchLifecycleStatus".to_string()
-            } else if options == ["Started", "Not started", "Complete"].into_iter().collect::<std::collections::HashSet<_>>() {
+            } else if options
+                == ["Started", "Not started", "Complete"]
+                    .into_iter()
+                    .collect::<std::collections::HashSet<_>>()
+            {
                 "SpecificationLifecycleStatus".to_string()
             } else {
                 panic!("Unknown lifecycle_status options: {:?}", options);
             }
-        },
+        }
         "type" => {
-            if param.doc.as_ref().unwrap().content.as_str().contains("Attachment Type") {
+            if param
+                .doc
+                .as_ref()
+                .unwrap()
+                .content
+                .as_str()
+                .contains("Attachment Type")
+            {
                 "AttachmentType".to_string()
             } else {
                 "Type".to_string()
             }
-        },
+        }
         "order_by" => {
             if options.contains("by branch name") {
                 "BranchOrderBy".to_string()
@@ -474,7 +558,7 @@ fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>
             } else {
                 panic!("Unknown order_by options: {:?}", options);
             }
-        },
+        }
         "repository_format" => {
             if options.iter().any(|o| o.contains("Bazaar")) {
                 "BazaarRepositoryFormat".to_string()
@@ -482,7 +566,7 @@ fn options_enum_name(param: &wadl::ast::Param, exists: Box<dyn Fn(&str) -> bool>
                 "ArchiveRepositoryFormat".to_string()
             }
         }
-        n => wadl::codegen::camel_case_name(n)
+        n => wadl::codegen::camel_case_name(n),
     };
 
     name
@@ -493,7 +577,11 @@ fn reformat_docstring(text: &str) -> String {
 }
 
 fn convert_to_multipart(type_name: &str, expr: &str) -> Option<String> {
-    let inner_type = type_name.trim_start_matches("Vec<").trim_end_matches('>').trim_start_matches("Option<").trim_end_matches('>');
+    let inner_type = type_name
+        .trim_start_matches("Vec<")
+        .trim_end_matches('>')
+        .trim_start_matches("Option<")
+        .trim_end_matches('>');
     if inner_type == "reqwest::blocking::multipart::Part" {
         Some(expr.replace('&', "").replace(".url().to_string()", ""))
     } else {

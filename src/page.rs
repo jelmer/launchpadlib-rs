@@ -1,10 +1,14 @@
 pub trait Page {
-   type Item;
-   fn next(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error> where Self: Sized;
-   fn prev(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error> where Self: Sized;
-   fn start(&self) -> usize;
-   fn total_size(&self) -> Option<usize>;
-   fn entries(&self) -> Vec<Self::Item>;
+    type Item;
+    fn next(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error>
+    where
+        Self: Sized;
+    fn prev(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error>
+    where
+        Self: Sized;
+    fn start(&self) -> usize;
+    fn total_size(&self) -> Option<usize>;
+    fn entries(&self) -> Vec<Self::Item>;
 }
 
 pub struct PagedCollection<'a, P: Page> {
@@ -19,7 +23,8 @@ impl<'a, P: Page> PagedCollection<'a, P> {
     }
 
     pub fn is_empty(&self) -> bool {
-        self.len() == Some(0) || (self.len().is_none() && self.page.entries().is_empty() && self.page.start() == 0)
+        self.len() == Some(0)
+            || (self.len().is_none() && self.page.entries().is_empty() && self.page.start() == 0)
     }
 
     /// Get the item at the given index.
@@ -135,7 +140,12 @@ mod tests {
         }
 
         fn entries(&self) -> Vec<Self::Item> {
-            self.entries.entries[self.start..std::cmp::min(self.start + self.entries.chunk_size, self.entries.entries.len())].to_vec()
+            self.entries.entries[self.start
+                ..std::cmp::min(
+                    self.start + self.entries.chunk_size,
+                    self.entries.entries.len(),
+                )]
+                .to_vec()
         }
     }
 
@@ -154,7 +164,10 @@ mod tests {
 
         assert_eq!(collection.len(), Some(3));
         assert!(!collection.is_empty());
-        assert_eq!(vec!["a", "b", "c"], collection.collect::<Result<Vec<_>, _>>().unwrap());
+        assert_eq!(
+            vec!["a", "b", "c"],
+            collection.collect::<Result<Vec<_>, _>>().unwrap()
+        );
     }
 
     #[test]
@@ -175,7 +188,6 @@ mod tests {
 
         assert_eq!(collection.next().is_none(), true);
     }
-
 }
 
 pub(crate) trait AsTotalSize {
