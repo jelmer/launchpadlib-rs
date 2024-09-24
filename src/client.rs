@@ -1,5 +1,13 @@
+//! The `Client` struct is a wrapper around `reqwest::blocking::Client` that provides OAuth1
+//! authentication for requests.
+
 use url::Url;
 
+/// A client that can make requests to a Launchpad API.
+///
+/// This client is a wrapper around `reqwest::blocking::Client` that provides OAuth1 authentication
+/// for requests. It can be created with or without credentials, and can be used to make requests
+/// to any Launchpad API.
 pub struct Client {
     client: reqwest::blocking::Client,
     consumer_key: Option<String>,
@@ -30,6 +38,7 @@ impl Client {
         )
     }
 
+    /// Create a new client with the given credentials.
     pub fn authenticated(
         instance: Option<&str>,
         consumer_key: &str,
@@ -38,6 +47,7 @@ impl Client {
         Ok(Self::from_tokens(consumer_key, None, &token, &token_secret))
     }
 
+    /// Create a new client with the given credentials.
     pub fn new(
         consumer_key: Option<&str>,
         consumer_secret: Option<&str>,

@@ -12,14 +12,22 @@ use rand::Rng;
 const REQUEST_TOKEN_URL: &str = "https://launchpad.net/+request-token";
 
 #[derive(Debug)]
+/// Errors that can occur when signing requests
 pub enum Error {
+    /// An error occurred while making a request
     Request(reqwest::Error),
+
+    /// An error occurred while parsing a response
     Parse(String),
 
+    /// An error occurred while performing IO operations
     Io(std::io::Error),
+
+    /// An error occurred while parsing a URL
     Url(url::ParseError),
 
     #[cfg(feature = "keyring")]
+    /// An error occurred while accessing the keyring
     Keyring(keyring::Error),
 }
 
@@ -299,6 +307,7 @@ pub fn generate_oauth1_authorization_header(
 
     let timestamp = timestamp
         .unwrap_or_else(|| Utc::now().naive_utc())
+        .and_utc()
         .timestamp()
         .to_string();
 
@@ -332,7 +341,7 @@ mod tests {
             None,
             "PsK9cpbll1KwehhRDckr",
             "M2hsnmsfEIAjS3bTWg6t8X2GKhlm152PRDjLLmtQdr9C8KFZWPl9c8QbLfWddE0qpz5L56pMKKFKEfv1",
-            Some(chrono::NaiveDateTime::from_timestamp(1217548916, 0)),
+            Some(chrono::DateTime::from_timestamp(1217548916, 0).unwrap().naive_utc()),
             Some(51769993),
         );
 
@@ -420,6 +429,11 @@ pub fn keyring_access_token(
     )?)
 }
 
+/// Get an access token from the Launchpad API, by prompting the user for input on the command line
+///
+/// # Arguments
+/// * `instance` - The Launchpad instance to use, or `None` for the default
+/// * `consumer_key` - The consumer key to use
 pub fn cmdline_access_token(
     instance: Option<&str>,
     consumer_key: &str,
@@ -446,6 +460,7 @@ pub fn cmdline_access_token(
 }
 
 #[cfg(feature = "keyring")]
+/// Get an access token, either from the keyring or by prompting the user
 pub fn get_access_token(
     instance: Option<&str>,
     consumer_key: &str,
@@ -454,6 +469,7 @@ pub fn get_access_token(
 }
 
 #[cfg(not(feature = "keyring"))]
+/// Get an access token, by prompting the user
 pub fn get_access_token(
     instance: Option<&str>,
     consumer_key: &str,

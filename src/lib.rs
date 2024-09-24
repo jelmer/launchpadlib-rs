@@ -1,3 +1,4 @@
+#![deny(missing_docs)]
 //! # Launchpad API
 //!
 //! This crate provides a Rust interface to the Launchpad API.
@@ -26,12 +27,14 @@ pub use client::Client;
 use url::Url;
 use wadl::{Error, Resource};
 
+/// In development API
 #[cfg(feature = "api-devel")]
 pub mod devel {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
     #![allow(dead_code)]
+    #![allow(missing_docs)]
     use super::*;
     use crate::page::AsTotalSize;
     include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
@@ -61,12 +64,14 @@ pub mod devel {
     }
 }
 
+/// The current beta API
 #[cfg(feature = "api-beta")]
 pub mod beta {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
     #![allow(dead_code)]
+    #![allow(missing_docs)]
     use super::*;
     use crate::page::AsTotalSize;
     include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
@@ -96,12 +101,14 @@ pub mod beta {
     }
 }
 
+/// The original version in the v1.0 API
 #[cfg(feature = "api-v1_0")]
 pub mod v1_0 {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
     #![allow(dead_code)]
+    #![allow(missing_docs)]
     use super::*;
     use crate::page::AsTotalSize;
 
@@ -117,6 +124,7 @@ pub mod v1_0 {
         };
     }
 
+    /// Get a service root by URL
     pub fn get_service_root_by_url(
         url: &'_ Url,
     ) -> std::result::Result<&'static ServiceRoot, Error> {
@@ -147,6 +155,7 @@ pub mod v1_0 {
         ServiceRoot(url).get(client)
     }
 
+    /// Get a resource by URL
     pub fn get_resource_by_url(
         url: &'_ Url,
     ) -> std::result::Result<&'static (dyn Resource + Send + Sync), Error> {
@@ -171,7 +180,7 @@ pub mod v1_0 {
         assert_eq!(team.display_name, "awsome-core");
 
         let json = include_str!("../testdata/team2.json");
-        let team: TeamFull = serde_json::from_str(json).unwrap();
+        let _team: TeamFull = serde_json::from_str(json).unwrap();
     }
 
     #[test]
@@ -189,7 +198,7 @@ pub mod v1_0 {
     #[test]
     fn test_parse_bug_tasks() {
         let json = include_str!("../testdata/bug_tasks.json");
-        let bug_tasks: BugTaskPage = serde_json::from_str(json).unwrap();
+        let _bug_tasks: BugTaskPage = serde_json::from_str(json).unwrap();
     }
 
     impl Bugs {
@@ -212,6 +221,7 @@ pub mod v1_0 {
     }
 
     impl Projects {
+        /// Get a project by its name
         pub fn get_by_name(
             &self,
             client: &dyn wadl::Client,
@@ -223,6 +233,7 @@ pub mod v1_0 {
     }
 
     impl ProjectGroups {
+        /// Get a project group by name
         pub fn get_by_name(
             &self,
             client: &dyn wadl::Client,
@@ -234,6 +245,7 @@ pub mod v1_0 {
     }
 
     impl Distributions {
+        /// Get a distribution by name
         pub fn get_by_name(
             &self,
             client: &dyn wadl::Client,
@@ -244,8 +256,12 @@ pub mod v1_0 {
         }
     }
 
+    /// Enum for either a person or a team
     pub enum PersonOrTeam {
+        /// A person
         Person(Person),
+
+        /// A team
         Team(Team),
     }
 
