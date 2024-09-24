@@ -23,9 +23,7 @@ pub mod auth;
 pub mod client;
 pub mod page;
 pub use client::Client;
-
-use url::Url;
-use wadl::{Error, Resource};
+pub use wadl::{Error, Resource};
 
 /// In development API
 #[cfg(feature = "api-devel")]
@@ -37,6 +35,8 @@ pub mod devel {
     #![allow(missing_docs)]
     use super::*;
     use crate::page::AsTotalSize;
+    use url::Url;
+
     include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
 
     lazy_static::lazy_static! {
@@ -67,6 +67,7 @@ pub mod devel {
 /// The current beta API
 #[cfg(feature = "api-beta")]
 pub mod beta {
+
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
@@ -74,6 +75,8 @@ pub mod beta {
     #![allow(missing_docs)]
     use super::*;
     use crate::page::AsTotalSize;
+    use url::Url;
+
     include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
 
     lazy_static::lazy_static! {
@@ -111,6 +114,7 @@ pub mod v1_0 {
     #![allow(missing_docs)]
     use super::*;
     use crate::page::AsTotalSize;
+    use url::Url;
 
     include!(concat!(env!("OUT_DIR"), "/generated/1_0.rs"));
 
