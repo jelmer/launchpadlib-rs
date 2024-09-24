@@ -1,16 +1,31 @@
+//! Pagination support.
+
+/// A page of items.
 pub trait Page {
+    /// The type of item in the page.
     type Item;
+
+    /// Return the next page, if any.
     fn next(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error>
     where
         Self: Sized;
+
+    /// Return the previous page, if any.
     fn prev(&self, client: &dyn wadl::Client) -> Result<Option<Self>, crate::Error>
     where
         Self: Sized;
+
+    /// Return the index of the first entry on this page.
     fn start(&self) -> usize;
+
+    /// Return the total number of entries in the page collection
     fn total_size(&self) -> Option<usize>;
+
+    /// Get the entries on this page.
     fn entries(&self) -> Vec<Self::Item>;
 }
 
+/// A collection of items that may be paginated.
 pub struct PagedCollection<'a, P: Page> {
     client: &'a dyn wadl::Client,
     pending: Vec<P::Item>,
@@ -18,10 +33,12 @@ pub struct PagedCollection<'a, P: Page> {
 }
 
 impl<'a, P: Page> PagedCollection<'a, P> {
+    /// Return the total number of entries in the collection.
     pub fn len(&self) -> Option<usize> {
         self.page.total_size()
     }
 
+    /// Return true if the collection is empty.
     pub fn is_empty(&self) -> bool {
         self.len() == Some(0)
             || (self.len().is_none() && self.page.entries().is_empty() && self.page.start() == 0)
@@ -60,6 +77,7 @@ impl<'a, P: Page> PagedCollection<'a, P> {
 }
 
 impl<'a, P: Page> PagedCollection<'a, P> {
+    /// Create a new page
     pub fn new(client: &'a dyn wadl::Client, page: P) -> Self {
         let mut pending = page.entries();
         pending.reverse();
