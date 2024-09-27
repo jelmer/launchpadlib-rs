@@ -25,10 +25,10 @@ pub mod devel {
     }
 
     /// Get the default service root
-    pub fn service_root(
+    pub async fn service_root(
         client: &dyn wadl::r#async::Client,
     ) -> std::result::Result<ServiceRootJson, wadl::Error> {
-        ROOT.get(client)
+        ROOT.get(client).await
     }
 
     /// Get the service root for a specific host
@@ -38,12 +38,12 @@ pub mod devel {
     /// let client = launchpadlib::r#async::Client::anonymous("just+testing");
     /// let root = launchpadlib::r#async::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
-    pub fn service_root_for_host(
+    pub async fn service_root_for_host(
         client: &dyn wadl::r#async::Client,
         host: &str,
     ) -> std::result::Result<ServiceRootJson, wadl::Error> {
         let url = Url::parse(&format!("https://{}/devel/", host)).unwrap();
-        ServiceRoot(url).get(client)
+        ServiceRoot(url).get(client).await
     }
 }
 
@@ -67,10 +67,10 @@ pub mod beta {
     }
 
     /// Get the default service root
-    pub fn service_root(
+    pub async fn service_root(
         client: &dyn wadl::r#async::Client,
     ) -> std::result::Result<ServiceRootJson, wadl::Error> {
-        ROOT.get(client)
+        ROOT.get(client).await
     }
 
     /// Get the service root for a specific host
@@ -80,12 +80,12 @@ pub mod beta {
     /// let client = launchpadlib::r#async::Client::anonymous("just+testing");
     /// let root = launchpadlib::r#async::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
-    pub fn service_root_for_host(
+    pub async fn service_root_for_host(
         client: &dyn wadl::r#async::Client,
         host: &str,
     ) -> std::result::Result<ServiceRootJson, wadl::Error> {
         let url = Url::parse(&format!("https://{}/beta/", host)).unwrap();
-        ServiceRoot(url).get(client)
+        ServiceRoot(url).get(client).await
     }
 }
 
