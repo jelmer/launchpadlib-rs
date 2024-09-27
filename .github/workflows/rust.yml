@@ -18,11 +18,19 @@ jobs:
     - uses: actions/checkout@v4
     - run: cargo install cargo-all-features
     - name: Build
-      run: cargo build-all-features --verbose
+      run: cargo build --verbose
       env:
         RUSTFLAGS: -Dwarnings
     - name: Run tests
-      run: cargo test-all-features --verbose
+      run: cargo test --verbose --features api-v1_0
+      env:
+        RUSTFLAGS: -Dwarnings
+    - name: Run tests (all)
+      run: cargo test --verbose --all-features
+      env:
+        RUSTFLAGS: -Dwarnings
+    - name: Run async tests
+      run: cargo test --verbose --features async,api-v1_0
       env:
         RUSTFLAGS: -Dwarnings
     - name: Check formatting

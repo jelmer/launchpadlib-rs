@@ -24,7 +24,6 @@ Bindings are generated from the wadl published by Launchpad.
 Limitations and bugs
 --------------------
 
-* There is only a blocking API available at the moment
 * While bindings are generated from the entire WADL file, I have only used a
   small number of them. Please report bugs if you run into issues.
 * Launchpad's WADL is incorrect in places, e.g. claiming that certain fields
