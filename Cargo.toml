@@ -15,8 +15,8 @@ include = ["wadl/*.wadl", "src/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs
 [lib]
 
 [workspace.dependencies]
-# wadl = { version = "0.3.0", default-features = false }
-wadl = { path = "../wadl-rs", default-features = false }
+wadl = { version = ">=0.4.0", default-features = false }
+#wadl = { path = "../wadl-rs", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.38", features = ["serde"] }
