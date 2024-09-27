@@ -25,6 +25,13 @@ pub mod page;
 pub use client::Client;
 pub use wadl::{Error, Resource};
 
+/// The default user agent, used if none is provided
+pub const DEFAULT_USER_AGENT: &str =
+    concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+
+#[cfg(feature = "async")]
+pub mod r#async;
+
 /// In development API
 #[cfg(feature = "api-devel")]
 pub mod devel {

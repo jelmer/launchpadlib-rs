@@ -2,6 +2,7 @@ fn override_type_name(
     container: &wadl::codegen::ParamContainer,
     type_name: &str,
     param_name: &str,
+    config: &wadl::codegen::Config,
 ) -> Option<String> {
     if param_name == "entries" {
         return match container {
@@ -93,7 +94,13 @@ fn override_type_name(
         "custom_file_urls" => Some("Vec<url::Url>"),
         "cvs_module" => Some("String"),
         "cvs_root" => Some("String"),
-        "data" if type_name == "HostedFile" => Some("*reqwest::blocking::multipart::Part"),
+        "data" if type_name == "HostedFile" => {
+            if config.r#async {
+                Some("*reqwest::multipart::Part")
+            } else {
+                Some("*reqwest::blocking::multipart::Part")
+            }
+        }
         "deb_version_template" => Some("String"),
         "default_branch" => Some("String"),
         "default_membership_period" => Some("usize"),
@@ -118,7 +125,13 @@ fn override_type_name(
         "failnotes" => Some("String"),
         "features" => Some("Vec<String>"),
         "filename" | "file_extension" => Some("String"),
-        "file_content" => Some("*reqwest::blocking::multipart::Part"),
+        "file_content" => {
+            if config.r#async {
+                Some("*reqwest::multipart::Part")
+            } else {
+                Some("*reqwest::blocking::multipart::Part")
+            }
+        }
         "find_all_tags" => Some("bool"),
         "fingerprint" => Some("String"),
         "freshmeat_project" => Some("String"),
@@ -306,22 +319,48 @@ fn generate_representation_traits(
     _def: &wadl::ast::RepresentationDef,
     name: &str,
     _representation: &wadl::ast::RepresentationDef,
-    _config: &wadl::codegen::Config,
+    config: &wadl::codegen::Config,
 ) -> Option<Vec<String>> {
     if name.ends_with("Page") {
         let r = map_page_to_full(name);
-        let ret = vec![
-            "impl crate::page::Page for ".to_string() + name + " {\n",
-            "    type Item = ".to_string() + r.as_str() + ";\n",
-            "    fn next<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<Option<Self>, Error> { self.next_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
-            "    fn prev<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<Option<Self>, Error> { self.prev_collection().map(|x| x.get(client)).transpose() }\n".to_string(),
+        let mut ret = vec![];
+
+        if config.r#async {
+            ret.push("#[async_trait::async_trait]\n".to_string());
+        }
+
+        ret.push(format!(
+            "impl {} for {} {{\n",
+            if config.r#async {
+                "crate::r#async::page::Page"
+            } else {
+                "crate::page::Page"
+            },
+            name
+        ));
+        ret.push("    type Item = ".to_string() + r.as_str() + ";\n");
+        ret.extend(
+            if config.r#async {
+                vec![
+            format!("    async fn next<'a>(&'a self, client: &'a dyn {}) -> std::result::Result<Option<Self>, wadl::Error> {{ if let Some(p) = self.next_collection() {{ Ok(Some(p.get(client).await?)) }} else {{ Ok(None) }} }}\n", config.client_trait_name()),
+            format!("    async fn prev<'a>(&'a self, client: &'a dyn {}) -> std::result::Result<Option<Self>, wadl::Error> {{ if let Some(p) = self.prev_collection() {{ Ok(Some(p.get(client).await?)) }} else {{ Ok(None) }} }}\n", config.client_trait_name()),
+                ]
+            } else {
+                vec![
+            format!("    fn next<'a>(&'a self, client: &'a dyn {}) -> std::result::Result<Option<Self>, wadl::Error> {{ self.next_collection().map(|x| x.get(client)).transpose() }}\n", config.client_trait_name()),
+            format!("    fn prev<'a>(&'a self, client: &'a dyn {}) -> std::result::Result<Option<Self>, wadl::Error> {{ self.prev_collection().map(|x| x.get(client)).transpose() }}\n", config.client_trait_name()),
+                ]
+            });
+
+        ret.extend(vec![
             "    fn start(&self) -> usize { self.start }\n".to_string(),
-            "    fn total_size(&self) -> Option<usize> { self.total_size.as_total_size() }\n".to_string(),
+            "    fn total_size(&self) -> Option<usize> { self.total_size.as_total_size() }\n"
+                .to_string(),
             "    fn entries(&self) -> Vec<".to_string()
                 + r.as_str()
                 + "> { self.entries.clone() }\n",
             "}\n".to_string(),
-        ];
+        ]);
         Some(ret)
     } else {
         None
@@ -397,16 +436,30 @@ fn extend_accessor(
             "Branches" => "Branch".to_string(),
             t => t.to_string(),
         } + "Page";
+        let pc_type = if config.r#async {
+            "crate::r#async::page::PagedCollection"
+        } else {
+            "crate::page::PagedCollection"
+        };
+        let opt_async = if config.r#async { "async " } else { "" };
         lines.extend(if type_name.starts_with("Option<") {
             vec![
-                    format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<Option<crate::page::PagedCollection<'a, {}>>, Error> {{\n", field_name, page_type),
-                    format!("        self.{}_collection().map(|x| Ok(crate::page::PagedCollection::new(client, x.get(client)?))).transpose()\n", field_name),
+                    format!("    pub {}fn {}<'a>(&'a self, client: &'a dyn {}) -> std::result::Result<Option<{}<'a, {}>>, wadl::Error> {{\n", opt_async, field_name, config.client_trait_name(), pc_type, page_type),
+                    if config.r#async {
+                        format!("        if let Some(c) = self.{}_collection() {{ Ok(Some({}::new(client, c.get(client).await?))) }} else {{ Ok(None) }}\n", field_name, pc_type)
+                    } else {
+                        format!("        self.{}_collection().map(|x| Ok({}::new(client, x.get(client)?))).transpose()\n", field_name, pc_type)
+                    },
                     format!("    }}\n"),
             ]
         } else {
             vec![
-                format!("    pub fn {}<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", field_name, page_type),
-                format!("        Ok(crate::page::PagedCollection::new(client, self.{}_collection().get(client)?))\n", field_name),
+                format!("    pub {}fn {}<'a>(&'a self, client: &'a dyn {}) -> std::result::Result<{}<'a, {}>, wadl::Error> {{\n", opt_async, field_name, config.client_trait_name(), pc_type, page_type),
+                if config.r#async {
+                    format!("        Ok({}::new(client, self.{}_collection().get(client).await?))\n", pc_type, field_name)
+                } else {
+                    format!("        Ok({}::new(client, self.{}_collection().get(client)?))\n", pc_type, field_name)
+                },
                 format!("    }}\n"),
             ]
         });
@@ -420,13 +473,22 @@ fn extend_method(
     resource_type: &str,
     name: &str,
     ret_type: &str,
-    _config: &wadl::codegen::Config,
+    config: &wadl::codegen::Config,
 ) -> Vec<String> {
+    let pc_type = if config.r#async {
+        "crate::r#async::page::PagedCollection"
+    } else {
+        "crate::page::PagedCollection"
+    };
     if !resource_type.ends_with("-page-resource") && name == "get" && ret_type.contains("Page") {
         vec![
             format!("    /// Get a paged collection of {}.\n", ret_type),
-            format!("    pub fn iter<'a>(&'a self, client: &'a dyn wadl::Client) -> std::result::Result<crate::page::PagedCollection<'a, {}>, Error> {{\n", ret_type),
-            format!("        Ok(crate::page::PagedCollection::new(client, self.get(client)?))\n"),
+            format!("    pub {}fn iter<'a>(&'a self, client: &'a dyn {}) -> std::result::Result<{}<'a, {}>, wadl::Error> {{\n", if config.r#async { "async " } else { "" }, config.client_trait_name(), pc_type, ret_type),
+            if config.r#async {
+                format!("        Ok({}::new(client, self.get(client).await?))\n", pc_type)
+            } else {
+                format!("        Ok({}::new(client, self.get(client)?))\n", pc_type)
+            },
             format!("    }}\n"),
         ]
     } else {
@@ -434,7 +496,11 @@ fn extend_method(
     }
 }
 
-fn map_type_for_response(method: &str, type_name: &str) -> Option<(String, String)> {
+fn map_type_for_response(
+    method: &str,
+    type_name: &str,
+    config: &wadl::codegen::Config,
+) -> Option<(String, String)> {
     if !type_name.ends_with("Page") {
         return None;
     }
@@ -443,9 +509,15 @@ fn map_type_for_response(method: &str, type_name: &str) -> Option<(String, Strin
         return None;
     }
 
+    let pc_type = if config.r#async {
+        "crate::r#async::page::PagedCollection"
+    } else {
+        "crate::page::PagedCollection"
+    };
+
     Some((
-        format!("crate::page::PagedCollection<'a, {}>", type_name),
-        "|x| crate::page::PagedCollection::new(client, x)".to_string(),
+        format!("{}<'a, {}>", pc_type, type_name),
+        format!("|x| {}::new(client, x)", pc_type),
     ))
 }
 
@@ -582,7 +654,9 @@ fn convert_to_multipart(type_name: &str, expr: &str) -> Option<String> {
         .trim_end_matches('>')
         .trim_start_matches("Option<")
         .trim_end_matches('>');
-    if inner_type == "reqwest::blocking::multipart::Part" {
+    if inner_type == "reqwest::blocking::multipart::Part"
+        || inner_type == "reqwest::multipart::Part"
+    {
         Some(expr.replace('&', "").replace(".url().to_string()", ""))
     } else {
         None
@@ -592,53 +666,58 @@ fn convert_to_multipart(type_name: &str, expr: &str) -> Option<String> {
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
 fn main() {
-    #[allow(clippy::needless_update)]
-    let config = wadl::codegen::Config {
-        override_type_name: Some(Box::new(override_type_name)),
-        param_accessor_rename: Some(Box::new(accessor_rename)),
-        generate_representation_traits: Some(Box::new(generate_representation_traits)),
-        strip_code_examples: true,
-        accessor_visibility: Some(Box::new(accessor_visibility)),
-        resource_type_visibility: Some(Box::new(resource_type_visibility)),
-        extend_accessor: Some(Box::new(extend_accessor)),
-        extend_method: Some(Box::new(extend_method)),
-        method_visibility: Some(Box::new(method_visibility)),
-        map_type_for_response: Some(Box::new(map_type_for_response)),
-        deprecated_param: Some(Box::new(deprecated_param)),
-        options_enum_name: Some(Box::new(options_enum_name)),
-        reformat_docstring: Some(Box::new(reformat_docstring)),
-        convert_to_multipart: Some(Box::new(convert_to_multipart)),
-        ..Default::default()
-    };
-
-    for version in VERSIONS {
-        let wadl = if let Ok(text) = std::fs::read_to_string(format!(
-            "{}/wadl/{}.wadl",
-            env!("CARGO_MANIFEST_DIR"),
-            version
-        )) {
-            text
-        } else {
-            let url = format!("https://api.launchpad.net/{}/", version);
-            reqwest::blocking::Client::new()
-                .request(reqwest::Method::GET, &url)
-                .header("Accept", "application/vd.sun.wadl+xml")
-                .send()
-                .unwrap()
-                .error_for_status()
-                .unwrap()
-                .text()
-                .unwrap()
+    for is_async in [true, false] {
+        let config = wadl::codegen::Config {
+            override_type_name: Some(Box::new(override_type_name)),
+            param_accessor_rename: Some(Box::new(accessor_rename)),
+            generate_representation_traits: Some(Box::new(generate_representation_traits)),
+            strip_code_examples: true,
+            accessor_visibility: Some(Box::new(accessor_visibility)),
+            resource_type_visibility: Some(Box::new(resource_type_visibility)),
+            extend_accessor: Some(Box::new(extend_accessor)),
+            extend_method: Some(Box::new(extend_method)),
+            method_visibility: Some(Box::new(method_visibility)),
+            map_type_for_response: Some(Box::new(map_type_for_response)),
+            deprecated_param: Some(Box::new(deprecated_param)),
+            options_enum_name: Some(Box::new(options_enum_name)),
+            reformat_docstring: Some(Box::new(reformat_docstring)),
+            convert_to_multipart: Some(Box::new(convert_to_multipart)),
+            r#async: is_async,
+            ..Default::default()
         };
 
-        let wadl_app = wadl::parse_string(wadl.as_str()).unwrap();
-        let code = wadl::codegen::generate(&wadl_app, &config);
-        let target_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap())
-            .canonicalize()
-            .unwrap();
-        let generated = target_dir.join("generated");
-        std::fs::create_dir_all(&generated).unwrap();
-        let path = generated.join(format!("{}.rs", version.replace('.', "_")));
-        std::fs::write(path, code).unwrap();
+        for version in VERSIONS {
+            let wadl = if let Ok(text) = std::fs::read_to_string(format!(
+                "{}/wadl/{}.wadl",
+                env!("CARGO_MANIFEST_DIR"),
+                version
+            )) {
+                text
+            } else {
+                let url = format!("https://api.launchpad.net/{}/", version);
+                reqwest::blocking::Client::new()
+                    .request(reqwest::Method::GET, &url)
+                    .header("Accept", "application/vd.sun.wadl+xml")
+                    .send()
+                    .unwrap()
+                    .error_for_status()
+                    .unwrap()
+                    .text()
+                    .unwrap()
+            };
+
+            let wadl_app = wadl::parse_string(wadl.as_str()).unwrap();
+            let code = wadl::codegen::generate(&wadl_app, &config);
+            let target_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap())
+                .canonicalize()
+                .unwrap();
+            let mut generated = target_dir.join("generated");
+            if is_async {
+                generated = generated.join("async");
+            }
+            std::fs::create_dir_all(&generated).unwrap();
+            let path = generated.join(format!("{}.rs", version.replace('.', "_")));
+            std::fs::write(path, code).unwrap();
+        }
     }
 }

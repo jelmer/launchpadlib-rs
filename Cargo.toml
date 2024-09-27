@@ -15,7 +15,8 @@ include = ["wadl/*.wadl", "src/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs
 [lib]
 
 [workspace.dependencies]
-wadl = { version = "0.3.0", default-features = false }
+# wadl = { version = "0.3.0", default-features = false }
+wadl = { path = "../wadl-rs", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.38", features = ["serde"] }
@@ -33,6 +34,7 @@ url = { version = "2.5.2", features = ["serde"] }
 wadl = { workspace = true }
 clap = { version = "4", features = ["derive"], optional = true }
 keyring = { version = "3.3.0", optional = true }
+async-trait = { version = "0.1", optional = true }
 
 [build-dependencies]
 wadl = { workspace = true, features = ["codegen"] }
@@ -40,6 +42,7 @@ reqwest = { version = "0.12", features = ["blocking"] }
 
 [dev-dependencies]
 maplit = "1.0.2"
+tokio = { version = "1", features = ["full"] }
 
 [features]
 default = ["api-v1_0"]
@@ -48,6 +51,7 @@ api-devel = []
 api-beta = []
 cli = ["dep:clap"]
 keyring = ["dep:keyring"]
+async = ["wadl/async", "dep:async-trait"]
 
 [[example]]
 required-features = ["api-v1_0"]

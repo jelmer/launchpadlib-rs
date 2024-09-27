@@ -1,15 +1,15 @@
-//! The `Client` struct is a wrapper around `reqwest::blocking::Client` that provides OAuth1
+//! The `Client` struct is a wrapper around `reqwest::Client` that provides OAuth1
 //! authentication for requests.
 
 use url::Url;
 
 /// A client that can make requests to a Launchpad API.
 ///
-/// This client is a wrapper around `reqwest::blocking::Client` that provides OAuth1 authentication
+/// This client is a wrapper around `reqwest::Client` that provides OAuth1 authentication
 /// for requests. It can be created with or without credentials, and can be used to make requests
 /// to any Launchpad API.
 pub struct Client {
-    client: reqwest::blocking::Client,
+    client: reqwest::Client,
     consumer_key: Option<String>,
     consumer_secret: Option<String>,
     token: Option<String>,
@@ -56,7 +56,7 @@ impl Client {
         user_agent: Option<&str>,
     ) -> Self {
         let user_agent = user_agent.unwrap_or(crate::DEFAULT_USER_AGENT);
-        let client = reqwest::blocking::Client::builder()
+        let client = reqwest::Client::builder()
             .user_agent(user_agent)
             .build()
             .unwrap();
@@ -84,8 +84,9 @@ impl Client {
     }
 }
 
-impl wadl::Client for Client {
-    fn request(&self, method: reqwest::Method, url: url::Url) -> reqwest::blocking::RequestBuilder {
+#[async_trait::async_trait]
+impl wadl::r#async::Client for Client {
+    async fn request(&self, method: reqwest::Method, url: url::Url) -> reqwest::RequestBuilder {
         let auth_header = self.token.as_ref().map(|token| {
             self.authorization_header(
                 &url,
