@@ -32,12 +32,6 @@ pub mod devel {
     }
 
     /// Get the service root for a specific host
-    ///
-    /// # Example
-    /// ```rust
-    /// let client = launchpadlib::r#async::Client::anonymous("just+testing");
-    /// let root = launchpadlib::r#async::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
-    /// ```
     pub async fn service_root_for_host(
         client: &dyn wadl::r#async::Client,
         host: &str,
@@ -74,12 +68,6 @@ pub mod beta {
     }
 
     /// Get the service root for a specific host
-    ///
-    /// # Example
-    /// ```rust
-    /// let client = launchpadlib::r#async::Client::anonymous("just+testing");
-    /// let root = launchpadlib::r#async::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
-    /// ```
     pub async fn service_root_for_host(
         client: &dyn wadl::r#async::Client,
         host: &str,

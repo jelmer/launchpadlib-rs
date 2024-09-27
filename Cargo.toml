@@ -79,3 +79,8 @@ name = "lp-check-membership"
 
 [package.metadata.cargo-all-features]
 max_combination_size = 2
+
+skip_feature_sets = [
+    [],
+    ["async"],
+]
