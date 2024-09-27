@@ -1764,7 +1764,9 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "wadl"
-version = "0.3.2"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "565bf6ae9401e40206e3e55c8153614404d7f154bac8996064ece7f4872a14c6"
 dependencies = [
  "async-trait",
  "form_urlencoded",

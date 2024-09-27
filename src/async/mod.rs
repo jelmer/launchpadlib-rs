@@ -1,5 +1,6 @@
 //! Async version of the Launchpad API
 
+#[allow(unused_imports)]
 use crate::*;
 pub mod client;
 pub mod page;
