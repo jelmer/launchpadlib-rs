@@ -29,6 +29,9 @@ pub use wadl::{Error, Resource};
 pub const DEFAULT_USER_AGENT: &str =
     concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
+/// The default Launchpad instance
+pub const DEFAULT_INSTANCE: &str = "launchpad.net";
+
 #[cfg(feature = "async")]
 pub mod r#async;
 
@@ -177,46 +180,6 @@ pub mod v1_0 {
         }
     }
 
-    #[cfg(test)]
-    mod tests {
-        use super::*;
-
-        #[test]
-        fn test_parse_person() {
-            let json = include_str!("../testdata/person.json");
-            let person: PersonFull = serde_json::from_str(json).unwrap();
-            assert_eq!(person.display_name, "Jelmer Vernooĳ");
-        }
-
-        #[test]
-        fn test_parse_team() {
-            let json = include_str!("../testdata/team.json");
-            let team: TeamFull = serde_json::from_str(json).unwrap();
-            assert_eq!(team.display_name, "awsome-core");
-
-            let json = include_str!("../testdata/team2.json");
-            let _team: TeamFull = serde_json::from_str(json).unwrap();
-        }
-
-        #[test]
-        fn test_parse_bug() {
-            let json = include_str!("../testdata/bug.json");
-            let bug: BugFull = serde_json::from_str(json).unwrap();
-            assert_eq!(bug.title, "Microsoft has a majority market share");
-
-            let json = include_str!("../testdata/bug2.json");
-            let bug: BugFull = serde_json::from_str(json).unwrap();
-            assert_eq!(bug.name, None);
-            assert_eq!(bug.id, 2039729);
-        }
-
-        #[test]
-        fn test_parse_bug_tasks() {
-            let json = include_str!("../testdata/bug_tasks.json");
-            let _bug_tasks: BugTaskPage = serde_json::from_str(json).unwrap();
-        }
-    }
-
     impl Bugs {
         /// Get a bug by its id
         ///
@@ -305,6 +268,46 @@ pub mod v1_0 {
             } else {
                 Err(Error::InvalidUrl)
             }
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        #[test]
+        fn test_parse_person() {
+            let json = include_str!("../testdata/person.json");
+            let person: PersonFull = serde_json::from_str(json).unwrap();
+            assert_eq!(person.display_name, "Jelmer Vernooĳ");
+        }
+
+        #[test]
+        fn test_parse_team() {
+            let json = include_str!("../testdata/team.json");
+            let team: TeamFull = serde_json::from_str(json).unwrap();
+            assert_eq!(team.display_name, "awsome-core");
+
+            let json = include_str!("../testdata/team2.json");
+            let _team: TeamFull = serde_json::from_str(json).unwrap();
+        }
+
+        #[test]
+        fn test_parse_bug() {
+            let json = include_str!("../testdata/bug.json");
+            let bug: BugFull = serde_json::from_str(json).unwrap();
+            assert_eq!(bug.title, "Microsoft has a majority market share");
+
+            let json = include_str!("../testdata/bug2.json");
+            let bug: BugFull = serde_json::from_str(json).unwrap();
+            assert_eq!(bug.name, None);
+            assert_eq!(bug.id, 2039729);
+        }
+
+        #[test]
+        fn test_parse_bug_tasks() {
+            let json = include_str!("../testdata/bug_tasks.json");
+            let _bug_tasks: BugTaskPage = serde_json::from_str(json).unwrap();
         }
     }
 }

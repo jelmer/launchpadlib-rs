@@ -80,7 +80,7 @@ fn parse_token_response(response_text: &[u8]) -> (String, String) {
         } else if key == "oauth_token_secret" {
             request_token_secret = value.to_string();
         } else {
-            log::debug!("Unknown key in request token response: {}", key);
+            log::debug!("Unknown key in request token response: {} ⇒ {}", key, value);
         }
     }
 
@@ -89,7 +89,7 @@ fn parse_token_response(response_text: &[u8]) -> (String, String) {
 
 /// Get a request token and request token secret
 pub fn get_request_token(
-    instance: Option<&str>,
+    instance: &str,
     consumer_key: &str,
 ) -> Result<(String, String), reqwest::Error> {
     let mut params = HashMap::new();
@@ -99,9 +99,7 @@ pub fn get_request_token(
 
     let mut url = url::Url::parse(REQUEST_TOKEN_URL).unwrap();
 
-    if let Some(instance) = instance {
-        url.set_host(Some(instance)).unwrap();
-    }
+    url.set_host(Some(instance)).unwrap();
 
     let client = reqwest::blocking::Client::new();
     let response = client.post(REQUEST_TOKEN_URL).form(&params).send()?;
@@ -111,15 +109,13 @@ pub fn get_request_token(
 
 /// Authorize a request token
 pub fn authorize_token_url(
-    instance: Option<&str>,
+    instance: &str,
     oauth_token: &str,
     oauth_callback: Option<&url::Url>,
 ) -> Result<url::Url, url::ParseError> {
     let mut url: url::Url = "https://launchpad.net/+authorize-token".parse().unwrap();
 
-    if let Some(instance) = instance {
-        url.set_host(Some(instance)).unwrap();
-    }
+    url.set_host(Some(instance)).unwrap();
 
     url.query_pairs_mut()
         .append_pair("oauth_token", oauth_token);
@@ -133,7 +129,7 @@ pub fn authorize_token_url(
 
 /// Exchange a request token for an access token
 pub fn exchange_request_token(
-    instance: Option<&str>,
+    instance: &str,
     consumer_key: &str,
     consumer_secret: Option<&str>,
     request_token: &str,
@@ -149,9 +145,7 @@ pub fn exchange_request_token(
 
     let mut url = url::Url::parse("https://launchpad.net/+access-token").unwrap();
 
-    if let Some(instance) = instance {
-        url.set_host(Some(instance)).unwrap();
-    }
+    url.set_host(Some(instance)).unwrap();
 
     // Make a POST request to exchange the request token for an access token
     let client = reqwest::blocking::Client::new();
@@ -391,18 +385,19 @@ mod tests {
 
 #[cfg(feature = "keyring")]
 /// Obtain an access token from either the keyring, or by prompting the user
-pub fn keyring_access_token(
-    instance: Option<&str>,
-    consumer_key: &str,
-) -> Result<(String, String), Error> {
-    let entry = keyring::Entry::new(instance.unwrap_or("launchpad.net"), "oauth1")?;
+pub fn keyring_access_token(instance: &str, consumer_key: &str) -> Result<(String, String), Error> {
+    let entry = keyring::Entry::new(instance, "oauth1")?;
 
     let req_token = match entry.get_password() {
         Ok(token) => {
+            log::debug!("Found entry in keyring for {}", instance);
             let (token, secret) = parse_token_response(token.as_bytes());
+            log::debug!("Parsed token: {} / {}", token, secret);
             (token, secret)
         }
         Err(keyring::Error::NoEntry) => {
+            log::debug!("No entry found in keyring at {}", instance);
+
             // Step 1: Get a request token
             let req_token = get_request_token(instance, consumer_key)?;
 
@@ -440,7 +435,7 @@ pub fn keyring_access_token(
 /// * `instance` - The Launchpad instance to use, or `None` for the default
 /// * `consumer_key` - The consumer key to use
 pub fn cmdline_access_token(
-    instance: Option<&str>,
+    instance: &str,
     consumer_key: &str,
 ) -> Result<(String, String), reqwest::Error> {
     // Step 1: Get a request token
@@ -466,17 +461,14 @@ pub fn cmdline_access_token(
 
 #[cfg(feature = "keyring")]
 /// Get an access token, either from the keyring or by prompting the user
-pub fn get_access_token(
-    instance: Option<&str>,
-    consumer_key: &str,
-) -> Result<(String, String), Error> {
+pub fn get_access_token(instance: &str, consumer_key: &str) -> Result<(String, String), Error> {
     keyring_access_token(instance, consumer_key)
 }
 
 #[cfg(not(feature = "keyring"))]
 /// Get an access token, by prompting the user
 pub fn get_access_token(
-    instance: Option<&str>,
+    instance: &str,
     consumer_key: &str,
 ) -> Result<(String, String), reqwest::Error> {
     cmdline_access_token(instance, consumer_key)
