@@ -5,6 +5,7 @@
 //! It is generated from the Launchpad API WADL document.
 //!
 //! ## Usage
+//!
 //! ```rust
 //! use url::Url;
 //!
@@ -18,6 +19,15 @@
 //! println!("SSH Keys: {:?}", ssh_keys);
 //! }
 //! ```
+//!
+//! ## Limitations and bugs
+//!
+//! * While bindings are generated from the entire WADL file, I have only used a small number of
+//!   them. Please report bugs if you run into issues.  Launchpad's WADL is incorrect in places, e.g.
+//!   claiming that certain fields are optional while they will actually be set to null. Any problems
+//!   with the WADL will impact the usability of the rust bindings.
+//!
+//! * See fixup.xsl for manual patches that are applied; this file is almost certainly incomplete.
 
 pub mod auth;
 pub mod client;
