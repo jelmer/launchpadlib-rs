@@ -39,10 +39,7 @@ impl Client {
     }
 
     /// Create a new client with the given credentials.
-    pub fn authenticated(
-        instance: Option<&str>,
-        consumer_key: &str,
-    ) -> Result<Self, crate::auth::Error> {
+    pub fn authenticated(instance: &str, consumer_key: &str) -> Result<Self, crate::auth::Error> {
         let (token, token_secret) = crate::auth::get_access_token(instance, consumer_key)?;
         Ok(Self::from_tokens(consumer_key, None, &token, &token_secret))
     }

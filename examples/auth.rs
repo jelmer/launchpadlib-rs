@@ -5,11 +5,13 @@ fn main() {
     // Step 0: Pick a consumer key
     let consumer_key = "your_consumer_key";
 
+    let instance = "launchpad.net";
+
     // Step 1: Get a request token
-    let req_token = get_request_token(None, consumer_key).unwrap();
+    let req_token = get_request_token(instance, consumer_key).unwrap();
 
     // Step 2: Get the user to authorize the request token
-    let auth_url = authorize_token_url(None, req_token.0.as_str(), None).unwrap();
+    let auth_url = authorize_token_url(instance, req_token.0.as_str(), None).unwrap();
 
     println!("Please authorize the request token at {}", auth_url);
     println!("Once done, press enter to continue...");
@@ -18,7 +20,7 @@ fn main() {
 
     // Step 3: Exchange the request token for an access token
     let access_token = exchange_request_token(
-        None,
+        instance,
         consumer_key,
         None,
         req_token.0.as_str(),

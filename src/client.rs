@@ -43,6 +43,7 @@ impl Client {
         instance: Option<&str>,
         consumer_key: &str,
     ) -> Result<Self, crate::auth::Error> {
+        let instance = instance.unwrap_or(crate::DEFAULT_INSTANCE);
         let (token, token_secret) = crate::auth::get_access_token(instance, consumer_key)?;
         Ok(Self::from_tokens(consumer_key, None, &token, &token_secret))
     }
