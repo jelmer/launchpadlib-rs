@@ -8,12 +8,12 @@ pub trait Page {
     type Item;
 
     /// Return the next page, if any.
-    fn next(&self, client: &dyn wadl::Client) -> Result<Option<Self>, Error>
+    fn next(&self, client: &dyn wadl::blocking::Client) -> Result<Option<Self>, Error>
     where
         Self: Sized;
 
     /// Return the previous page, if any.
-    fn prev(&self, client: &dyn wadl::Client) -> Result<Option<Self>, Error>
+    fn prev(&self, client: &dyn wadl::blocking::Client) -> Result<Option<Self>, Error>
     where
         Self: Sized;
 
@@ -29,7 +29,7 @@ pub trait Page {
 
 /// A collection of items that may be paginated.
 pub struct PagedCollection<'a, P: Page> {
-    client: &'a dyn wadl::Client,
+    client: &'a dyn wadl::blocking::Client,
     pending: Vec<P::Item>,
     page: P,
 }
@@ -80,7 +80,7 @@ impl<'a, P: Page> PagedCollection<'a, P> {
 
 impl<'a, P: Page> PagedCollection<'a, P> {
     /// Create a new page
-    pub fn new(client: &'a dyn wadl::Client, page: P) -> Self {
+    pub fn new(client: &'a dyn wadl::blocking::Client, page: P) -> Self {
         let mut pending = page.entries();
         pending.reverse();
         Self {
@@ -129,7 +129,7 @@ mod tests {
     impl<I: Clone> Page for DummyPage<I> {
         type Item = I;
 
-        fn next(&self, _: &dyn wadl::Client) -> Result<Option<Self>, Error> {
+        fn next(&self, _: &dyn wadl::blocking::Client) -> Result<Option<Self>, Error> {
             if self.start + self.entries.chunk_size >= self.entries.entries.len() {
                 Ok(None)
             } else {
@@ -140,7 +140,7 @@ mod tests {
             }
         }
 
-        fn prev(&self, _: &dyn wadl::Client) -> Result<Option<Self>, Error> {
+        fn prev(&self, _: &dyn wadl::blocking::Client) -> Result<Option<Self>, Error> {
             if self.start == 0 {
                 Ok(None)
             } else {

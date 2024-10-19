@@ -64,7 +64,9 @@ pub mod devel {
     }
 
     /// Get the default service root
-    pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
+    pub fn service_root(
+        client: &dyn wadl::blocking::Client,
+    ) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 
@@ -76,7 +78,7 @@ pub mod devel {
     /// let root = launchpadlib::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
     pub fn service_root_for_host(
-        client: &dyn wadl::Client,
+        client: &dyn wadl::blocking::Client,
         host: &str,
     ) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/devel/", host)).unwrap();
@@ -104,7 +106,9 @@ pub mod beta {
     }
 
     /// Get the default service root
-    pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
+    pub fn service_root(
+        client: &dyn wadl::blocking::Client,
+    ) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 
@@ -116,7 +120,7 @@ pub mod beta {
     /// let root = launchpadlib::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
     pub fn service_root_for_host(
-        client: &dyn wadl::Client,
+        client: &dyn wadl::blocking::Client,
         host: &str,
     ) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/beta/", host)).unwrap();
@@ -160,7 +164,9 @@ pub mod v1_0 {
     }
 
     /// Get the default service root
-    pub fn service_root(client: &dyn wadl::Client) -> std::result::Result<ServiceRootJson, Error> {
+    pub fn service_root(
+        client: &dyn wadl::blocking::Client,
+    ) -> std::result::Result<ServiceRootJson, Error> {
         ROOT.get(client)
     }
 
@@ -172,7 +178,7 @@ pub mod v1_0 {
     /// let root = launchpadlib::v1_0::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
     pub fn service_root_for_host(
-        client: &dyn wadl::Client,
+        client: &dyn wadl::blocking::Client,
         host: &str,
     ) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/1.0/", host)).unwrap();
@@ -201,7 +207,7 @@ pub mod v1_0 {
         /// ```
         pub fn get_by_id(
             &self,
-            client: &dyn wadl::Client,
+            client: &dyn wadl::blocking::Client,
             id: u32,
         ) -> std::result::Result<BugFull, Error> {
             let url = self.url().join(format!("bugs/{}", id).as_str()).unwrap();
@@ -213,7 +219,7 @@ pub mod v1_0 {
         /// Get a project by its name
         pub fn get_by_name(
             &self,
-            client: &dyn wadl::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
         ) -> std::result::Result<ProjectFull, Error> {
             let url = self.url().join(name).unwrap();
@@ -225,7 +231,7 @@ pub mod v1_0 {
         /// Get a project group by name
         pub fn get_by_name(
             &self,
-            client: &dyn wadl::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
         ) -> std::result::Result<ProjectGroupFull, Error> {
             let url = self.url().join(name).unwrap();
@@ -237,7 +243,7 @@ pub mod v1_0 {
         /// Get a distribution by name
         pub fn get_by_name(
             &self,
-            client: &dyn wadl::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
         ) -> std::result::Result<DistributionFull, Error> {
             let url = self.url().join(name).unwrap();
@@ -258,12 +264,12 @@ pub mod v1_0 {
         /// Get a person or team by name
         pub fn get_by_name(
             &self,
-            client: &dyn wadl::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
         ) -> std::result::Result<PersonOrTeam, Error> {
             let url = self.url().join(&format!("~{}", name)).unwrap();
 
-            let wadl = wadl::get_wadl_resource_by_href(client, &url)?;
+            let wadl = wadl::blocking::get_wadl_resource_by_href(client, &url)?;
 
             let types = wadl
                 .r#type
