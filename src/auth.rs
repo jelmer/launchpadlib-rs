@@ -10,6 +10,8 @@ use url::form_urlencoded;
 use rand::Rng;
 
 const REQUEST_TOKEN_URL: &str = "https://launchpad.net/+request-token";
+const AUTHORIZE_TOKEN_URL: &str = "https://launchpad.net/+authorize-token";
+const ACCESS_TOKEN_URL: &str = "https://launchpad.net/+access-token";
 
 #[derive(Debug)]
 /// Errors that can occur when signing requests
@@ -113,7 +115,7 @@ pub fn authorize_token_url(
     oauth_token: &str,
     oauth_callback: Option<&url::Url>,
 ) -> Result<url::Url, url::ParseError> {
-    let mut url: url::Url = "https://launchpad.net/+authorize-token".parse().unwrap();
+    let mut url: url::Url = AUTHORIZE_TOKEN_URL.parse()?;
 
     url.set_host(Some(instance)).unwrap();
 
@@ -143,7 +145,7 @@ pub fn exchange_request_token(
     let signature = calculate_plaintext_signature(consumer_secret, request_token_secret);
     params.insert("oauth_signature", signature.as_str());
 
-    let mut url = url::Url::parse("https://launchpad.net/+access-token").unwrap();
+    let mut url = url::Url::parse(ACCESS_TOKEN_URL).unwrap();
 
     url.set_host(Some(instance)).unwrap();
 
@@ -349,7 +351,7 @@ mod tests {
 
     #[test]
     fn test_authorize_token_url() {
-        let ret = super::authorize_token_url(None, "9kDgVhXlcVn52HGgCWxq", None);
+        let ret = super::authorize_token_url("launchpad.net", "9kDgVhXlcVn52HGgCWxq", None);
 
         assert_eq!(
             "https://launchpad.net/+authorize-token?oauth_token=9kDgVhXlcVn52HGgCWxq",
@@ -357,7 +359,7 @@ mod tests {
         );
 
         let ret = super::authorize_token_url(
-            None,
+            "launchpad.net",
             "9kDgVhXlcVn52HGgCWxq",
             Some(&"https://example.com/".parse().unwrap()),
         );
@@ -388,7 +390,7 @@ mod tests {
 pub fn keyring_access_token(instance: &str, consumer_key: &str) -> Result<(String, String), Error> {
     let entry = keyring::Entry::new(instance, "oauth1")?;
 
-    let req_token = match entry.get_password() {
+    let access_token = match entry.get_password() {
         Ok(token) => {
             log::debug!("Found entry in keyring for {}", instance);
             let (token, secret) = parse_token_response(token.as_bytes());
@@ -409,24 +411,26 @@ pub fn keyring_access_token(instance: &str, consumer_key: &str) -> Result<(Strin
             let mut input = String::new();
             std::io::stdin().read_line(&mut input)?;
 
+            // Step 3: Exchange the request token for an access token
+            let access_token = exchange_request_token(
+                instance,
+                consumer_key,
+                None,
+                req_token.0.as_str(),
+                Some(req_token.1.as_str()),
+            )?;
+
             entry.set_password(&format!(
                 "oauth_token={}&oauth_token_secret={}",
-                req_token.0, req_token.1
+                access_token.0, access_token.1
             ))?;
 
-            req_token
+            access_token
         }
         Err(e) => return Err(e.into()),
     };
 
-    // Step 3: Exchange the request token for an access token
-    Ok(exchange_request_token(
-        instance,
-        consumer_key,
-        None,
-        req_token.0.as_str(),
-        Some(req_token.1.as_str()),
-    )?)
+    Ok(access_token)
 }
 
 /// Get an access token from the Launchpad API, by prompting the user for input on the command line
