@@ -1,0 +1,6 @@
+tag-name = "v$VERSION"
+tarball-location = []
+release-timeout = 5
+
+[github]
+url = "https://github.com/jelmer/launchpadlib-rs"
