@@ -1,5 +1,10 @@
 //! Pagination support
 use crate::Error;
+use std::pin::Pin;
+
+use futures::task::Context;
+use futures::Future;
+use futures::{task::Poll, Stream};
 
 /// A page of items.
 #[async_trait::async_trait]
@@ -96,15 +101,78 @@ impl<'a, P: Page> PagedCollection<'a, P> {
     }
 }
 
+impl<'a, P: Default> Stream for PagedCollection<'a, P>
+where
+    P: Page + Unpin,
+    P::Item: Unpin,
+{
+    type Item = Result<P::Item, Error>;
+
+    fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+        let this = self.get_mut();
+
+        // Return an item from the pending list if available
+        if let Some(item) = this.pending.pop() {
+            return Poll::Ready(Some(Ok(item)));
+        }
+
+        // We need to move `this.page` out to avoid borrowing conflicts.
+        // Use `std::mem::take` to replace `this.page` with a default empty page.
+        let page = std::mem::take(&mut this.page);
+
+        // Create an async block to fetch the next page.
+        let fut = async {
+            let next_page = page.next(this.client).await;
+            (next_page, page)
+        };
+
+        // Pin the future so we can poll it
+        futures::pin_mut!(fut);
+
+        match fut.poll(cx) {
+            Poll::Pending => {
+                // If the future is not yet ready, move `page` back to `this.page`
+                Poll::Pending
+            }
+            Poll::Ready((Ok(Some(next_page)), _)) => {
+                // Update `this.page` with the newly fetched page
+                this.page = next_page;
+                let mut entries = this.page.entries();
+                entries.reverse();
+                this.pending = entries;
+
+                // Return the next item from the newly fetched page
+                if let Some(item) = this.pending.pop() {
+                    Poll::Ready(Some(Ok(item)))
+                } else {
+                    Poll::Ready(None)
+                }
+            }
+            Poll::Ready((Ok(None), _)) => {
+                // No more pages to fetch, stream has ended
+                Poll::Ready(None)
+            }
+            Poll::Ready((Err(e), _)) => {
+                // On error, move `page` back to `this.page` and return the error
+                Poll::Ready(Some(Err(e)))
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    use futures::TryStreamExt;
+
+    #[derive(Default)]
     struct DummyMaster<I: Send + Sync> {
         entries: Vec<I>,
         chunk_size: usize,
     }
 
+    #[derive(Default)]
     struct DummyPage<I: Send + Sync> {
         start: usize,
         entries: std::sync::Arc<DummyMaster<I>>,
@@ -196,5 +264,25 @@ mod tests {
 
         assert_eq!(collection.len(), Some(0));
         assert_eq!(collection.is_empty(), true);
+    }
+
+    #[tokio::test]
+    async fn test_stream() {
+        let client = crate::r#async::client::Client::anonymous("just testing");
+        let master = DummyMaster {
+            entries: vec!["a", "b", "c"],
+            chunk_size: 2,
+        };
+
+        let page = DummyPage {
+            entries: std::sync::Arc::new(master),
+            start: 0,
+        };
+
+        let collection = super::PagedCollection::new(&client, page);
+
+        let result: Vec<&str> = collection.try_collect::<Vec<&str>>().await.unwrap();
+
+        assert_eq!(result, vec!["a", "b", "c"]);
     }
 }
