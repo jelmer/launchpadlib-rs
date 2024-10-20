@@ -35,6 +35,7 @@ wadl = { workspace = true }
 clap = { version = "4", features = ["derive"], optional = true }
 keyring = { version = "3.4.0", optional = true, features = ["apple-native", "windows-native", "linux-native"] }
 async-trait = { version = "0.1", optional = true }
+futures = { version = "0.3.31", optional = true }
 
 [build-dependencies]
 wadl = { workspace = true, features = ["codegen"] }
@@ -51,7 +52,7 @@ api-devel = []
 api-beta = []
 cli = ["dep:clap"]
 keyring = ["dep:keyring"]
-async = ["wadl/async", "dep:async-trait"]
+async = ["wadl/async", "dep:async-trait", "dep:futures"]
 blocking = ["wadl/blocking"]
 
 [[example]]

@@ -34,7 +34,7 @@ pub struct PagedCollection<'a, P: Page> {
     page: P,
 }
 
-impl<'a, P: Page> PagedCollection<'a, P> {
+impl<P: Page> PagedCollection<'_, P> {
     /// Return the total number of entries in the collection.
     pub fn len(&self) -> Option<usize> {
         self.page.total_size()
