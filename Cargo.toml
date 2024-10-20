@@ -1,6 +1,6 @@
 [package]
 name = "launchpadlib"
-version = "0.3.1"
+version = "0.4.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/jelmer/launchpadlib-rs"
@@ -10,7 +10,7 @@ keywords = ["launchpad", "api", "rust"]
 categories = ["network-programming", "asynchronous", "api-bindings"]
 authors = ["Jelmer Vernooĳ <jelmer@jelmer.uk>"]
 build = "build.rs"
-include = ["wadl/*.wadl", "src/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs", "testdata/*"]
+include = ["wadl/*.wadl", "src/*.rs", "src/blocking/*.rs", "src/async/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs", "testdata/*"]
 
 [lib]
 
