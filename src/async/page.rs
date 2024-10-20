@@ -101,7 +101,7 @@ impl<'a, P: Page> PagedCollection<'a, P> {
     }
 }
 
-impl<'a, P: Default> Stream for PagedCollection<'a, P>
+impl<'a, P: Clone> Stream for PagedCollection<'a, P>
 where
     P: Page + Unpin,
     P::Item: Unpin,
@@ -116,15 +116,10 @@ where
             return Poll::Ready(Some(Ok(item)));
         }
 
-        // We need to move `this.page` out to avoid borrowing conflicts.
-        // Use `std::mem::take` to replace `this.page` with a default empty page.
-        let page = std::mem::take(&mut this.page);
+        let page_clone = this.page.clone();
 
         // Create an async block to fetch the next page.
-        let fut = async {
-            let next_page = page.next(this.client).await;
-            (next_page, page)
-        };
+        let fut = page_clone.next(this.client);
 
         // Pin the future so we can poll it
         futures::pin_mut!(fut);
@@ -134,7 +129,7 @@ where
                 // If the future is not yet ready, move `page` back to `this.page`
                 Poll::Pending
             }
-            Poll::Ready((Ok(Some(next_page)), _)) => {
+            Poll::Ready(Ok(Some(next_page))) => {
                 // Update `this.page` with the newly fetched page
                 this.page = next_page;
                 let mut entries = this.page.entries();
@@ -148,11 +143,11 @@ where
                     Poll::Ready(None)
                 }
             }
-            Poll::Ready((Ok(None), _)) => {
+            Poll::Ready(Ok(None)) => {
                 // No more pages to fetch, stream has ended
                 Poll::Ready(None)
             }
-            Poll::Ready((Err(e), _)) => {
+            Poll::Ready(Err(e)) => {
                 // On error, move `page` back to `this.page` and return the error
                 Poll::Ready(Some(Err(e)))
             }
@@ -166,13 +161,13 @@ mod tests {
 
     use futures::TryStreamExt;
 
-    #[derive(Default)]
+    #[derive(Clone)]
     struct DummyMaster<I: Send + Sync> {
         entries: Vec<I>,
         chunk_size: usize,
     }
 
-    #[derive(Default)]
+    #[derive(Clone)]
     struct DummyPage<I: Send + Sync> {
         start: usize,
         entries: std::sync::Arc<DummyMaster<I>>,
