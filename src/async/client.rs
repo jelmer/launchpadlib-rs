@@ -39,6 +39,11 @@ impl Client {
     }
 
     /// Create a new client with the given credentials.
+    ///
+    /// If the `keyring` feature is enabled, this function will attempt to retrieve the access
+    /// token from the keyring. If the access token is not found, the user will be prompted to
+    /// authorize access, after which the access token will be stored in the keyring for future
+    /// use.
     pub async fn authenticated(
         instance: &str,
         consumer_key: &str,
