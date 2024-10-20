@@ -142,13 +142,13 @@ pub mod auth {
     pub fn keyring_access_token(
         instance: &str,
         consumer_key: &str,
-    ) -> Result<(String, String), Error> {
+    ) -> Result<(String, String), crate::auth::Error> {
         let entry = keyring::Entry::new(instance, "oauth1")?;
 
         let access_token = match entry.get_password() {
             Ok(token) => {
                 log::debug!("Found entry in keyring for {}", instance);
-                let (token, secret) = parse_token_response(token.as_bytes());
+                let (token, secret) = crate::auth::parse_token_response(token.as_bytes());
                 log::debug!("Parsed token: {} / {}", token, secret);
                 (token, secret)
             }
@@ -239,7 +239,10 @@ pub mod auth {
 
     #[cfg(feature = "keyring")]
     /// Get an access token, either from the keyring or by prompting the user
-    pub fn get_access_token(instance: &str, consumer_key: &str) -> Result<(String, String), Error> {
+    pub fn get_access_token(
+        instance: &str,
+        consumer_key: &str,
+    ) -> Result<(String, String), crate::auth::Error> {
         keyring_access_token(instance, consumer_key)
     }
 

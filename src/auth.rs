@@ -104,7 +104,7 @@ pub(crate) fn request_token_params(consumer_key: &str) -> HashMap<&str, &str> {
 }
 
 /// Authorize a request token
-pub(crate) fn authorize_token_url(
+pub fn authorize_token_url(
     instance: &str,
     oauth_token: &str,
     oauth_callback: Option<&url::Url>,

@@ -22,13 +22,14 @@ fn main() {
     let args = Args::parse();
 
     let client =
-        launchpadlib::Client::authenticated(args.instance.as_deref(), CONSUMER_KEY).unwrap();
+        launchpadlib::blocking::Client::authenticated(args.instance.as_deref(), CONSUMER_KEY)
+            .unwrap();
 
     let root = if let Some(host) = args.instance {
         let host = format!("api.{}", host);
-        launchpadlib::v1_0::service_root_for_host(&client, &host)
+        launchpadlib::blocking::v1_0::service_root_for_host(&client, &host)
     } else {
-        launchpadlib::v1_0::service_root(&client)
+        launchpadlib::blocking::v1_0::service_root(&client)
     }
     .unwrap();
 
@@ -67,7 +68,7 @@ fn main() {
                     .unwrap()
                     .patch(
                         &client,
-                        &launchpadlib::v1_0::BugDiff {
+                        &launchpadlib::blocking::v1_0::BugDiff {
                             duplicate_of_link: new_main_dupe_of.self_link.clone(),
                             ..Default::default()
                         },
@@ -102,7 +103,7 @@ fn main() {
                 .unwrap()
                 .patch(
                     &client,
-                    &launchpadlib::v1_0::BugDiff {
+                    &launchpadlib::blocking::v1_0::BugDiff {
                         duplicate_of_link: main_bug.self_link.clone(),
                         ..Default::default()
                     },

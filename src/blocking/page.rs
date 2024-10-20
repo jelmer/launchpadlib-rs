@@ -171,7 +171,7 @@ mod tests {
 
     #[test]
     fn test_iter() {
-        let client = crate::client::Client::anonymous("just testing");
+        let client = crate::blocking::client::Client::anonymous("just testing");
         let master = DummyMaster {
             entries: vec!["a", "b", "c"],
             chunk_size: 2,
@@ -192,7 +192,7 @@ mod tests {
 
     #[test]
     fn test_empty() {
-        let client = crate::client::Client::anonymous("just testing");
+        let client = crate::blocking::client::Client::anonymous("just testing");
         let master: DummyMaster<&str> = DummyMaster::<&str> {
             entries: vec![],
             chunk_size: 2,
@@ -207,22 +207,5 @@ mod tests {
         assert_eq!(collection.is_empty(), true);
 
         assert_eq!(collection.next().is_none(), true);
-    }
-}
-
-#[allow(dead_code)]
-pub(crate) trait AsTotalSize {
-    fn as_total_size(self) -> Option<usize>;
-}
-
-impl AsTotalSize for Option<usize> {
-    fn as_total_size(self) -> Option<usize> {
-        self
-    }
-}
-
-impl AsTotalSize for usize {
-    fn as_total_size(self) -> Option<usize> {
-        Some(self)
     }
 }

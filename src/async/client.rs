@@ -142,13 +142,13 @@ pub mod auth {
     pub async fn keyring_access_token(
         instance: &str,
         consumer_key: &str,
-    ) -> Result<(String, String), Error> {
+    ) -> Result<(String, String), crate::auth::Error> {
         let entry = keyring::Entry::new(instance, "oauth1")?;
 
         let access_token = match entry.get_password() {
             Ok(token) => {
                 log::debug!("Found entry in keyring for {}", instance);
-                let (token, secret) = parse_token_response(token.as_bytes());
+                let (token, secret) = crate::auth::parse_token_response(token.as_bytes());
                 log::debug!("Parsed token: {} / {}", token, secret);
                 (token, secret)
             }
@@ -165,7 +165,8 @@ pub mod auth {
                 println!("Please authorize the request token at {}", auth_url);
                 println!("Once done, press enter to continue...");
                 let mut input = String::new();
-                tokio::io::stdin().read_line(&mut input)?;
+                // TODO: Use async tokio::io::stdin() here?
+                std::io::stdin().read_line(&mut input)?;
 
                 // Step 3: Exchange the request token for an access token
                 let access_token = exchange_request_token(
@@ -244,7 +245,7 @@ pub mod auth {
     pub async fn get_access_token(
         instance: &str,
         consumer_key: &str,
-    ) -> Result<(String, String), Error> {
+    ) -> Result<(String, String), crate::auth::Error> {
         keyring_access_token(instance, consumer_key).await
     }
 

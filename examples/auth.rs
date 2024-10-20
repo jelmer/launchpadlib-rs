@@ -1,5 +1,6 @@
-use launchpadlib::auth::{authorize_token_url, exchange_request_token, get_request_token};
-use launchpadlib::Client;
+use launchpadlib::auth::authorize_token_url;
+use launchpadlib::blocking::client::auth::{exchange_request_token, get_request_token};
+use launchpadlib::blocking::Client;
 
 fn main() {
     // Step 0: Pick a consumer key
@@ -35,7 +36,7 @@ fn main() {
         access_token.1.as_str(),
     );
 
-    let root = launchpadlib::v1_0::service_root(&client).unwrap();
+    let root = launchpadlib::blocking::v1_0::service_root(&client).unwrap();
     let person = root.me().unwrap().get(&client).unwrap();
     println!("{:?}", person);
 }

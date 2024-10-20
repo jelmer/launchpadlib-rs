@@ -1,10 +1,10 @@
-//! Async version of the Launchpad API
+//! Blocking API
 
-#[allow(unused_imports)]
-use crate::*;
 pub mod client;
 pub mod page;
 pub use client::Client;
+
+use crate::{Error, Resource};
 
 /// In development API
 #[cfg(feature = "api-devel")]
@@ -18,26 +18,32 @@ pub mod devel {
     use crate::AsTotalSize;
     use url::Url;
 
-    include!(concat!(env!("OUT_DIR"), "/generated/async/devel.rs"));
+    include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
 
     lazy_static::lazy_static! {
         static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/devel/").unwrap());
     }
 
     /// Get the default service root
-    pub async fn service_root(
-        client: &dyn wadl::r#async::Client,
-    ) -> std::result::Result<ServiceRootJson, wadl::Error> {
-        ROOT.get(client).await
+    pub fn service_root(
+        client: &dyn wadl::blocking::Client,
+    ) -> std::result::Result<ServiceRootJson, Error> {
+        ROOT.get(client)
     }
 
     /// Get the service root for a specific host
-    pub async fn service_root_for_host(
-        client: &dyn wadl::r#async::Client,
+    ///
+    /// # Example
+    /// ```rust
+    /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
+    /// let root = launchpadlib::blocking::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
+    /// ```
+    pub fn service_root_for_host(
+        client: &dyn wadl::blocking::Client,
         host: &str,
-    ) -> std::result::Result<ServiceRootJson, wadl::Error> {
+    ) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/devel/", host)).unwrap();
-        ServiceRoot(url).get(client).await
+        ServiceRoot(url).get(client)
     }
 }
 
@@ -54,26 +60,32 @@ pub mod beta {
     use crate::AsTotalSize;
     use url::Url;
 
-    include!(concat!(env!("OUT_DIR"), "/generated/async/beta.rs"));
+    include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
 
     lazy_static::lazy_static! {
         static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/beta/").unwrap());
     }
 
     /// Get the default service root
-    pub async fn service_root(
-        client: &dyn wadl::r#async::Client,
-    ) -> std::result::Result<ServiceRootJson, wadl::Error> {
-        ROOT.get(client).await
+    pub fn service_root(
+        client: &dyn wadl::blocking::Client,
+    ) -> std::result::Result<ServiceRootJson, Error> {
+        ROOT.get(client)
     }
 
     /// Get the service root for a specific host
-    pub async fn service_root_for_host(
-        client: &dyn wadl::r#async::Client,
+    ///
+    /// # Example
+    /// ```rust
+    /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
+    /// let root = launchpadlib::blocking::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
+    /// ```
+    pub fn service_root_for_host(
+        client: &dyn wadl::blocking::Client,
         host: &str,
-    ) -> std::result::Result<ServiceRootJson, wadl::Error> {
+    ) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/beta/", host)).unwrap();
-        ServiceRoot(url).get(client).await
+        ServiceRoot(url).get(client)
     }
 }
 
@@ -89,7 +101,7 @@ pub mod v1_0 {
     use crate::AsTotalSize;
     use url::Url;
 
-    include!(concat!(env!("OUT_DIR"), "/generated/async/1_0.rs"));
+    include!(concat!(env!("OUT_DIR"), "/generated/1_0.rs"));
 
     lazy_static::lazy_static! {
         static ref ROOT: ServiceRoot = ServiceRoot(Url::parse("https://api.launchpad.net/1.0/").unwrap());
@@ -104,7 +116,7 @@ pub mod v1_0 {
     /// Get a service root by URL
     pub fn get_service_root_by_url(
         url: &'_ Url,
-    ) -> std::result::Result<&'static ServiceRoot, wadl::Error> {
+    ) -> std::result::Result<&'static ServiceRoot, Error> {
         if url == ROOT.url() {
             Ok(&ROOT)
         } else {
@@ -113,25 +125,31 @@ pub mod v1_0 {
     }
 
     /// Get the default service root
-    pub async fn service_root(
-        client: &dyn wadl::r#async::Client,
-    ) -> std::result::Result<ServiceRootJson, wadl::Error> {
-        ROOT.get(client).await
+    pub fn service_root(
+        client: &dyn wadl::blocking::Client,
+    ) -> std::result::Result<ServiceRootJson, Error> {
+        ROOT.get(client)
     }
 
     /// Get the service root for a specific host
-    pub async fn service_root_for_host(
-        client: &dyn wadl::r#async::Client,
+    ///
+    /// # Example
+    /// ```rust
+    /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
+    /// let root = launchpadlib::blocking::v1_0::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
+    /// ```
+    pub fn service_root_for_host(
+        client: &dyn wadl::blocking::Client,
         host: &str,
-    ) -> std::result::Result<ServiceRootJson, wadl::Error> {
+    ) -> std::result::Result<ServiceRootJson, Error> {
         let url = Url::parse(&format!("https://{}/1.0/", host)).unwrap();
-        ServiceRoot(url).get(client).await
+        ServiceRoot(url).get(client)
     }
 
     /// Get a resource by URL
     pub fn get_resource_by_url(
         url: &'_ Url,
-    ) -> std::result::Result<&'static (dyn Resource + Send + Sync), wadl::Error> {
+    ) -> std::result::Result<&'static (dyn Resource + Send + Sync), Error> {
         if let Some(resource) = STATIC_RESOURCES.get(url) {
             Ok(resource.as_ref())
         } else {
@@ -141,49 +159,56 @@ pub mod v1_0 {
 
     impl Bugs {
         /// Get a bug by its id
-        pub async fn get_by_id(
+        ///
+        /// # Example
+        /// ```rust
+        /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
+        /// let root = launchpadlib::blocking::v1_0::service_root(&client).unwrap();
+        /// let bug = root.bugs().unwrap().get_by_id(&client, 1).unwrap();
+        /// ```
+        pub fn get_by_id(
             &self,
-            client: &dyn wadl::r#async::Client,
+            client: &dyn wadl::blocking::Client,
             id: u32,
-        ) -> std::result::Result<BugFull, wadl::Error> {
+        ) -> std::result::Result<BugFull, Error> {
             let url = self.url().join(format!("bugs/{}", id).as_str()).unwrap();
-            Bug(url).get(client).await
+            Bug(url).get(client)
         }
     }
 
     impl Projects {
         /// Get a project by its name
-        pub async fn get_by_name(
+        pub fn get_by_name(
             &self,
-            client: &dyn wadl::r#async::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
-        ) -> std::result::Result<ProjectFull, wadl::Error> {
+        ) -> std::result::Result<ProjectFull, Error> {
             let url = self.url().join(name).unwrap();
-            Project(url).get(client).await
+            Project(url).get(client)
         }
     }
 
     impl ProjectGroups {
         /// Get a project group by name
-        pub async fn get_by_name(
+        pub fn get_by_name(
             &self,
-            client: &dyn wadl::r#async::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
-        ) -> std::result::Result<ProjectGroupFull, wadl::Error> {
+        ) -> std::result::Result<ProjectGroupFull, Error> {
             let url = self.url().join(name).unwrap();
-            ProjectGroup(url).get(client).await
+            ProjectGroup(url).get(client)
         }
     }
 
     impl Distributions {
         /// Get a distribution by name
-        pub async fn get_by_name(
+        pub fn get_by_name(
             &self,
-            client: &dyn wadl::r#async::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
-        ) -> std::result::Result<DistributionFull, wadl::Error> {
+        ) -> std::result::Result<DistributionFull, Error> {
             let url = self.url().join(name).unwrap();
-            Distribution(url).get(client).await
+            Distribution(url).get(client)
         }
     }
 
@@ -198,14 +223,14 @@ pub mod v1_0 {
 
     impl People {
         /// Get a person or team by name
-        pub async fn get_by_name(
+        pub fn get_by_name(
             &self,
-            client: &dyn wadl::r#async::Client,
+            client: &dyn wadl::blocking::Client,
             name: &str,
-        ) -> std::result::Result<PersonOrTeam, wadl::Error> {
+        ) -> std::result::Result<PersonOrTeam, Error> {
             let url = self.url().join(&format!("~{}", name)).unwrap();
 
-            let wadl = wadl::r#async::get_wadl_resource_by_href(client, &url).await?;
+            let wadl = wadl::blocking::get_wadl_resource_by_href(client, &url)?;
 
             let types = wadl
                 .r#type
