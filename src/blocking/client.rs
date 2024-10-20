@@ -38,7 +38,12 @@ impl Client {
         )
     }
 
-    /// Create a new client with the given credentials.
+    /// Create a new client that is authenticated.
+    ///
+    /// If the `keyring` feature is enabled, this function will attempt to retrieve the access
+    /// token from the keyring. If the access token is not found, the user will be prompted to
+    /// authorize access, after which the access token will be stored in the keyring for future
+    /// use.
     pub fn authenticated(
         instance: Option<&str>,
         consumer_key: &str,
@@ -72,7 +77,7 @@ impl Client {
     }
 
     /// Generate an OAuth1 authorization header for the given URL.
-    fn authorization_header(&self, url: &Url, token: &str, token_secret: &str) -> String {
+    pub fn authorization_header(&self, url: &Url, token: &str, token_secret: &str) -> String {
         crate::auth::generate_oauth1_authorization_header(
             url,
             self.consumer_key.as_ref().unwrap().as_str(),
