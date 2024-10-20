@@ -1,15 +1,15 @@
-//! The `Client` struct is a wrapper around `reqwest::Client` that provides OAuth1
+//! The `Client` struct is a wrapper around `reqwest::blocking::Client` that provides OAuth1
 //! authentication for requests.
 
 use url::Url;
 
 /// A client that can make requests to a Launchpad API.
 ///
-/// This client is a wrapper around `reqwest::Client` that provides OAuth1 authentication
+/// This client is a wrapper around `reqwest::blocking::Client` that provides OAuth1 authentication
 /// for requests. It can be created with or without credentials, and can be used to make requests
 /// to any Launchpad API.
 pub struct Client {
-    client: reqwest::Client,
+    client: reqwest::blocking::Client,
     consumer_key: Option<String>,
     consumer_secret: Option<String>,
     token: Option<String>,
@@ -39,11 +39,12 @@ impl Client {
     }
 
     /// Create a new client with the given credentials.
-    pub async fn authenticated(
-        instance: &str,
+    pub fn authenticated(
+        instance: Option<&str>,
         consumer_key: &str,
     ) -> Result<Self, crate::auth::Error> {
-        let (token, token_secret) = auth::get_access_token(instance, consumer_key).await?;
+        let instance = instance.unwrap_or(crate::DEFAULT_INSTANCE);
+        let (token, token_secret) = auth::get_access_token(instance, consumer_key)?;
         Ok(Self::from_tokens(consumer_key, None, &token, &token_secret))
     }
 
@@ -56,7 +57,7 @@ impl Client {
         user_agent: Option<&str>,
     ) -> Self {
         let user_agent = user_agent.unwrap_or(crate::DEFAULT_USER_AGENT);
-        let client = reqwest::Client::builder()
+        let client = reqwest::blocking::Client::builder()
             .user_agent(user_agent)
             .build()
             .unwrap();
@@ -84,9 +85,8 @@ impl Client {
     }
 }
 
-#[async_trait::async_trait]
-impl wadl::r#async::Client for Client {
-    async fn request(&self, method: reqwest::Method, url: url::Url) -> reqwest::RequestBuilder {
+impl wadl::blocking::Client for Client {
+    fn request(&self, method: reqwest::Method, url: url::Url) -> reqwest::blocking::RequestBuilder {
         let auth_header = self.token.as_ref().map(|token| {
             self.authorization_header(
                 &url,
@@ -104,12 +104,12 @@ impl wadl::r#async::Client for Client {
     }
 }
 
-/// Functions for authenticating with the Launchpad API
+/// OAuth1 authentication functions
 pub mod auth {
     use std::collections::HashMap;
 
     /// Exchange a request token for an access token
-    pub async fn exchange_request_token(
+    pub fn exchange_request_token(
         instance: &str,
         consumer_key: &str,
         consumer_secret: Option<&str>,
@@ -130,16 +130,16 @@ pub mod auth {
         url.set_host(Some(instance)).unwrap();
 
         // Make a POST request to exchange the request token for an access token
-        let client = reqwest::Client::new();
-        let response = client.post(url).form(&params).send().await?;
+        let client = reqwest::blocking::Client::new();
+        let response = client.post(url).form(&params).send()?;
 
         // Parse the response to get the access token and access token secret
-        Ok(crate::auth::parse_token_response(&response.bytes().await?))
+        Ok(crate::auth::parse_token_response(&response.bytes()?))
     }
 
     #[cfg(feature = "keyring")]
     /// Obtain an access token from either the keyring, or by prompting the user
-    pub async fn keyring_access_token(
+    pub fn keyring_access_token(
         instance: &str,
         consumer_key: &str,
     ) -> Result<(String, String), crate::auth::Error> {
@@ -156,7 +156,7 @@ pub mod auth {
                 log::debug!("No entry found in keyring at {}", instance);
 
                 // Step 1: Get a request token
-                let req_token = get_request_token(instance, consumer_key).await?;
+                let req_token = get_request_token(instance, consumer_key)?;
 
                 // Step 2: Get the user to authorize the request token
                 let auth_url =
@@ -165,7 +165,6 @@ pub mod auth {
                 println!("Please authorize the request token at {}", auth_url);
                 println!("Once done, press enter to continue...");
                 let mut input = String::new();
-                // TODO: Use async tokio::io::stdin() here?
                 std::io::stdin().read_line(&mut input)?;
 
                 // Step 3: Exchange the request token for an access token
@@ -175,8 +174,7 @@ pub mod auth {
                     None,
                     req_token.0.as_str(),
                     Some(req_token.1.as_str()),
-                )
-                .await?;
+                )?;
 
                 entry.set_password(&format!(
                     "oauth_token={}&oauth_token_secret={}",
@@ -196,12 +194,12 @@ pub mod auth {
     /// # Arguments
     /// * `instance` - The Launchpad instance to use, or `None` for the default
     /// * `consumer_key` - The consumer key to use
-    pub async fn cmdline_access_token(
+    pub fn cmdline_access_token(
         instance: &str,
         consumer_key: &str,
     ) -> Result<(String, String), reqwest::Error> {
         // Step 1: Get a request token
-        let req_token = get_request_token(instance, consumer_key).await?;
+        let req_token = get_request_token(instance, consumer_key)?;
 
         // Step 2: Get the user to authorize the request token
         let auth_url =
@@ -220,11 +218,10 @@ pub mod auth {
             req_token.0.as_str(),
             Some(req_token.1.as_str()),
         )
-        .await
     }
 
     /// Get a request token and request token secret
-    pub async fn get_request_token(
+    pub fn get_request_token(
         instance: &str,
         consumer_key: &str,
     ) -> Result<(String, String), reqwest::Error> {
@@ -234,27 +231,27 @@ pub mod auth {
 
         url.set_host(Some(instance)).unwrap();
 
-        let client = reqwest::Client::new();
-        let response = client.post(url).form(&params).send().await?;
+        let client = reqwest::blocking::Client::new();
+        let response = client.post(url).form(&params).send()?;
 
-        Ok(crate::auth::parse_token_response(&response.bytes().await?))
+        Ok(crate::auth::parse_token_response(&response.bytes()?))
     }
 
     #[cfg(feature = "keyring")]
     /// Get an access token, either from the keyring or by prompting the user
-    pub async fn get_access_token(
+    pub fn get_access_token(
         instance: &str,
         consumer_key: &str,
     ) -> Result<(String, String), crate::auth::Error> {
-        keyring_access_token(instance, consumer_key).await
+        keyring_access_token(instance, consumer_key)
     }
 
     #[cfg(not(feature = "keyring"))]
     /// Get an access token, by prompting the user
-    pub async fn get_access_token(
+    pub fn get_access_token(
         instance: &str,
         consumer_key: &str,
     ) -> Result<(String, String), reqwest::Error> {
-        cmdline_access_token(instance, consumer_key).await
+        cmdline_access_token(instance, consumer_key)
     }
 }

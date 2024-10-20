@@ -15,7 +15,7 @@ include = ["wadl/*.wadl", "src/*.rs", "src/bin/*.rs", "build.rs", "examples/*.rs
 [lib]
 
 [workspace.dependencies]
-wadl = { version = ">=0.4.0", default-features = false }
+wadl = { version = ">=0.5.0", default-features = false }
 #wadl = { path = "../wadl-rs", default-features = false }
 
 [dependencies]
@@ -27,7 +27,7 @@ log = "0.4"
 mime = "0.3.17"
 percent-encoding = "2.3.1"
 rand = "0.8.5"
-reqwest = { version = "0.12", features = ["json", "blocking", "multipart"] }
+reqwest = { version = "0.12", features = ["json", "multipart"] }
 serde = { version = "1.0.210", features = ["derive"] }
 serde_json = "1.0.128"
 url = { version = "2.5.2", features = ["serde"] }
@@ -45,40 +45,41 @@ maplit = "1.0.2"
 tokio = { version = "1", features = ["full"] }
 
 [features]
-default = ["api-v1_0"]
+default = ["blocking", "api-v1_0"]
 api-v1_0 = []
 api-devel = []
 api-beta = []
 cli = ["dep:clap"]
 keyring = ["dep:keyring"]
 async = ["wadl/async", "dep:async-trait"]
+blocking = ["wadl/blocking"]
 
 [[example]]
-required-features = ["api-v1_0"]
+required-features = ["api-v1_0", "blocking"]
 name = "auth"
 
 [[example]]
-required-features = ["api-v1_0"]
+required-features = ["api-v1_0", "blocking"]
 name = "ssh-keys"
 
 [[example]]
-required-features = ["api-v1_0", "keyring"]
+required-features = ["api-v1_0", "keyring", "blocking"]
 name = "keyring"
 
 [[bin]]
-required-features = ["api-v1_0", "cli"]
+required-features = ["api-v1_0", "cli", "blocking"]
 name = "lp-attach"
 
 [[bin]]
-required-features = ["api-v1_0", "cli"]
+required-features = ["api-v1_0", "cli", "blocking"]
 name = "lp-set-dupe"
 
 [[bin]]
-required-features = ["api-v1_0", "cli"]
+required-features = ["api-v1_0", "cli", "blocking"]
 name = "lp-list-bugs"
 
 [[bin]]
-required-features = ["api-v1_0", "cli"]
+required-features = ["api-v1_0", "cli", "blocking"]
 name = "lp-check-membership"
 
 [package.metadata.cargo-all-features]
@@ -87,4 +88,5 @@ max_combination_size = 2
 skip_feature_sets = [
     [],
     ["async"],
+    ["blocking"],
 ]

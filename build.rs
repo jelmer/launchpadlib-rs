@@ -334,7 +334,7 @@ fn generate_representation_traits(
             if config.r#async {
                 "crate::r#async::page::Page"
             } else {
-                "crate::page::Page"
+                "crate::blocking::page::Page"
             },
             name
         ));
@@ -439,7 +439,7 @@ fn extend_accessor(
         let pc_type = if config.r#async {
             "crate::r#async::page::PagedCollection"
         } else {
-            "crate::page::PagedCollection"
+            "crate::blocking::page::PagedCollection"
         };
         let opt_async = if config.r#async { "async " } else { "" };
         lines.extend(if type_name.starts_with("Option<") {
@@ -478,7 +478,7 @@ fn extend_method(
     let pc_type = if config.r#async {
         "crate::r#async::page::PagedCollection"
     } else {
-        "crate::page::PagedCollection"
+        "crate::blocking::page::PagedCollection"
     };
     if !resource_type.ends_with("-page-resource") && name == "get" && ret_type.contains("Page") {
         vec![
@@ -512,7 +512,7 @@ fn map_type_for_response(
     let pc_type = if config.r#async {
         "crate::r#async::page::PagedCollection"
     } else {
-        "crate::page::PagedCollection"
+        "crate::blocking::page::PagedCollection"
     };
 
     Some((

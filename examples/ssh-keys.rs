@@ -1,7 +1,7 @@
 fn main() {
-    use launchpadlib::v1_0::Keytype::*;
+    use launchpadlib::blocking::v1_0::Keytype::*;
     let client = reqwest::blocking::Client::new();
-    let root = launchpadlib::v1_0::service_root(&client).unwrap();
+    let root = launchpadlib::blocking::v1_0::service_root(&client).unwrap();
     let people = root.people().unwrap();
     let person = people.get_by_email(&client, "jelmer@jelmer.uk").unwrap();
     let ssh_keys = person
