@@ -1,5 +1,5 @@
 //! Pagination support
-use crate::Error;
+use create::Error;
 use std::pin::Pin;
 
 use futures::task::Context;
@@ -225,7 +225,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_iter() {
-        let client = crate::r#async::client::Client::anonymous("just testing");
+        let client = create::r#async::client::Client::anonymous("just testing");
         let master = DummyMaster {
             entries: vec!["a", "b", "c"],
             chunk_size: 2,
@@ -246,7 +246,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_empty() {
-        let client = crate::r#async::client::Client::anonymous("just testing");
+        let client = create::r#async::client::Client::anonymous("just testing");
         let master: DummyMaster<&str> = DummyMaster::<&str> {
             entries: vec![],
             chunk_size: 2,
@@ -263,7 +263,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_stream() {
-        let client = crate::r#async::client::Client::anonymous("just testing");
+        let client = create::r#async::client::Client::anonymous("just testing");
         let master = DummyMaster {
             entries: vec!["a", "b", "c"],
             chunk_size: 2,

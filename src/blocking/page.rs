@@ -1,6 +1,6 @@
 //! Pagination support.
 
-use crate::Error;
+use create::Error;
 
 /// A page of items.
 pub trait Page {
@@ -171,7 +171,7 @@ mod tests {
 
     #[test]
     fn test_iter() {
-        let client = crate::blocking::client::Client::anonymous("just testing");
+        let client = create::blocking::client::Client::anonymous("just testing");
         let master = DummyMaster {
             entries: vec!["a", "b", "c"],
             chunk_size: 2,
@@ -192,7 +192,7 @@ mod tests {
 
     #[test]
     fn test_empty() {
-        let client = crate::blocking::client::Client::anonymous("just testing");
+        let client = create::blocking::client::Client::anonymous("just testing");
         let master: DummyMaster<&str> = DummyMaster::<&str> {
             entries: vec![],
             chunk_size: 2,

@@ -10,13 +10,13 @@ use url::form_urlencoded;
 use rand::Rng;
 
 /// URL for requesting tokens
-pub(crate) const REQUEST_TOKEN_URL: &str = "https://launchpad.net/+request-token";
+pub(create) const REQUEST_TOKEN_URL: &str = "https://launchpad.net/+request-token";
 
 /// URL for authorizing tokens
-pub(crate) const AUTHORIZE_TOKEN_URL: &str = "https://launchpad.net/+authorize-token";
+pub(create) const AUTHORIZE_TOKEN_URL: &str = "https://launchpad.net/+authorize-token";
 
 /// URL for access tokens
-pub(crate) const ACCESS_TOKEN_URL: &str = "https://launchpad.net/+access-token";
+pub(create) const ACCESS_TOKEN_URL: &str = "https://launchpad.net/+access-token";
 
 #[derive(Debug)]
 /// Errors that can occur when signing requests
@@ -78,7 +78,7 @@ impl std::fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
-pub(crate) fn parse_token_response(response_text: &[u8]) -> (String, String) {
+pub(create) fn parse_token_response(response_text: &[u8]) -> (String, String) {
     let mut request_token = String::new();
     let mut request_token_secret = String::new();
     for (key, value) in form_urlencoded::parse(response_text) {
@@ -94,7 +94,7 @@ pub(crate) fn parse_token_response(response_text: &[u8]) -> (String, String) {
     (request_token, request_token_secret)
 }
 
-pub(crate) fn request_token_params(consumer_key: &str) -> HashMap<&str, &str> {
+pub(create) fn request_token_params(consumer_key: &str) -> HashMap<&str, &str> {
     let mut params = HashMap::new();
     params.insert("oauth_consumer_key", consumer_key);
     params.insert("oauth_signature_method", "PLAINTEXT");
@@ -123,7 +123,7 @@ pub fn authorize_token_url(
     Ok(url)
 }
 
-pub(crate) fn calculate_plaintext_signature(
+pub(create) fn calculate_plaintext_signature(
     consumer_secret: Option<&str>,
     token_secret: Option<&str>,
 ) -> String {

@@ -1,7 +1,7 @@
 #![deny(missing_docs)]
 //! # Launchpad API
 //!
-//! This crate provides a Rust interface to the Launchpad API.
+//! This create provides a Rust interface to the Launchpad API.
 //! It is generated from the Launchpad API WADL document.
 //!
 //! ## Usage
@@ -46,7 +46,7 @@ pub mod r#async;
 pub mod blocking;
 
 #[allow(dead_code)]
-pub(crate) trait AsTotalSize {
+pub(create) trait AsTotalSize {
     fn as_total_size(self) -> Option<usize>;
 }
 

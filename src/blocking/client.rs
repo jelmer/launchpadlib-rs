@@ -47,8 +47,8 @@ impl Client {
     pub fn authenticated(
         instance: Option<&str>,
         consumer_key: &str,
-    ) -> Result<Self, crate::auth::Error> {
-        let instance = instance.unwrap_or(crate::DEFAULT_INSTANCE);
+    ) -> Result<Self, create::auth::Error> {
+        let instance = instance.unwrap_or(create::DEFAULT_INSTANCE);
         let (token, token_secret) = auth::get_access_token(instance, consumer_key)?;
         Ok(Self::from_tokens(consumer_key, None, &token, &token_secret))
     }
@@ -61,7 +61,7 @@ impl Client {
         token_secret: Option<&str>,
         user_agent: Option<&str>,
     ) -> Self {
-        let user_agent = user_agent.unwrap_or(crate::DEFAULT_USER_AGENT);
+        let user_agent = user_agent.unwrap_or(create::DEFAULT_USER_AGENT);
         let client = reqwest::blocking::Client::builder()
             .user_agent(user_agent)
             .build()
@@ -78,7 +78,7 @@ impl Client {
 
     /// Generate an OAuth1 authorization header for the given URL.
     pub fn authorization_header(&self, url: &Url, token: &str, token_secret: &str) -> String {
-        crate::auth::generate_oauth1_authorization_header(
+        create::auth::generate_oauth1_authorization_header(
             url,
             self.consumer_key.as_ref().unwrap().as_str(),
             self.consumer_secret.as_deref(),
@@ -127,10 +127,10 @@ pub mod auth {
         params.insert("oauth_consumer_key", consumer_key);
         params.insert("oauth_signature_method", "PLAINTEXT");
         let signature =
-            crate::auth::calculate_plaintext_signature(consumer_secret, request_token_secret);
+            create::auth::calculate_plaintext_signature(consumer_secret, request_token_secret);
         params.insert("oauth_signature", signature.as_str());
 
-        let mut url = url::Url::parse(crate::auth::ACCESS_TOKEN_URL).unwrap();
+        let mut url = url::Url::parse(create::auth::ACCESS_TOKEN_URL).unwrap();
 
         url.set_host(Some(instance)).unwrap();
 
@@ -139,7 +139,7 @@ pub mod auth {
         let response = client.post(url).form(&params).send()?;
 
         // Parse the response to get the access token and access token secret
-        Ok(crate::auth::parse_token_response(&response.bytes()?))
+        Ok(create::auth::parse_token_response(&response.bytes()?))
     }
 
     #[cfg(feature = "keyring")]
@@ -147,13 +147,13 @@ pub mod auth {
     pub fn keyring_access_token(
         instance: &str,
         consumer_key: &str,
-    ) -> Result<(String, String), crate::auth::Error> {
+    ) -> Result<(String, String), create::auth::Error> {
         let entry = keyring::Entry::new(instance, "oauth1")?;
 
         let access_token = match entry.get_password() {
             Ok(token) => {
                 log::debug!("Found entry in keyring for {}", instance);
-                let (token, secret) = crate::auth::parse_token_response(token.as_bytes());
+                let (token, secret) = create::auth::parse_token_response(token.as_bytes());
                 log::debug!("Parsed token: {} / {}", token, secret);
                 (token, secret)
             }
@@ -165,7 +165,7 @@ pub mod auth {
 
                 // Step 2: Get the user to authorize the request token
                 let auth_url =
-                    crate::auth::authorize_token_url(instance, req_token.0.as_str(), None)?;
+                    create::auth::authorize_token_url(instance, req_token.0.as_str(), None)?;
 
                 println!("Please authorize the request token at {}", auth_url);
                 println!("Once done, press enter to continue...");
@@ -208,7 +208,7 @@ pub mod auth {
 
         // Step 2: Get the user to authorize the request token
         let auth_url =
-            crate::auth::authorize_token_url(instance, req_token.0.as_str(), None).unwrap();
+            create::auth::authorize_token_url(instance, req_token.0.as_str(), None).unwrap();
 
         println!("Please authorize the request token at {}", auth_url);
         println!("Once done, press enter to continue...");
@@ -230,16 +230,16 @@ pub mod auth {
         instance: &str,
         consumer_key: &str,
     ) -> Result<(String, String), reqwest::Error> {
-        let params = crate::auth::request_token_params(consumer_key);
+        let params = create::auth::request_token_params(consumer_key);
 
-        let mut url = url::Url::parse(crate::auth::REQUEST_TOKEN_URL).unwrap();
+        let mut url = url::Url::parse(create::auth::REQUEST_TOKEN_URL).unwrap();
 
         url.set_host(Some(instance)).unwrap();
 
         let client = reqwest::blocking::Client::new();
         let response = client.post(url).form(&params).send()?;
 
-        Ok(crate::auth::parse_token_response(&response.bytes()?))
+        Ok(create::auth::parse_token_response(&response.bytes()?))
     }
 
     #[cfg(feature = "keyring")]
@@ -247,7 +247,7 @@ pub mod auth {
     pub fn get_access_token(
         instance: &str,
         consumer_key: &str,
-    ) -> Result<(String, String), crate::auth::Error> {
+    ) -> Result<(String, String), create::auth::Error> {
         keyring_access_token(instance, consumer_key)
     }
 

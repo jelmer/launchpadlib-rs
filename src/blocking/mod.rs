@@ -4,7 +4,7 @@ pub mod client;
 pub mod page;
 pub use client::Client;
 
-use crate::{Error, Resource};
+use create::{Error, Resource};
 
 /// In development API
 #[cfg(feature = "api-devel")]
@@ -15,7 +15,7 @@ pub mod devel {
     #![allow(dead_code)]
     #![allow(missing_docs)]
     use super::*;
-    use crate::AsTotalSize;
+    use create::AsTotalSize;
     use url::Url;
 
     include!(concat!(env!("OUT_DIR"), "/generated/devel.rs"));
@@ -57,7 +57,7 @@ pub mod beta {
     #![allow(dead_code)]
     #![allow(missing_docs)]
     use super::*;
-    use crate::AsTotalSize;
+    use create::AsTotalSize;
     use url::Url;
 
     include!(concat!(env!("OUT_DIR"), "/generated/beta.rs"));
@@ -98,7 +98,7 @@ pub mod v1_0 {
     #![allow(dead_code)]
     #![allow(missing_docs)]
     use super::*;
-    use crate::AsTotalSize;
+    use create::AsTotalSize;
     use url::Url;
 
     include!(concat!(env!("OUT_DIR"), "/generated/1_0.rs"));

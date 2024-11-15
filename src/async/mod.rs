@@ -1,7 +1,7 @@
 //! Async version of the Launchpad API
 
 #[allow(unused_imports)]
-use crate::*;
+use create::*;
 pub mod client;
 pub mod page;
 pub use client::Client;
@@ -15,7 +15,7 @@ pub mod devel {
     #![allow(dead_code)]
     #![allow(missing_docs)]
     use super::*;
-    use crate::AsTotalSize;
+    use create::AsTotalSize;
     use url::Url;
 
     include!(concat!(env!("OUT_DIR"), "/generated/async/devel.rs"));
@@ -51,7 +51,7 @@ pub mod beta {
     #![allow(dead_code)]
     #![allow(missing_docs)]
     use super::*;
-    use crate::AsTotalSize;
+    use create::AsTotalSize;
     use url::Url;
 
     include!(concat!(env!("OUT_DIR"), "/generated/async/beta.rs"));
@@ -86,7 +86,7 @@ pub mod v1_0 {
     #![allow(dead_code)]
     #![allow(missing_docs)]
     use super::*;
-    use crate::AsTotalSize;
+    use create::AsTotalSize;
     use url::Url;
 
     include!(concat!(env!("OUT_DIR"), "/generated/async/1_0.rs"));
