@@ -274,7 +274,7 @@ pub fn generate_oauth1_authorization_header(
         .to_string();
 
     let nonce: String = nonce.map_or_else(
-        || rand::thread_rng().gen_range(100000..999999).to_string(),
+        || rand::rng().random_range(100000..999999).to_string(),
         |nonce| nonce.to_string(),
     );
 
