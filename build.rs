@@ -107,7 +107,7 @@ fn override_type_name(
         "dependencies" => Some("Vec<String>"),
         "development_series_alias" => Some("String"),
         "diffstat" => Some("String"),
-        "display_arches" => Some("Vec<String>"),
+        "display_arches" => Some("crate::types::PackageUploadArches"),
         "display_version" => Some("String"),
         "distro_series_name" => Some("String"),
         "domain_name" => Some("String"),

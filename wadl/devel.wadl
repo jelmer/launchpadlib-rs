@@ -33181,7 +33181,7 @@ Whether or not this upload contains sources
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="copy_source_archive_link" path="$['copy_source_archive_link']">
+      <wadl:param style="plain" required="false" name="copy_source_archive_link" path="$['copy_source_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Copy source archive</p>
 <p>The archive from which this package was copied, if any.</p>
@@ -33223,7 +33223,7 @@ This item's displayable source package version
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 ID
 </wadl:doc>

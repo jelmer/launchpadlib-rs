@@ -16,8 +16,12 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- Set type of bug id param to int -->
-  <xsl:template match="wadl:representation[@id='bug-full']/wadl:param[@name='id']">
+  <!-- Set type of various id param to int -->
+  <xsl:template match="wadl:representation[
+  @id='bug-full'
+  or @id='package_upload'
+  or @id='package_upload-full'
+      ]/wadl:param[@name='id']">
     <xsl:copy>
     <xsl:apply-templates select="@*"/>
       <xsl:attribute name="type">int</xsl:attribute>
@@ -138,6 +142,16 @@
 
   <!-- Mark all content_templates attributes everywhere as optional -->
   <xsl:template match="wadl:param[@name='content_templates']">
+    <xsl:copy>
+    <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="required">false</xsl:attribute>
+    <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="wadl:representation[@id='package_upload' or @id='package_upload-full']/wadl:param[
+  @name='copy_source_archive_link'
+      ]">
     <xsl:copy>
     <xsl:apply-templates select="@*"/>
       <xsl:attribute name="required">false</xsl:attribute>
