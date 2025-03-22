@@ -61,3 +61,23 @@ impl AsTotalSize for usize {
         Some(self)
     }
 }
+
+/// Various custom types to help massaging the LP data into proper Rust types.
+pub mod types {
+    /// Custom type to work around some peculiarities of the package_upload.display_arches field.
+    #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+    pub enum PackageUploadArches {
+        /// A sourceful upload
+        #[serde(rename = "source")]
+        Source,
+        /// When the upload comes from a Debian sync, there is no arch list.
+        #[serde(rename = "sync")]
+        Sync,
+        /// A single arch
+        #[serde(untagged)]
+        Arch(String),
+        /// Several arches for a single item. Obsolete?
+        #[serde(untagged)]
+        Arches(Vec<String>),
+    }
+}
