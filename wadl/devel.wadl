@@ -73,6 +73,11 @@
       </wadl:param>
     
     
+      <wadl:param style="plain" name="craft_recipes_collection_link" path="$['craft_recipes_collection_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipes"/>
+      </wadl:param>
+    
+    
       <wadl:param style="plain" name="cves_collection_link" path="$['cves_collection_link']">
         <wadl:link resource_type="https://api.launchpad.net/devel/#cves"/>
       </wadl:param>
@@ -140,6 +145,16 @@
     
       <wadl:param style="plain" name="questions_collection_link" path="$['questions_collection_link']">
         <wadl:link resource_type="https://api.launchpad.net/devel/#questions"/>
+      </wadl:param>
+    
+    
+      <wadl:param style="plain" name="rock_bases_collection_link" path="$['rock_bases_collection_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_bases"/>
+      </wadl:param>
+    
+    
+      <wadl:param style="plain" name="rock_recipes_collection_link" path="$['rock_recipes_collection_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipes"/>
       </wadl:param>
     
     
@@ -1102,6 +1117,219 @@ Code
         <wadl:response>
           
           <wadl:representation href="https://api.launchpad.net/devel/#country-full"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+  
+  
+    <wadl:resource_type id="craft_recipes">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A utility to create and access craft recipes.
+</wadl:doc>
+      <wadl:method name="GET" id="craft_recipes-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe-page"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="craft_recipes-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method id="craft_recipes-getByName" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Returns the appropriate ICraftRecipe for the given objects.
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getByName">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="owner" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Owner
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+            </wadl:param>
+            <wadl:param style="query" name="project" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Project
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+            </wadl:param>
+            <wadl:param style="query" name="name" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Recipe name
+</wadl:doc>
+              
+            </wadl:param>
+          
+        </wadl:request>
+        <wadl:response>
+          
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe-full"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method id="craft_recipes-findByOwner" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Return all craft recipes for the given owner.
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="findByOwner">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="owner" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Owner
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+            </wadl:param>
+          
+        </wadl:request>
+        <wadl:response>
+          
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe-page"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method id="craft_recipes-new" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Create an ICraftRecipe.
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="new">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="owner" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Owner</p>
+<p>The owner of this craft recipe.</p>
+
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+            </wadl:param>
+            <wadl:param style="query" name="project" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The project that this craft recipe is associated with
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+            </wadl:param>
+            <wadl:param style="query" name="name" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Craft recipe name</p>
+<p>The name of the craft recipe.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="description" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Description</p>
+<p>A description of the craft recipe.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_repository" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository</p>
+<p>A Git repository with a branch containing a sourcecraft.yaml recipe.</p>
+
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#git_repository"/>
+            </wadl:param>
+            <wadl:param style="query" name="git_repository_url" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository URL</p>
+<p>The URL of a Git repository with a branch containing a sourcecraft.yaml at the top level.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_path" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch path</p>
+<p>The path of the Git branch containing a sourcecraft.yaml recipe.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_ref" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch</p>
+<p>The Git branch containing a craft.yaml recipe.</p>
+
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#git_ref"/>
+            </wadl:param>
+            <wadl:param style="query" name="build_path" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build path</p>
+<p>Subdirectory within the branch containing craft.yaml.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="auto_build" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically build when branch changes</p>
+<p>Whether this craft recipe is built automatically when the branch containing its craft.yaml recipe changes.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="auto_build_channels" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for automatic builds</p>
+<p>A dictionary mapping snap names to channels to use when building this craft recipe.  Currently only 'core', 'core18', 'core20', and 'sourcecraft' keys are supported.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="store_upload" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically upload to store</p>
+<p>Whether builds of this craft recipe are automatically uploaded to the store.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="store_name" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registered store name</p>
+<p>The registered name of this craft in the store.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="store_channels" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Store channels</p>
+<p>Channels to release this craft to after uploading it to the store. A channel is defined by a combination of an optional track, a risk, and an optional branch, e.g. '2.1/stable/fix-123', '2.1/stable', 'stable/fix-123', or 'stable'.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="information_type" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Information type</p>
+<p>The type of information contained in this craft recipe.</p>
+
+</wadl:doc>
+              
+              <wadl:option value="Public"/>
+              <wadl:option value="Public Security"/>
+              <wadl:option value="Private Security"/>
+              <wadl:option value="Private"/>
+              <wadl:option value="Proprietary"/>
+              <wadl:option value="Embargoed"/>
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        <wadl:response>
+          <wadl:param name="Location" style="header">
+            <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe"/>
+          </wadl:param>
+          
         </wadl:response>
       </wadl:method>
     </wadl:resource_type>
@@ -3135,6 +3363,294 @@ The id of the question to get
 
   
   
+    <wadl:resource_type id="rock_bases">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Interface representing the set of bases for rocks.
+</wadl:doc>
+      <wadl:method name="GET" id="rock_bases-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_base-page"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="rock_bases-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method id="rock_bases-getByDistroSeries" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Return the IRockBase for this distro series.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getByDistroSeries">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="distro_series" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Distro series
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+            </wadl:param>
+          
+        </wadl:request>
+        <wadl:response>
+          
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_base-full"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method id="rock_bases-new" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Create an IRockBase.
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="new">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="distro_series" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Distro series
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+            </wadl:param>
+            <wadl:param style="query" name="build_channels" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for builds</p>
+<p>A dictionary mapping snap names to channels to use when building rock recipes that specify this base.  The special '_byarch' key may have a mapping of architecture names to mappings of snap names to channels, which if present override the channels declared at the top level when building for those architectures.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="processors" required="false">
+             
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        <wadl:response>
+          <wadl:param name="Location" style="header">
+            <wadl:link resource_type="https://api.launchpad.net/devel/#rock_base"/>
+          </wadl:param>
+          
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+  
+  
+    <wadl:resource_type id="rock_recipes">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A utility to create and access rock recipes.
+</wadl:doc>
+      <wadl:method name="GET" id="rock_recipes-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe-page"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="rock_recipes-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method id="rock_recipes-getByName" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Returns the appropriate IRockRecipe for the given objects.
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getByName">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="owner" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Owner
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+            </wadl:param>
+            <wadl:param style="query" name="project" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Project
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+            </wadl:param>
+            <wadl:param style="query" name="name" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Recipe name
+</wadl:doc>
+              
+            </wadl:param>
+          
+        </wadl:request>
+        <wadl:response>
+          
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe-full"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method id="rock_recipes-findByOwner" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Return all rock recipes with the given owner.
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="findByOwner">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="owner" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Owner
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+            </wadl:param>
+          
+        </wadl:request>
+        <wadl:response>
+          
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe-page"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method id="rock_recipes-new" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Create an IRockRecipe.
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="new">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="owner" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Owner</p>
+<p>The owner of this rock recipe.</p>
+
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+            </wadl:param>
+            <wadl:param style="query" name="project" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The project that this rock recipe is associated with
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+            </wadl:param>
+            <wadl:param style="query" name="name" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Rock recipe name</p>
+<p>The name of the rock recipe.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="description" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Description</p>
+<p>A description of the rock recipe.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_repository" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository</p>
+<p>A Git repository with a branch containing a rockcraft.yaml recipe.</p>
+
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#git_repository"/>
+            </wadl:param>
+            <wadl:param style="query" name="git_repository_url" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository URL</p>
+<p>The URL of a Git repository with a branch containing a rockcraft.yaml at the top level.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_path" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch path</p>
+<p>The path of the Git branch containing a rockcraft.yaml recipe.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_ref" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch</p>
+<p>The Git branch containing a rockcraft.yaml recipe.</p>
+
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#git_ref"/>
+            </wadl:param>
+            <wadl:param style="query" name="build_path" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build path</p>
+<p>Subdirectory within the branch containing rockcraft.yaml.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="auto_build" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically build when branch changes</p>
+<p>Whether this rock recipe is built automatically when the branch containing its rockcraft.yaml recipe changes.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="auto_build_channels" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for automatic builds</p>
+<p>A dictionary mapping snap names to channels to use when building this rock recipe. Currently only 'core', 'core18', 'core20', and 'rockcraft' keys are supported.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="store_upload" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically upload to store</p>
+<p>Whether builds of this rock recipe are automatically uploaded to the store.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="store_name" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registered store name</p>
+<p>The registered name of this rock in the store.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="store_channels" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Store channels</p>
+<p>Channels to release this rock to after uploading it to the store. A channel is defined by a combination of an optional track, a risk, and an optional branch, e.g. '2.1/stable/fix-123', '2.1/stable', 'stable/fix-123', or 'stable'.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="information_type" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Information type</p>
+<p>The type of information contained in this rock recipe.</p>
+
+</wadl:doc>
+              
+              <wadl:option value="Public"/>
+              <wadl:option value="Public Security"/>
+              <wadl:option value="Private Security"/>
+              <wadl:option value="Private"/>
+              <wadl:option value="Proprietary"/>
+              <wadl:option value="Embargoed"/>
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        <wadl:response>
+          <wadl:param name="Location" style="header">
+            <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe"/>
+          </wadl:param>
+          
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+  
+  
     <wadl:resource_type id="snap_bases">
       <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Interface representing the set of bases for snaps.
@@ -5040,6 +5556,14 @@ Component name
 </wadl:doc>
               
             </wadl:param>
+            <wadl:param style="query" name="order_by_date_ascending" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Order by ascending creation date</p>
+<p>Return oldest results first.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
           
         </wadl:request>
         <wadl:response>
@@ -5126,6 +5650,14 @@ Whether or not to filter binary names by exact matching.
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Order by creation date</p>
 <p>Return newest results first. This is recommended for applications that need to catch up with publications since their last run.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="order_by_date_ascending" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Order by ascending creation date</p>
+<p>Return oldest results first.</p>
 
 </wadl:doc>
               
@@ -6407,6 +6939,14 @@ NOTE: This is for migration of OEM PPAs only!</p>
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="metadata_overrides" path="$['metadata_overrides']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>A JSON object containing metadata overrides for this archive.</p>
+<p>Accepted keys are Origin, Label, Suite and Snapshots.The values for all these keys should be a string and can use a {series} placeholder, which will get substituted by the name of the series that is currently being published.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="name" path="$['name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Name</p>
@@ -6497,6 +7037,7 @@ Repository format
         <wadl:option value="Conda"/>
         <wadl:option value="Go"/>
         <wadl:option value="Generic"/>
+        <wadl:option value="Rust"/>
       </wadl:param>
       <wadl:param style="plain" required="true" name="require_virtualized" path="$['require_virtualized']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -6580,6 +7121,14 @@ NOTE: This is for migration of OEM PPAs only!</p>
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="false" name="metadata_overrides" path="$['metadata_overrides']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>A JSON object containing metadata overrides for this archive.</p>
+<p>Accepted keys are Origin, Label, Suite and Snapshots.The values for all these keys should be a string and can use a {series} placeholder, which will get substituted by the name of the series that is currently being published.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="false" name="name" path="$['name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Name</p>
@@ -6654,6 +7203,7 @@ Repository format
         <wadl:option value="Conda"/>
         <wadl:option value="Go"/>
         <wadl:option value="Generic"/>
+        <wadl:option value="Rust"/>
       </wadl:param>
       <wadl:param style="plain" required="false" name="require_virtualized" path="$['require_virtualized']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -7330,6 +7880,14 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#builder"/>
       </wadl:param>
+      <wadl:param style="plain" required="true" name="buildinfo_url" path="$['buildinfo_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>buildinfo file URL</p>
+<p>The URL for the .buildinfo file for this build.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="buildstate" path="$['buildstate']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Status</p>
@@ -7376,7 +7934,7 @@ Architecture tag
       </wadl:param>
       <wadl:param style="plain" required="true" name="changesfile_url" path="$['changesfile_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Changes File URL</p>
+<p>Changes file URL</p>
 <p>The URL for the changes file for this build. Will be None if the build was imported by Gina.</p>
 
 </wadl:doc>
@@ -7537,14 +8095,6 @@ Architecture tag
         <wadl:option value="Cancelling build"/>
         <wadl:option value="Cancelled build"/>
         <wadl:option value="Gathering build output"/>
-      </wadl:param>
-      <wadl:param style="plain" required="false" name="changesfile_url" path="$['changesfile_url']">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Changes File URL</p>
-<p>The URL for the changes file for this build. Will be None if the build was imported by Gina.</p>
-
-</wadl:doc>
-        
       </wadl:param>
       <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -12591,6 +13141,14 @@ Search for bugs that are linked to blueprints or for bugs that are not linked to
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
     </wadl:representation>
 
     <wadl:representation mediaType="application/json" id="bug_target-diff">
@@ -12606,6 +13164,14 @@ Search for bugs that are linked to blueprints or for bugs that are not linked to
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
 
 </wadl:doc>
         
@@ -17602,6 +18168,1099 @@ Country title
 
   
   
+    <wadl:resource_type id="craft_recipe_build">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A build record for a craft recipe.
+</wadl:doc>
+      <wadl:method name="GET" id="craft_recipe_build-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe_build-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="craft_recipe_build-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="craft_recipe_build-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="craft_recipe_build-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe_build-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="craft_recipe_build-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe_build-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      
+
+      <wadl:method id="craft_recipe_build-getFileUrls" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>URLs for all the files produced by this build.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getFileUrls"/>
+          
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="craft_recipe_build-rescore" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Change the build's score.
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="rescore"/>
+            <wadl:param style="query" name="score" required="true">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Score
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="craft_recipe_build-retry" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Restore the build record to its initial state.</p>
+<p>Build record loses its history, is moved to NEEDSBUILD and a new
+non-scored BuildQueue entry is created for it.</p>
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="retry"/>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="craft_recipe_build-cancel" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Cancel the build if it is either pending or in progress.</p>
+<p>Check the can_be_cancelled property prior to calling this method to
+find out if cancelling the build is possible.</p>
+<p>If the build is in progress, it is marked as CANCELLING until the
+buildd manager terminates the build and marks it CANCELLED.  If the
+build is not in progress, it is marked CANCELLED immediately and is
+removed from the build queue.</p>
+<p>If the build is not in a cancellable state, this method is a no-op.</p>
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="cancel"/>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="craft_recipe_build-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="arch_tag" path="$['arch_tag']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Architecture tag
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="archive_link" path="$['archive_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Archive</p>
+<p>The Archive context for this build.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#archive"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build Log URL</p>
+<p>A URL for the build log. None if there is no log available.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_metadata_url" path="$['build_metadata_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>URL of the build metadata file</p>
+<p>URL of the metadata file generated by the fetch service, if it exists.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Builder</p>
+<p>The builder assigned to this job.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#builder"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="buildstate" path="$['buildstate']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Status</p>
+<p>The current status of the job.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Needs building"/>
+        <wadl:option value="Successfully built"/>
+        <wadl:option value="Failed to build"/>
+        <wadl:option value="Dependency wait"/>
+        <wadl:option value="Chroot problem"/>
+        <wadl:option value="Build for superseded Source"/>
+        <wadl:option value="Currently building"/>
+        <wadl:option value="Failed to upload"/>
+        <wadl:option value="Uploading build"/>
+        <wadl:option value="Cancelling build"/>
+        <wadl:option value="Cancelled build"/>
+        <wadl:option value="Gathering build output"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_be_cancelled" path="$['can_be_cancelled']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can be cancelled</p>
+<p>Whether this build record can be cancelled.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_be_rescored" path="$['can_be_rescored']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can be rescored</p>
+<p>Whether this build record can be rescored manually.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_be_retried" path="$['can_be_retried']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can be retried</p>
+<p>Whether this build record can be retried.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="channels" path="$['channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels to use for this build.</p>
+<p>A dictionary mapping snap names to channels to use for this build.  Currently only 'core', 'core18', 'core20', and 'sourcecraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date finished</p>
+<p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_started" path="$['date_started']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date started</p>
+<p>The timestamp when the build farm job was started.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date finished</p>
+<p>The timestamp when the build farm job was finished.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="datecreated" path="$['datecreated']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date created</p>
+<p>The timestamp when the build farm job was created.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Dependencies</p>
+<p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="distribution_link" path="$['distribution_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution</p>
+<p>Shortcut for its distribution.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distribution"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="distro_arch_series_link" path="$['distro_arch_series_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The series and architecture for which to build.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distro_arch_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="distro_series_link" path="$['distro_series_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution series</p>
+<p>Shortcut for its distribution series.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="duration" path="$['duration']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Duration</p>
+<p>Duration interval, calculated when the result gets collected.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="pocket" path="$['pocket']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Pocket</p>
+<p>The build targeted pocket.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Release"/>
+        <wadl:option value="Security"/>
+        <wadl:option value="Updates"/>
+        <wadl:option value="Proposed"/>
+        <wadl:option value="Backports"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="recipe_link" path="$['recipe_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The craft recipe to build.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="requester_link" path="$['requester_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The person who requested this build.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="revision_id" path="$['revision_id']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Revision ID</p>
+<p>The revision ID of the branch used for this build, if available.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="score" path="$['score']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Score of the related build farm job (if any).
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="title" path="$['title']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Title
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Upload Log URL</p>
+<p>A URL for failed upload logs.Will be None if there was no failure.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="craft_recipe_build-diff">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build Log URL</p>
+<p>A URL for the build log. None if there is no log available.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="buildstate" path="$['buildstate']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Status</p>
+<p>The current status of the job.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Needs building"/>
+        <wadl:option value="Successfully built"/>
+        <wadl:option value="Failed to build"/>
+        <wadl:option value="Dependency wait"/>
+        <wadl:option value="Chroot problem"/>
+        <wadl:option value="Build for superseded Source"/>
+        <wadl:option value="Currently building"/>
+        <wadl:option value="Failed to upload"/>
+        <wadl:option value="Uploading build"/>
+        <wadl:option value="Cancelling build"/>
+        <wadl:option value="Cancelled build"/>
+        <wadl:option value="Gathering build output"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="channels" path="$['channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels to use for this build.</p>
+<p>A dictionary mapping snap names to channels to use for this build.  Currently only 'core', 'core18', 'core20', and 'sourcecraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Dependencies</p>
+<p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="distribution_link" path="$['distribution_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution</p>
+<p>Shortcut for its distribution.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distribution"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="distro_series_link" path="$['distro_series_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution series</p>
+<p>Shortcut for its distribution series.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="pocket" path="$['pocket']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Pocket</p>
+<p>The build targeted pocket.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Release"/>
+        <wadl:option value="Security"/>
+        <wadl:option value="Updates"/>
+        <wadl:option value="Proposed"/>
+        <wadl:option value="Backports"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="title" path="$['title']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Title
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Upload Log URL</p>
+<p>A URL for failed upload logs.Will be None if there was no failure.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="craft_recipe_build-page-resource">
+      <wadl:method name="GET" id="craft_recipe_build-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#craft_recipe_build-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="craft_recipe_build-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#craft_recipe_build-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#craft_recipe_build-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
+    <wadl:resource_type id="craft_recipe_build_request">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A request to build a craft recipe.
+</wadl:doc>
+      <wadl:method name="GET" id="craft_recipe_build_request-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe_build_request-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="craft_recipe_build_request-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="craft_recipe_build_request-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="craft_recipe_build_request-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe_build_request-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="craft_recipe_build_request-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe_build_request-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      
+
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="craft_recipe_build_request-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build_request"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="builds_collection_link" path="$['builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Builds produced by this request
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The time when this request finished
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_requested" path="$['date_requested']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The time when this request was made
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="error_message" path="$['error_message']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Error message
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="recipe_link" path="$['recipe_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Craft recipe
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="status" path="$['status']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Status
+</wadl:doc>
+        
+        <wadl:option value="Pending"/>
+        <wadl:option value="Failed"/>
+        <wadl:option value="Completed"/>
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="craft_recipe_build_request-diff">
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="craft_recipe_build_request-page-resource">
+      <wadl:method name="GET" id="craft_recipe_build_request-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#craft_recipe_build_request-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="craft_recipe_build_request-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#craft_recipe_build_request-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#craft_recipe_build_request-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build_request"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
+    <wadl:resource_type id="craft_recipe">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A buildable craft recipe.
+</wadl:doc>
+      <wadl:method name="GET" id="craft_recipe-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="craft_recipe-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="craft_recipe-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="craft_recipe-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="craft_recipe-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#craft_recipe-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="DELETE" id="craft_recipe-delete"/>
+
+      <wadl:method id="craft_recipe-requestBuilds" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Request that the craft recipe be built.</p>
+<p>This is an asynchronous operation; once the operation has finished,
+the resulting build request's C{status} will be "Completed" and its
+C{builds} collection will return the resulting builds.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="requestBuilds"/>
+            <wadl:param style="query" name="channels" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels to use for these builds.</p>
+<p>A dictionary mapping snap names to channels to use for these builds. Currently only 'sourcecraft', 'core', 'core18', 'core20', and 'core22' keys are supported.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="architectures" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The list of architectures to build for this recipe.
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        <wadl:response>
+          <wadl:param name="Location" style="header">
+            <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build_request"/>
+          </wadl:param>
+          
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="craft_recipe-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="auto_build" path="$['auto_build']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically build when branch changes</p>
+<p>Whether this craft recipe is built automatically when the branch containing its craft.yaml recipe changes.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="auto_build_channels" path="$['auto_build_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for automatic builds</p>
+<p>A dictionary mapping snap names to channels to use when building this craft recipe.  Currently only 'core', 'core18', 'core20', and 'sourcecraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_path" path="$['build_path']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build path</p>
+<p>Subdirectory within the branch containing craft.yaml.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="builds_collection_link" path="$['builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>All builds of this craft recipe.</p>
+<p>All builds of this craft recipe, sorted in descending order of finishing (or starting if not completed successfully).</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_upload_to_store" path="$['can_upload_to_store']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can upload to the CraftStore</p>
+<p>Whether everything is set up to allow uploading builds of this craftrecipe to the CraftStore.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="completed_builds_collection_link" path="$['completed_builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Completed builds of this craft recipe.</p>
+<p>Completed builds of this craft recipe, sorted in descending order of finishing.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Date created
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_last_modified" path="$['date_last_modified']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Date last modified
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="description" path="$['description']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Description</p>
+<p>A description of the craft recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="failed_build_requests_collection_link" path="$['failed_build_requests_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Failed build requests for this craft recipe.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build_request-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_path" path="$['git_path']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch path</p>
+<p>The path of the Git branch containing a sourcecraft.yaml recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_ref_link" path="$['git_ref_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch</p>
+<p>The Git branch containing a craft.yaml recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#git_ref"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_repository_link" path="$['git_repository_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository</p>
+<p>A Git repository with a branch containing a sourcecraft.yaml recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#git_repository"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_repository_url" path="$['git_repository_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository URL</p>
+<p>The URL of a Git repository with a branch containing a sourcecraft.yaml at the top level.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="information_type" path="$['information_type']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Information type</p>
+<p>The type of information contained in this craft recipe.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Public"/>
+        <wadl:option value="Public Security"/>
+        <wadl:option value="Private Security"/>
+        <wadl:option value="Private"/>
+        <wadl:option value="Proprietary"/>
+        <wadl:option value="Embargoed"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="is_stale" path="$['is_stale']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Craft recipe is stale and is due to be rebuilt.
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="name" path="$['name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Craft recipe name</p>
+<p>The name of the craft recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="owner_link" path="$['owner_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Owner</p>
+<p>The owner of this craft recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="pending_build_requests_collection_link" path="$['pending_build_requests_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Pending build requests for this craft recipe.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build_request-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="pending_builds_collection_link" path="$['pending_builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Pending builds of this craft recipe.</p>
+<p>Pending builds of this craft recipe, sorted in descending order of creation.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="private" path="$['private']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Private</p>
+<p>Whether this craft recipe is private.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="project_link" path="$['project_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The project that this craft recipe is associated with
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="registrant_link" path="$['registrant_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registrant</p>
+<p>The person who registered this craft recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="require_virtualized" path="$['require_virtualized']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Require virtualized builders</p>
+<p>Only build this craft recipe on virtual builders.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="store_channels" path="$['store_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Store channels</p>
+<p>Channels to release this craft to after uploading it to the store. A channel is defined by a combination of an optional track, a risk, and an optional branch, e.g. '2.1/stable/fix-123', '2.1/stable', 'stable/fix-123', or 'stable'.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="store_name" path="$['store_name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registered store name</p>
+<p>The registered name of this craft in the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="store_upload" path="$['store_upload']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically upload to store</p>
+<p>Whether builds of this craft recipe are automatically uploaded to the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Craft builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="craft_recipe-diff">
+      <wadl:param style="plain" required="false" name="auto_build" path="$['auto_build']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically build when branch changes</p>
+<p>Whether this craft recipe is built automatically when the branch containing its craft.yaml recipe changes.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="auto_build_channels" path="$['auto_build_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for automatic builds</p>
+<p>A dictionary mapping snap names to channels to use when building this craft recipe.  Currently only 'core', 'core18', 'core20', and 'sourcecraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="build_path" path="$['build_path']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build path</p>
+<p>Subdirectory within the branch containing craft.yaml.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Description</p>
+<p>A description of the craft recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="git_ref_link" path="$['git_ref_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch</p>
+<p>The Git branch containing a craft.yaml recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#git_ref"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="information_type" path="$['information_type']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Information type</p>
+<p>The type of information contained in this craft recipe.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Public"/>
+        <wadl:option value="Public Security"/>
+        <wadl:option value="Private Security"/>
+        <wadl:option value="Private"/>
+        <wadl:option value="Proprietary"/>
+        <wadl:option value="Embargoed"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="name" path="$['name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Craft recipe name</p>
+<p>The name of the craft recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="owner_link" path="$['owner_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Owner</p>
+<p>The owner of this craft recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="private" path="$['private']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Private</p>
+<p>Whether this craft recipe is private.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="project_link" path="$['project_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The project that this craft recipe is associated with
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="require_virtualized" path="$['require_virtualized']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Require virtualized builders</p>
+<p>Only build this craft recipe on virtual builders.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="store_channels" path="$['store_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Store channels</p>
+<p>Channels to release this craft to after uploading it to the store. A channel is defined by a combination of an optional track, a risk, and an optional branch, e.g. '2.1/stable/fix-123', '2.1/stable', 'stable/fix-123', or 'stable'.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="store_name" path="$['store_name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registered store name</p>
+<p>The registered name of this craft in the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="store_upload" path="$['store_upload']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically upload to store</p>
+<p>Whether builds of this craft recipe are automatically uploaded to the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Craft builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="craft_recipe-page-resource">
+      <wadl:method name="GET" id="craft_recipe-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#craft_recipe-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="craft_recipe-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#craft_recipe-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#craft_recipe-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#craft_recipe"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
     <wadl:resource_type id="cve">
       <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 A single CVE database entry.
@@ -19225,6 +20884,14 @@ All enabled and official RELEASE mirrors of this Distribution.
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="current_series_link" path="$['current_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Current series</p>
@@ -19656,6 +21323,14 @@ Webhooks for this target.
 
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#commercial_subscription"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
       </wadl:param>
       <wadl:param style="plain" required="false" name="current_series_link" path="$['current_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -21202,6 +22877,14 @@ Owner of the resulting branch
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="display_name" path="$['display_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Display name for this package.
@@ -21261,6 +22944,14 @@ Webhooks for this target.
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
 
 </wadl:doc>
         
@@ -23415,6 +25106,14 @@ The series component names
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The date this series was registered.
@@ -23569,6 +25268,14 @@ between InRelease and other files during mirror updates.</p>
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="publish_i18n_index" path="$['publish_i18n_index']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Publish I18n index</p>
+<p>Publish archive i18n/Index file, which is believed to be unused.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="registrant_link" path="$['registrant_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Registrant
@@ -23712,6 +25419,14 @@ automatically upgrade within backports, but not into it.</p>
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="false" name="date_created" path="$['date_created']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The date this series was registered.
@@ -23832,6 +25547,14 @@ automatically upgrade within proposed, but not into it.</p>
 <p>Publish archive index files in by-hash directories so that apt
 can retrieve them based on their hash, avoiding race conditions
 between InRelease and other files during mirror updates.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="publish_i18n_index" path="$['publish_i18n_index']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Publish I18n index</p>
+<p>Publish archive i18n/Index file, which is believed to be unused.</p>
 
 </wadl:doc>
         
@@ -29251,6 +30974,14 @@ Change whether an OCI Recipe is official or not for this project.
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date created
@@ -29344,6 +31075,14 @@ Series inside this OCI project.
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
 
 </wadl:doc>
         
@@ -32522,6 +34261,24 @@ Limit the branches to those modified since this date.
           <wadl:representation href="https://api.launchpad.net/devel/#branch-page"/>
         </wadl:response>
       </wadl:method>
+      <wadl:method id="person-getSocialAccountsByPlatform" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Return Social Accounts associated to the user.
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getSocialAccountsByPlatform"/>
+            <wadl:param style="query" name="platform" required="true">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Social Platform Type
+</wadl:doc>
+              
+              <wadl:option value="Matrix platform"/>
+            </wadl:param>
+          
+        </wadl:request>
+        
+      </wadl:method>
       <wadl:method id="person-getRecipe" name="GET">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Return the person's recipe with the given name.
@@ -33439,6 +35196,12 @@ People who have applied to join the team.
 All recipes associated with the object.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#source_package_recipe-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="social_accounts_collection_link" path="$['social_accounts_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+List of Social Accounts of this Person.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#social_account-page-resource"/>
       </wadl:param>
       <wadl:param style="plain" required="true" name="sshkeys_collection_link" path="$['sshkeys_collection_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -35603,6 +37366,14 @@ Bugs are tracked
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Created</p>
@@ -36065,6 +37836,14 @@ Bugs are tracked
 
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#commercial_subscription"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
       </wadl:param>
       <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -37452,6 +39231,14 @@ All milestones associated with this project series, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date Registered
@@ -37615,6 +39402,14 @@ Status
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
 
 </wadl:doc>
         
@@ -38251,6 +40046,14 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#bug_tracker"/>
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Created</p>
@@ -38483,6 +40286,14 @@ List of active projects for this project group.
 
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#bug_tracker"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
       </wadl:param>
       <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -40683,6 +42494,1262 @@ A short title for the report.
 
   
   
+    <wadl:resource_type id="rock_base">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A base for rocks.
+</wadl:doc>
+      <wadl:method name="GET" id="rock_base-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_base-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="rock_base-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="rock_base-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="rock_base-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_base-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="rock_base-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_base-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="DELETE" id="rock_base-delete"/>
+
+      <wadl:method id="rock_base-setProcessors" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Set the architectures that the rock base supports.
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="setProcessors"/>
+            <wadl:param style="query" name="processors" required="true">
+              
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="rock_base-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_base"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_channels" path="$['build_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for builds</p>
+<p>A dictionary mapping snap names to channels to use when building rock recipes that specify this base.  The special '_byarch' key may have a mapping of architecture names to mappings of snap names to channels, which if present override the channels declared at the top level when building for those architectures.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Date created
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="distro_series_link" path="$['distro_series_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Distro series
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="processors_collection_link" path="$['processors_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Processors</p>
+<p>The architectures that the rock base supports.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#processor-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="registrant_link" path="$['registrant_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registrant</p>
+<p>The person who registered this base.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="rock_base-diff">
+      <wadl:param style="plain" required="false" name="build_channels" path="$['build_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for builds</p>
+<p>A dictionary mapping snap names to channels to use when building rock recipes that specify this base.  The special '_byarch' key may have a mapping of architecture names to mappings of snap names to channels, which if present override the channels declared at the top level when building for those architectures.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="rock_base-page-resource">
+      <wadl:method name="GET" id="rock_base-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#rock_base-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="rock_base-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#rock_base-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#rock_base-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_base"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
+    <wadl:resource_type id="rock_recipe_build">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A build record for a rock recipe.
+</wadl:doc>
+      <wadl:method name="GET" id="rock_recipe_build-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe_build-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="rock_recipe_build-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="rock_recipe_build-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="rock_recipe_build-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe_build-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="rock_recipe_build-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe_build-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      
+
+      <wadl:method id="rock_recipe_build-getFileUrls" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>URLs for all the files produced by this build.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getFileUrls"/>
+          
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="rock_recipe_build-rescore" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Change the build's score.
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="rescore"/>
+            <wadl:param style="query" name="score" required="true">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Score
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="rock_recipe_build-retry" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Restore the build record to its initial state.</p>
+<p>Build record loses its history, is moved to NEEDSBUILD and a new
+non-scored BuildQueue entry is created for it.</p>
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="retry"/>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="rock_recipe_build-cancel" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Cancel the build if it is either pending or in progress.</p>
+<p>Check the can_be_cancelled property prior to calling this method to
+find out if cancelling the build is possible.</p>
+<p>If the build is in progress, it is marked as CANCELLING until the
+buildd manager terminates the build and marks it CANCELLED.  If the
+build is not in progress, it is marked CANCELLED immediately and is
+removed from the build queue.</p>
+<p>If the build is not in a cancellable state, this method is a no-op.</p>
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="cancel"/>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="rock_recipe_build-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="arch_tag" path="$['arch_tag']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Architecture tag
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="archive_link" path="$['archive_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Archive</p>
+<p>The Archive context for this build.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#archive"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build Log URL</p>
+<p>A URL for the build log. None if there is no log available.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_metadata_url" path="$['build_metadata_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>URL of the build metadata file</p>
+<p>URL of the metadata file generated by the fetch service, if it exists.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Builder</p>
+<p>The builder assigned to this job.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#builder"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="buildstate" path="$['buildstate']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Status</p>
+<p>The current status of the job.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Needs building"/>
+        <wadl:option value="Successfully built"/>
+        <wadl:option value="Failed to build"/>
+        <wadl:option value="Dependency wait"/>
+        <wadl:option value="Chroot problem"/>
+        <wadl:option value="Build for superseded Source"/>
+        <wadl:option value="Currently building"/>
+        <wadl:option value="Failed to upload"/>
+        <wadl:option value="Uploading build"/>
+        <wadl:option value="Cancelling build"/>
+        <wadl:option value="Cancelled build"/>
+        <wadl:option value="Gathering build output"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_be_cancelled" path="$['can_be_cancelled']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can be cancelled</p>
+<p>Whether this build record can be cancelled.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_be_rescored" path="$['can_be_rescored']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can be rescored</p>
+<p>Whether this build record can be rescored manually.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_be_retried" path="$['can_be_retried']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can be retried</p>
+<p>Whether this build record can be retried.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="channels" path="$['channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels to use for this build.</p>
+<p>A dictionary mapping snap names to channels to use for this build.  Currently only 'core', 'core18', 'core20', and 'rockcraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date finished</p>
+<p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_started" path="$['date_started']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date started</p>
+<p>The timestamp when the build farm job was started.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date finished</p>
+<p>The timestamp when the build farm job was finished.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="datecreated" path="$['datecreated']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date created</p>
+<p>The timestamp when the build farm job was created.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Dependencies</p>
+<p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="distribution_link" path="$['distribution_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution</p>
+<p>Shortcut for its distribution.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distribution"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="distro_arch_series_link" path="$['distro_arch_series_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The series and architecture for which to build.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distro_arch_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="distro_series_link" path="$['distro_series_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution series</p>
+<p>Shortcut for its distribution series.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="duration" path="$['duration']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Duration</p>
+<p>Duration interval, calculated when the result gets collected.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="pocket" path="$['pocket']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Pocket</p>
+<p>The build targeted pocket.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Release"/>
+        <wadl:option value="Security"/>
+        <wadl:option value="Updates"/>
+        <wadl:option value="Proposed"/>
+        <wadl:option value="Backports"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="recipe_link" path="$['recipe_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The rock recipe to build.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="requester_link" path="$['requester_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The person who requested this build.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="revision_id" path="$['revision_id']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Revision ID</p>
+<p>The revision ID of the branch used for this build, if available.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="score" path="$['score']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Score of the related build farm job (if any).
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="title" path="$['title']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Title
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Upload Log URL</p>
+<p>A URL for failed upload logs.Will be None if there was no failure.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="rock_recipe_build-diff">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build Log URL</p>
+<p>A URL for the build log. None if there is no log available.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="buildstate" path="$['buildstate']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Status</p>
+<p>The current status of the job.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Needs building"/>
+        <wadl:option value="Successfully built"/>
+        <wadl:option value="Failed to build"/>
+        <wadl:option value="Dependency wait"/>
+        <wadl:option value="Chroot problem"/>
+        <wadl:option value="Build for superseded Source"/>
+        <wadl:option value="Currently building"/>
+        <wadl:option value="Failed to upload"/>
+        <wadl:option value="Uploading build"/>
+        <wadl:option value="Cancelling build"/>
+        <wadl:option value="Cancelled build"/>
+        <wadl:option value="Gathering build output"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="channels" path="$['channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels to use for this build.</p>
+<p>A dictionary mapping snap names to channels to use for this build.  Currently only 'core', 'core18', 'core20', and 'rockcraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Dependencies</p>
+<p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="distribution_link" path="$['distribution_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution</p>
+<p>Shortcut for its distribution.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distribution"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="distro_series_link" path="$['distro_series_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Distribution series</p>
+<p>Shortcut for its distribution series.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="pocket" path="$['pocket']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Pocket</p>
+<p>The build targeted pocket.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Release"/>
+        <wadl:option value="Security"/>
+        <wadl:option value="Updates"/>
+        <wadl:option value="Proposed"/>
+        <wadl:option value="Backports"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="title" path="$['title']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Title
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Upload Log URL</p>
+<p>A URL for failed upload logs.Will be None if there was no failure.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="rock_recipe_build-page-resource">
+      <wadl:method name="GET" id="rock_recipe_build-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#rock_recipe_build-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="rock_recipe_build-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#rock_recipe_build-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#rock_recipe_build-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
+    <wadl:resource_type id="rock_recipe_build_request">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A request to build a rock recipe.
+</wadl:doc>
+      <wadl:method name="GET" id="rock_recipe_build_request-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe_build_request-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="rock_recipe_build_request-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="rock_recipe_build_request-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="rock_recipe_build_request-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe_build_request-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="rock_recipe_build_request-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe_build_request-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      
+
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="rock_recipe_build_request-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build_request"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="architectures" path="$['architectures']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+If set, this request is limited to these architecture tags
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="builds_collection_link" path="$['builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Builds produced by this request
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The time when this request finished
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_requested" path="$['date_requested']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The time when this request was made
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="error_message" path="$['error_message']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Error message
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="recipe_link" path="$['recipe_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Rock recipe
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="status" path="$['status']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Status
+</wadl:doc>
+        
+        <wadl:option value="Pending"/>
+        <wadl:option value="Failed"/>
+        <wadl:option value="Completed"/>
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="rock_recipe_build_request-diff">
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="rock_recipe_build_request-page-resource">
+      <wadl:method name="GET" id="rock_recipe_build_request-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#rock_recipe_build_request-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="rock_recipe_build_request-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#rock_recipe_build_request-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#rock_recipe_build_request-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build_request"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
+    <wadl:resource_type id="rock_recipe">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+A buildable rock recipe.
+</wadl:doc>
+      <wadl:method name="GET" id="rock_recipe-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="rock_recipe-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="rock_recipe-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="rock_recipe-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="rock_recipe-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#rock_recipe-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="DELETE" id="rock_recipe-delete"/>
+
+      <wadl:method id="rock_recipe-requestBuilds" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Request that the rock recipe be built.</p>
+<p>This is an asynchronous operation; once the operation has finished,
+the resulting build request's C{status} will be "Completed" and its
+C{builds} collection will return the resulting builds.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="requestBuilds"/>
+            <wadl:param style="query" name="channels" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels to use for these builds.</p>
+<p>A dictionary mapping snap names to channels to use for these builds.  Currently only 'rockcraft', 'core', 'core18', 'core20', and 'core22' keys are supported.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="architectures" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The list of architectures to build for this recipe.
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        <wadl:response>
+          <wadl:param name="Location" style="header">
+            <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build_request"/>
+          </wadl:param>
+          
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="rock_recipe-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="auto_build" path="$['auto_build']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically build when branch changes</p>
+<p>Whether this rock recipe is built automatically when the branch containing its rockcraft.yaml recipe changes.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="auto_build_channels" path="$['auto_build_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for automatic builds</p>
+<p>A dictionary mapping snap names to channels to use when building this rock recipe. Currently only 'core', 'core18', 'core20', and 'rockcraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_path" path="$['build_path']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build path</p>
+<p>Subdirectory within the branch containing rockcraft.yaml.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="builds_collection_link" path="$['builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>All builds of this rock recipe.</p>
+<p>All builds of this rock recipe, sorted in descending order of finishing (or starting if not completed successfully).</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="can_upload_to_store" path="$['can_upload_to_store']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Can upload to the RockStore</p>
+<p>Whether everything is set up to allow uploading builds of this rockrecipe to the RockStore.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="completed_builds_collection_link" path="$['completed_builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Completed builds of this rock recipe.</p>
+<p>Completed builds of this rock recipe, sorted in descending order of finishing.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_created" path="$['date_created']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Date created
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="date_last_modified" path="$['date_last_modified']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Date last modified
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="description" path="$['description']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Description</p>
+<p>A description of the rock recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="failed_build_requests_collection_link" path="$['failed_build_requests_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Failed build requests for this rock recipe.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build_request-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_path" path="$['git_path']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch path</p>
+<p>The path of the Git branch containing a rockcraft.yaml recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_ref_link" path="$['git_ref_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch</p>
+<p>The Git branch containing a rockcraft.yaml recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#git_ref"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_repository_link" path="$['git_repository_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository</p>
+<p>A Git repository with a branch containing a rockcraft.yaml recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#git_repository"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_repository_url" path="$['git_repository_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository URL</p>
+<p>The URL of a Git repository with a branch containing a rockcraft.yaml at the top level.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="information_type" path="$['information_type']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Information type</p>
+<p>The type of information contained in this rock recipe.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Public"/>
+        <wadl:option value="Public Security"/>
+        <wadl:option value="Private Security"/>
+        <wadl:option value="Private"/>
+        <wadl:option value="Proprietary"/>
+        <wadl:option value="Embargoed"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="is_stale" path="$['is_stale']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Rock recipe is stale and is due to be rebuilt.
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="name" path="$['name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Rock recipe name</p>
+<p>The name of the rock recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="owner_link" path="$['owner_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Owner</p>
+<p>The owner of this rock recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="pending_build_requests_collection_link" path="$['pending_build_requests_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Pending build requests for this rock recipe.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build_request-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="pending_builds_collection_link" path="$['pending_builds_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Pending builds of this rock recipe.</p>
+<p>Pending builds of this rock recipe, sorted in descending order of creation.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe_build-page-resource"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="private" path="$['private']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Private</p>
+<p>Whether this rock recipe is private.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="project_link" path="$['project_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The project that this rock recipe is associated with
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="registrant_link" path="$['registrant_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registrant</p>
+<p>The person who registered this rock recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="require_virtualized" path="$['require_virtualized']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Require virtualized builders</p>
+<p>Only build this rock recipe on virtual builders.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="store_channels" path="$['store_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Store channels</p>
+<p>Channels to release this rock to after uploading it to the store. A channel is defined by a combination of an optional track, a risk, and an optional branch, e.g. '2.1/stable/fix-123', '2.1/stable', 'stable/fix-123', or 'stable'.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="store_name" path="$['store_name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registered store name</p>
+<p>The registered name of this rock in the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="store_upload" path="$['store_upload']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically upload to store</p>
+<p>Whether builds of this rock recipe are automatically uploaded to the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Rock builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="rock_recipe-diff">
+      <wadl:param style="plain" required="false" name="auto_build" path="$['auto_build']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically build when branch changes</p>
+<p>Whether this rock recipe is built automatically when the branch containing its rockcraft.yaml recipe changes.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="auto_build_channels" path="$['auto_build_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Source snap channels for automatic builds</p>
+<p>A dictionary mapping snap names to channels to use when building this rock recipe. Currently only 'core', 'core18', 'core20', and 'rockcraft' keys are supported.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="build_path" path="$['build_path']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Build path</p>
+<p>Subdirectory within the branch containing rockcraft.yaml.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Description</p>
+<p>A description of the rock recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="git_ref_link" path="$['git_ref_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch</p>
+<p>The Git branch containing a rockcraft.yaml recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#git_ref"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="information_type" path="$['information_type']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Information type</p>
+<p>The type of information contained in this rock recipe.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="Public"/>
+        <wadl:option value="Public Security"/>
+        <wadl:option value="Private Security"/>
+        <wadl:option value="Private"/>
+        <wadl:option value="Proprietary"/>
+        <wadl:option value="Embargoed"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="name" path="$['name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Rock recipe name</p>
+<p>The name of the rock recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="owner_link" path="$['owner_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Owner</p>
+<p>The owner of this rock recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="private" path="$['private']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Private</p>
+<p>Whether this rock recipe is private.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="project_link" path="$['project_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The project that this rock recipe is associated with
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="require_virtualized" path="$['require_virtualized']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Require virtualized builders</p>
+<p>Only build this rock recipe on virtual builders.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="store_channels" path="$['store_channels']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Store channels</p>
+<p>Channels to release this rock to after uploading it to the store. A channel is defined by a combination of an optional track, a risk, and an optional branch, e.g. '2.1/stable/fix-123', '2.1/stable', 'stable/fix-123', or 'stable'.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="store_name" path="$['store_name']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Registered store name</p>
+<p>The registered name of this rock in the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="store_upload" path="$['store_upload']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Automatically upload to store</p>
+<p>Whether builds of this rock recipe are automatically uploaded to the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Rock builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="rock_recipe-page-resource">
+      <wadl:method name="GET" id="rock_recipe-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#rock_recipe-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="rock_recipe-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#rock_recipe-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#rock_recipe-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#rock_recipe"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
     <wadl:resource_type id="ssh_key">
       <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 SSH public key
@@ -41871,6 +44938,14 @@ The archive from which to build the snap package.
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="build_metadata_url" path="$['build_metadata_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>URL of the build metadata file</p>
+<p>URL of the metadata file generated by the fetch service, if it exists.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
@@ -42816,6 +45891,16 @@ Failed build requests for this snap package.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#snap_build_request-page-resource"/>
       </wadl:param>
+      <wadl:param style="plain" required="true" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
+      </wadl:param>
       <wadl:param style="plain" required="true" name="git_path" path="$['git_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git branch path</p>
@@ -42970,6 +46055,14 @@ Pending build requests for this snap package.
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Snap builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="webhooks_collection_link" path="$['webhooks_collection_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Webhooks for this target.
@@ -43056,6 +46149,16 @@ Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft
 
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#distro_series"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
       </wadl:param>
       <wadl:param style="plain" required="false" name="git_path" path="$['git_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -43155,6 +46258,14 @@ Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Automatically upload to store</p>
 <p>Whether builds of this snap package are automatically uploaded to the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Snap builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
 
 </wadl:doc>
         
@@ -43404,6 +46515,140 @@ Status
 
       <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
         <wadl:link resource_type="https://api.launchpad.net/devel/#snappy_series"/>
+      </wadl:param>
+  </wadl:representation>
+
+  
+  
+    <wadl:resource_type id="social_account">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Social Account
+</wadl:doc>
+      <wadl:method name="GET" id="social_account-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#social_account-full"/>
+          <wadl:representation mediaType="application/xhtml+xml" id="social_account-xhtml"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="social_account-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method name="PUT" id="social_account-put">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#social_account-full"/>
+        </wadl:request>
+      </wadl:method>
+
+      <wadl:method name="PATCH" id="social_account-patch">
+        <wadl:request>
+          <wadl:representation href="https://api.launchpad.net/devel/#social_account-diff"/>
+        </wadl:request>
+      </wadl:method>
+
+      
+
+    </wadl:resource_type>
+
+
+    <wadl:representation mediaType="application/json" id="social_account-full">
+      <wadl:param style="plain" name="self_link" path="$['self_link']">
+        <wadl:doc>The canonical link to this resource.</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#social_account"/>
+      </wadl:param>
+      <wadl:param style="plain" name="web_link" path="$['web_link']">
+        <wadl:doc>
+          The canonical human-addressable web link to this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:doc>
+          The link to the WADL description of this resource.
+        </wadl:doc>
+        <wadl:link/>
+      </wadl:param>
+      <wadl:param style="plain" name="http_etag" path="$['http_etag']">
+        <wadl:doc>
+          The value of the HTTP ETag for this resource.
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="identity" path="$['identity']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Identity</p>
+<p>A dictionary with the identity attributes and values for the social account. The format is specific for each platform. Matrix account attributes: username, homeserver</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="person_link" path="$['person_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Owner
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#person"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="platform" path="$['platform']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Social Platform Type
+</wadl:doc>
+        
+        <wadl:option value="Matrix platform"/>
+      </wadl:param>
+    </wadl:representation>
+
+    <wadl:representation mediaType="application/json" id="social_account-diff">
+      <wadl:param style="plain" required="false" name="identity" path="$['identity']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Identity</p>
+<p>A dictionary with the identity attributes and values for the social account. The format is specific for each platform. Matrix account attributes: username, homeserver</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="platform" path="$['platform']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Social Platform Type
+</wadl:doc>
+        
+        <wadl:option value="Matrix platform"/>
+      </wadl:param>
+    </wadl:representation>
+
+    <!--Collection page for this type of entry-->
+    <wadl:resource_type id="social_account-page-resource">
+      <wadl:method name="GET" id="social_account-page-resource-get">
+        <wadl:response>
+          <wadl:representation href="#social_account-page"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+    <wadl:representation mediaType="application/json" id="social_account-page">
+
+      <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
+        <wadl:link/>
+      </wadl:param>
+
+      
+
+      <wadl:param style="plain" name="total_size" path="$['total_size']" required="false"/>
+
+      <wadl:param style="plain" name="total_size_link" path="$['total_size_link']" required="false">
+        <wadl:link resource_type="#ScalarValue"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="start" path="$['start']" required="true"/>
+
+      <wadl:param style="plain" name="next_collection_link" path="$['next_collection_link']">
+        <wadl:link resource_type="#social_account-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="prev_collection_link" path="$['prev_collection_link']">
+        <wadl:link resource_type="#social_account-page-resource"/>
+      </wadl:param>
+
+      <wadl:param style="plain" name="entries" path="$['entries']" required="true"/>
+
+      <wadl:param style="plain" name="entry_links" path="$['entries'][*]['self_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#social_account"/>
       </wadl:param>
   </wadl:representation>
 
@@ -43946,6 +47191,14 @@ Delete the packaging for this sourcepackage.
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="displayname" path="$['displayname']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Display name</p>
@@ -44015,6 +47268,14 @@ The name of the component in which the package was last published.
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Templates to use for reporting a bug</p>
+<p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
 
 </wadl:doc>
         
@@ -47054,6 +50315,24 @@ Limit the branches to those modified since this date.
           <wadl:representation href="https://api.launchpad.net/devel/#branch-page"/>
         </wadl:response>
       </wadl:method>
+      <wadl:method id="team-getSocialAccountsByPlatform" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Return Social Accounts associated to the user.
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getSocialAccountsByPlatform"/>
+            <wadl:param style="query" name="platform" required="true">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Social Platform Type
+</wadl:doc>
+              
+              <wadl:option value="Matrix platform"/>
+            </wadl:param>
+          
+        </wadl:request>
+        
+      </wadl:method>
       <wadl:method id="team-getRecipe" name="GET">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Return the person's recipe with the given name.
@@ -48009,6 +51288,12 @@ When someone's membership is about to expire, notify them and
         
         <wadl:option value="invite them to apply for renewal"/>
         <wadl:option value="invite them to renew their own membership"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="social_accounts_collection_link" path="$['social_accounts_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+List of Social Accounts of this Person.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#social_account-page-resource"/>
       </wadl:param>
       <wadl:param style="plain" required="true" name="sshkeys_collection_link" path="$['sshkeys_collection_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
