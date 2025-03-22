@@ -123,6 +123,19 @@
     </xsl:copy>
   </xsl:template>
 
+  <!-- Mark various attributes in distro_series optional -->
+  <xsl:template match="wadl:representation[@id='distro_series' or @id='distro_series-full']/wadl:param[
+  @name='datereleased'
+  or @name='driver_link'
+  or @name='parent_series_link'
+      ]">
+    <xsl:copy>
+    <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="required">false</xsl:attribute>
+    <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+
   <!-- Mark all content_templates attributes everywhere as optional -->
   <xsl:template match="wadl:param[@name='content_templates']">
     <xsl:copy>
@@ -138,6 +151,19 @@
   or @name='redirect_release_uploads'
   or @name='supports_mirrors'
   or @name='supports_ppas'
+      ]">
+    <xsl:copy>
+    <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="type">boolean</xsl:attribute>
+    <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- Retype various attributes in distro_series as booleans -->
+  <xsl:template match="wadl:representation[@id='distro_series' or @id='distro_series-full']/wadl:param[
+  @name='publish_i18n_index'
+  or @name='publish_by_hash'
+  or @name='proposed_not_automatic'
       ]">
     <xsl:copy>
     <xsl:apply-templates select="@*"/>

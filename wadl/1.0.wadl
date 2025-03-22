@@ -18864,7 +18864,7 @@ The date this series was registered.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datereleased" path="$['datereleased']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datereleased" path="$['datereleased']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date released
 </wadl:doc>
@@ -18894,7 +18894,7 @@ Date released
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distribution"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="driver_link" path="$['driver_link']">
+      <wadl:param style="plain" required="false" name="driver_link" path="$['driver_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Driver</p>
 <p>The person or team responsible for decisions about features and bugs that will be targeted to this series of the distribution.</p>
@@ -18984,7 +18984,7 @@ DistroArchSeries designed to build architecture-independent packages within this
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="parent_series_link" path="$['parent_series_link']">
+      <wadl:param style="plain" required="false" name="parent_series_link" path="$['parent_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Parent series</p>
 <p>The series from which this one was branched.</p>
@@ -18992,7 +18992,7 @@ DistroArchSeries designed to build architecture-independent packages within this
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="proposed_not_automatic" path="$['proposed_not_automatic']">
+      <wadl:param style="plain" required="true" name="proposed_not_automatic" path="$['proposed_not_automatic']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Don't upgrade to proposed updates automatically</p>
 <p>Set NotAutomatic: yes and ButAutomaticUpgrades: yes in Release
@@ -19002,7 +19002,7 @@ automatically upgrade within proposed, but not into it.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="publish_by_hash" path="$['publish_by_hash']">
+      <wadl:param style="plain" required="true" name="publish_by_hash" path="$['publish_by_hash']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Publish by-hash directories</p>
 <p>Publish archive index files in by-hash directories so that apt
@@ -19012,7 +19012,7 @@ between InRelease and other files during mirror updates.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="publish_i18n_index" path="$['publish_i18n_index']">
+      <wadl:param style="plain" required="true" name="publish_i18n_index" path="$['publish_i18n_index']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Publish I18n index</p>
 <p>Publish archive i18n/Index file, which is believed to be unused.</p>
