@@ -9125,7 +9125,7 @@ Omit bugs targeted to a series
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
@@ -15627,7 +15627,7 @@ All enabled and official RELEASE mirrors of this Distribution.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="commercial_subscription_link" path="$['commercial_subscription_link']">
+      <wadl:param style="plain" required="false" name="commercial_subscription_link" path="$['commercial_subscription_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Commercial subscriptions</p>
 <p>An object which contains the timeframe and the voucher code of a subscription.</p>
@@ -15643,7 +15643,7 @@ All enabled and official RELEASE mirrors of this Distribution.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
@@ -15800,7 +15800,7 @@ Distribution Main Archive.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="oci_project_admin_link" path="$['oci_project_admin_link']">
+      <wadl:param style="plain" required="false" name="oci_project_admin_link" path="$['oci_project_admin_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>OCI Project Administrator</p>
 <p>The person or team that has the rights to manage OCI Projects for this distribution.</p>
@@ -15862,7 +15862,7 @@ Packages are tracked in Launchpad
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="redirect_default_traversal" path="$['redirect_default_traversal']">
+      <wadl:param style="plain" required="true" name="redirect_default_traversal" path="$['redirect_default_traversal']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Redirect the default traversal</p>
 <p>If true, the default traversal is for migration and redirects to a different canonical URL.</p>
@@ -15870,7 +15870,7 @@ Packages are tracked in Launchpad
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="redirect_release_uploads" path="$['redirect_release_uploads']">
+      <wadl:param style="plain" required="true" name="redirect_release_uploads" path="$['redirect_release_uploads']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Redirect release pocket uploads</p>
 <p>Redirect release pocket uploads to proposed pocket</p>
@@ -15908,13 +15908,13 @@ DistroSeries inside this Distribution
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="supports_mirrors" path="$['supports_mirrors']">
+      <wadl:param style="plain" required="true" name="supports_mirrors" path="$['supports_mirrors']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Enable mirror listings and probes
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="supports_ppas" path="$['supports_ppas']">
+      <wadl:param style="plain" required="true" name="supports_ppas" path="$['supports_ppas']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Enable PPA creation and publication
 </wadl:doc>
@@ -17272,7 +17272,7 @@ Owner of the resulting branch
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
@@ -19091,7 +19091,7 @@ The series component names
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
@@ -19105,7 +19105,7 @@ The date this series was registered.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datereleased" path="$['datereleased']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datereleased" path="$['datereleased']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date released
 </wadl:doc>
@@ -19135,7 +19135,7 @@ Date released
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#distribution"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="driver_link" path="$['driver_link']">
+      <wadl:param style="plain" required="false" name="driver_link" path="$['driver_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Driver</p>
 <p>The person or team responsible for decisions about features and bugs that will be targeted to this series of the distribution.</p>
@@ -19225,7 +19225,7 @@ DistroArchSeries designed to build architecture-independent packages within this
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="parent_series_link" path="$['parent_series_link']">
+      <wadl:param style="plain" required="false" name="parent_series_link" path="$['parent_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Parent series</p>
 <p>The series from which this one was branched.</p>
@@ -19233,7 +19233,7 @@ DistroArchSeries designed to build architecture-independent packages within this
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="proposed_not_automatic" path="$['proposed_not_automatic']">
+      <wadl:param style="plain" required="true" name="proposed_not_automatic" path="$['proposed_not_automatic']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Don't upgrade to proposed updates automatically</p>
 <p>Set NotAutomatic: yes and ButAutomaticUpgrades: yes in Release
@@ -19243,7 +19243,7 @@ automatically upgrade within proposed, but not into it.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="publish_by_hash" path="$['publish_by_hash']">
+      <wadl:param style="plain" required="true" name="publish_by_hash" path="$['publish_by_hash']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Publish by-hash directories</p>
 <p>Publish archive index files in by-hash directories so that apt
@@ -19253,7 +19253,7 @@ between InRelease and other files during mirror updates.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="publish_i18n_index" path="$['publish_i18n_index']">
+      <wadl:param style="plain" required="true" name="publish_i18n_index" path="$['publish_i18n_index']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Publish I18n index</p>
 <p>Publish archive i18n/Index file, which is believed to be unused.</p>
@@ -23474,7 +23474,7 @@ A Queue item for the archive uploader.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="copy_source_archive_link" path="$['copy_source_archive_link']">
+      <wadl:param style="plain" required="false" name="copy_source_archive_link" path="$['copy_source_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Copy source archive</p>
 <p>The archive from which this package was copied, if any.</p>
@@ -23524,7 +23524,7 @@ This item's displayable source package version
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 ID
 </wadl:doc>
@@ -26827,7 +26827,7 @@ Bugs are tracked
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
@@ -28544,7 +28544,7 @@ All milestones associated with this project series, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
@@ -29286,7 +29286,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/beta/#bug_tracker"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
@@ -34168,7 +34168,7 @@ Owner of the resulting branch
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="content_templates" path="$['content_templates']">
+      <wadl:param style="plain" required="false" name="content_templates" path="$['content_templates']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Templates to use for reporting a bug</p>
 <p>This pre-defined template will be given to the users to guide them when reporting a bug.</p>
