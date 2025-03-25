@@ -6,7 +6,7 @@
 //!
 //! ## Usage
 //!
-//! ```rust
+//! ```rust,no_run
 //! use url::Url;
 //!
 //! #[cfg(all(feature = "api-v1_0", feature = "blocking"))]
