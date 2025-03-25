@@ -34,7 +34,7 @@ pub mod devel {
     /// Get the service root for a specific host
     ///
     /// # Example
-    /// ```rust
+    /// ```rust,no_run
     /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
     /// let root = launchpadlib::blocking::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
@@ -76,7 +76,7 @@ pub mod beta {
     /// Get the service root for a specific host
     ///
     /// # Example
-    /// ```rust
+    /// ```rust,no_run
     /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
     /// let root = launchpadlib::blocking::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
@@ -134,7 +134,7 @@ pub mod v1_0 {
     /// Get the service root for a specific host
     ///
     /// # Example
-    /// ```rust
+    /// ```rust,no_run
     /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
     /// let root = launchpadlib::blocking::v1_0::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
@@ -161,7 +161,7 @@ pub mod v1_0 {
         /// Get a bug by its id
         ///
         /// # Example
-        /// ```rust
+        /// ```rust,no_run
         /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
         /// let root = launchpadlib::blocking::v1_0::service_root(&client).unwrap();
         /// let bug = root.bugs().unwrap().get_by_id(&client, 1).unwrap();
