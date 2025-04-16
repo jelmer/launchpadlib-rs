@@ -30,6 +30,7 @@
 //! * See fixup.xsl for manual patches that are applied; this file is almost certainly incomplete.
 
 pub mod auth;
+pub mod uris;
 pub use wadl::{Error, Resource};
 
 /// The default user agent, used if none is provided
