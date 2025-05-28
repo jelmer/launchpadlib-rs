@@ -23,6 +23,7 @@ fn override_type_name(
     }
 
     match param_name {
+        "is_permitted" => Some("String"),
         n if n.ends_with("_count") => Some("usize"),
         n if n.ends_with("_url") => Some("url::Url"),
         n if n.starts_with("is_") => Some("bool"),
@@ -160,8 +161,8 @@ fn override_type_name(
         "last_scanned_id" => Some("i64"),
         "latest_published_component_name" => Some("String"),
         "latitude" | "longitude" => Some("Option<f64>"),
-        "license_approved" => Some("bool"),
         "license_info" => Some("String"),
+        "licenses" => Some("Vec<String>"),
         "manual" => Some("String"),
         "merged_revision_id" => Some("String"),
         "merged_revno" => Some("i64"),
@@ -201,7 +202,6 @@ fn override_type_name(
         "priority_name" => Some("String"),
         "private_bugs" => Some("bool"),
         "programming_lang" | "programming_language" => Some("String"),
-        "project_reviewed" => Some("bool"),
         "properties" => Some("Vec<String>"),
         "proposition" => Some("String"),
         "qualifies_for_free_hosting" => Some("bool"),
@@ -713,4 +713,9 @@ fn main() {
             std::fs::write(path, code).unwrap();
         }
     }
+
+    // Request rebuilding if wadl/{1.0,devel,beta}.wadl changes
+    println!("cargo:rerun-if-changed=wadl/1.0.wadl");
+    println!("cargo:rerun-if-changed=wadl/devel.wadl");
+    println!("cargo:rerun-if-changed=wadl/beta.wadl");
 }

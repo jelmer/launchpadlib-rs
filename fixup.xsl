@@ -7,15 +7,6 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- Mark the team_owner_link param as optional -->
-  <xsl:template match="wadl:representation[@id='person-full']/wadl:param[@name='team_owner_link']">
-    <xsl:copy>
-    <xsl:apply-templates select="@*"/>
-      <xsl:attribute name="required">false</xsl:attribute>
-    <xsl:apply-templates select="node()"/>
-    </xsl:copy>
-  </xsl:template>
-
   <!-- Set type of various id param to int -->
   <xsl:template match="wadl:representation[
   @id='bug-full'
@@ -29,38 +20,11 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- Mark name, duplicate_of_link, who_made_private_link, latest_patch_uploaded and date_made_private params as optional -->
-  <xsl:template match="wadl:representation[@id='bug-full']/wadl:param[@name='duplicate_of_link' or @name='latest_patch_uploaded' or @name='who_made_private_link' or @name='date_made_private' or @name = 'name']">
-    <xsl:copy>
-      <xsl:apply-templates select="@*"/>
-      <xsl:attribute name="required">false</xsl:attribute>
-      <xsl:apply-templates select="node()"/>
-    </xsl:copy>
-  </xsl:template>
-
   <!-- Mark tags param as repeating in bug-full -->
   <xsl:template match="wadl:representation[@id='bug-full']/wadl:param[@name='tags']">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:attribute name="repeating">true</xsl:attribute>
-      <xsl:apply-templates select="node()"/>
-    </xsl:copy>
-  </xsl:template>
-
-  <!-- Mark various params as optional in team-full -->
-  <xsl:template match="wadl:representation[@id='team-full']/wadl:param[@name='description' or @name='team_description' or @name='preferred_email_address_link' or @name='default_membership_period' or @name='default_renewal_period' or @name='archive_link']">
-    <xsl:copy>
-      <xsl:apply-templates select="@*"/>
-      <xsl:attribute name="required">false</xsl:attribute>
-      <xsl:apply-templates select="node()"/>
-    </xsl:copy>
-  </xsl:template>
-
-  <!-- Mark milestone_link, bug_watch_link, date_assigned, date_closed and assignee_link as optional in bugtask-full -->
-  <xsl:template match="wadl:representation[@id='bug_task-full']/wadl:param[@name='milestone_link' or @name='assignee_link' or @name='bug_watch_link' or @name='date_assigned' or @name='date_incomplete' or @name='date_closed' or @name='date_fix_released' or @name='date_left_new' or @name='date_left_closed' or @name='date_fix_committed' or @name='date_confirmed' or @name='date_incomplete' or @name='date_in_progress' or @name='date_triaged']">
-    <xsl:copy>
-      <xsl:apply-templates select="@*"/>
-      <xsl:attribute name="required">false</xsl:attribute>
       <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
@@ -185,4 +149,14 @@
     <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
+
+  <!-- Mark bug reporting guidelines as optional -->
+  <xsl:template match="wadl:representation[@name='bug_reporting_guidelines' or @name='bug_tracker_link' or @name='date_next_suggest_packaging']">
+    <xsl:copy>
+    <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="required">false</xsl:attribute>
+    <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>

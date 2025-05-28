@@ -253,6 +253,13 @@ pub mod v1_0 {
         use super::*;
 
         #[test]
+        fn test_parse_project_full() {
+            let json = include_str!("../../testdata/project_full.json");
+            let project: ProjectFull = serde_json::from_str(json).unwrap();
+            assert_eq!(project.display_name, "Launchpad");
+        }
+
+        #[test]
         fn test_parse_person() {
             let json = include_str!("../../testdata/person.json");
             let person: PersonFull = serde_json::from_str(json).unwrap();
