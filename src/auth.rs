@@ -219,8 +219,8 @@ impl std::str::FromStr for OAuthAuthorizationHeader {
     }
 }
 
-impl ToString for OAuthAuthorizationHeader {
-    fn to_string(&self) -> String {
+impl std::fmt::Display for OAuthAuthorizationHeader {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut header = String::from("OAuth ");
 
         let push_str = |header: &mut String, key: &str, value: &str| {
@@ -250,7 +250,7 @@ impl ToString for OAuthAuthorizationHeader {
         push_str(&mut header, "oauth_nonce", &self.oauth_nonce);
         push_str(&mut header, "oauth_version", &self.oauth_version);
 
-        header
+        write!(f, "{}", header)
     }
 }
 
