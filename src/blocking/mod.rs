@@ -4,6 +4,7 @@ pub mod client;
 pub mod page;
 pub use client::Client;
 
+#[cfg(any(feature = "api-devel", feature = "api-beta", feature = "api-v1_0"))]
 use crate::{Error, Resource};
 
 /// In development API

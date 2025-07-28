@@ -347,7 +347,7 @@ fn generate_representation_traits(
 
         ret.extend(vec![
             "    fn start(&self) -> usize { self.start }\n".to_string(),
-            "    fn total_size(&self) -> Option<usize> { self.total_size.as_total_size() }\n"
+            "    fn total_size(&self) -> Option<usize> { self.total_size.into_total_size() }\n"
                 .to_string(),
             "    fn entries(&self) -> Vec<".to_string()
                 + r.as_str()
