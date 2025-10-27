@@ -214,6 +214,7 @@ pub mod devel {
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
     #![allow(dead_code)]
+    #![allow(missing_docs)]
     use super::*;
     use crate::AsTotalSize;
     use url::Url;
@@ -233,7 +234,7 @@ pub mod devel {
     /// Get the service root for a specific host
     ///
     /// # Example
-    /// ```rust
+    /// ```rust,no_run
     /// let client = launchpadlib::Client::anonymous("just+testing");
     /// let root = launchpadlib::devel::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
@@ -252,6 +253,7 @@ pub mod beta {
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
     #![allow(dead_code)]
+    #![allow(missing_docs)]
     use super::*;
     use crate::AsTotalSize;
     use url::Url;
@@ -271,7 +273,7 @@ pub mod beta {
     /// Get the service root for a specific host
     ///
     /// # Example
-    /// ```rust
+    /// ```rust,no_run
     /// let client = launchpadlib::Client::anonymous("just+testing");
     /// let root = launchpadlib::beta::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
@@ -291,6 +293,7 @@ pub mod v1_0 {
     #![allow(clippy::too_many_arguments)]
     #![allow(clippy::wrong_self_convention)]
     #![allow(dead_code)]
+    #![allow(missing_docs)]
     use super::*;
     use crate::AsTotalSize;
     use url::Url;
@@ -328,7 +331,7 @@ pub mod v1_0 {
     /// Get the service root for a specific host
     ///
     /// # Example
-    /// ```rust
+    /// ```rust,no_run
     /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
     /// let root = launchpadlib::v1_0::service_root_for_host(&client, "api.staging.launchpad.net").unwrap();
     /// ```
@@ -395,7 +398,7 @@ pub mod v1_0 {
         /// Get a bug by its id
         ///
         /// # Example
-        /// ```rust
+        /// ```rust,no_run
         /// let client = launchpadlib::blocking::Client::anonymous("just+testing");
         /// let root = launchpadlib::v1_0::service_root(&client).unwrap();
         /// let bug = root.bugs().unwrap().get_by_id(&client, 1).unwrap();
