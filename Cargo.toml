@@ -1,6 +1,6 @@
 [package]
 name = "launchpadlib"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/jelmer/launchpadlib-rs"
@@ -20,7 +20,7 @@ wadl = { version = ">=0.5.1", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.41", features = ["serde"] }
-debversion = { version = ">=0.4,<0.5", features = ["serde"] }
+debversion = { version = ">=0.4,<0.6", features = ["serde"] }
 form_urlencoded = "1.2.1"
 lazy_static = "1.5.0"
 log = "0.4.26"
