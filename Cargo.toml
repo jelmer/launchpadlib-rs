@@ -15,7 +15,7 @@ include = ["wadl/*.wadl", "src/*.rs", "src/blocking/*.rs", "src/async/*.rs", "sr
 [lib]
 
 [workspace.dependencies]
-wadl = { version = ">=0.5.1", default-features = false }
+wadl = { version = ">=0.5.1,<6", default-features = false }
 #wadl = { path = "../wadl-rs", default-features = false }
 
 [dependencies]
