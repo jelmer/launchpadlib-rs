@@ -245,6 +245,7 @@ pub mod v1_0 {
         }
 
         #[test]
+        #[cfg(feature = "bugs")]
         fn test_parse_bug() {
             let json = include_str!("../../testdata/bug.json");
             let bug: BugFull = serde_json::from_str(json).unwrap();
@@ -257,6 +258,7 @@ pub mod v1_0 {
         }
 
         #[test]
+        #[cfg(feature = "bugs")]
         fn test_parse_bug_tasks() {
             let json = include_str!("../../testdata/bug_tasks.json");
             let _bug_tasks: BugTaskPage = serde_json::from_str(json).unwrap();

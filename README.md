@@ -21,6 +21,29 @@ fn main() {
 
 Bindings are generated from the wadl published by Launchpad.
 
+Feature Flags
+-------------
+
+The library supports feature flags for Launchpad's different "pillars" to reduce build times:
+
+* `bugs` - Bug tracking functionality (Bug, CVE, etc.)
+* `answers` - Q&A/FAQ functionality (Question, FAQ, etc.)
+* `blueprints` - Specification/blueprint functionality
+* `code` - Code hosting functionality (Git, Branches, Merge Proposals, etc.)
+* `translations` - Translation/localization functionality (POFiles, POTemplates, etc.)
+* `packages` - Package management functionality (Archives, Builds, Snaps, etc.)
+
+By default, all pillar features are enabled. To reduce build times, you can disable features you don't need:
+
+```toml
+[dependencies]
+launchpadlib = { version = "0.5", default-features = false, features = ["blocking", "api-v1_0", "bugs"] }
+```
+
+This can reduce build times significantly.
+
+Note: Resources that span multiple pillars (e.g., linking bugs to branches) require all relevant pillar features to be enabled.
+
 Limitations and bugs
 --------------------
 

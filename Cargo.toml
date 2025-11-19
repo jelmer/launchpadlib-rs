@@ -15,8 +15,8 @@ include = ["wadl/*.wadl", "src/*.rs", "src/blocking/*.rs", "src/async/*.rs", "sr
 [lib]
 
 [workspace.dependencies]
-wadl = { version = ">=0.5.1,<6", default-features = false }
-#wadl = { path = "../wadl-rs", default-features = false }
+#wadl = { version = ">=0.5.1,<6", default-features = false }
+wadl = { version = "0.5.3", default-features = false }
 
 [dependencies]
 chrono = { version = "0.4.41", features = ["serde"] }
@@ -46,7 +46,7 @@ maplit = "1.0.2"
 tokio = { version = "1.13", features = ["full"] }
 
 [features]
-default = ["blocking", "api-v1_0"]
+default = ["blocking", "api-v1_0", "bugs", "answers", "blueprints", "code", "translations", "packages"]
 api-v1_0 = []
 api-devel = []
 api-beta = []
@@ -54,6 +54,13 @@ cli = ["dep:clap"]
 keyring = ["dep:keyring"]
 async = ["wadl/async", "dep:async-trait", "dep:futures"]
 blocking = ["wadl/blocking"]
+# Launchpad pillar features
+bugs = []
+answers = []
+blueprints = []
+code = []
+translations = []
+packages = []
 
 [[example]]
 required-features = ["api-v1_0", "blocking"]
