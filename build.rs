@@ -658,6 +658,247 @@ fn convert_to_multipart(type_name: &str, expr: &str) -> Option<String> {
 
 const VERSIONS: &[&str] = &["1.0", "devel", "beta"];
 
+// Pillar-specific resource ID prefixes
+const BUGS_PREFIXES: &[&str] = &["bug", "cve"];
+const ANSWERS_PREFIXES: &[&str] = &["question", "faq"];
+const BLUEPRINTS_PREFIXES: &[&str] = &["specification"];
+const CODE_PREFIXES: &[&str] = &["git", "branch", "code_", "preview_diff", "revision_status"];
+const TRANSLATIONS_PREFIXES: &[&str] = &["translation", "po_", "pot_"];
+const PACKAGES_PREFIXES: &[&str] = &[
+    "archive",
+    "binary_package",
+    "source_package",
+    "package",
+    "publishing",
+    "builder",
+    "processor",
+    "livefs",
+    "snap",
+    "charm",
+    "rock",
+    "oci",
+    "craft",
+    "distro_",
+    "build",
+    "ci_build",
+];
+
+// Core resource ID prefixes (always included)
+const CORE_PREFIXES: &[&str] = &[
+    "service",
+    "person",
+    "people",
+    "team",
+    "project",
+    "distribution",
+    "pillar",
+    "milestone",
+    "poll",
+    "country",
+    "countries",
+    "language",
+    "time_zone",
+    "access_token",
+    "webhook",
+    "email_address",
+    "gpg_key",
+    "ssh_key",
+    "irc_id",
+    "jabber_id",
+    "message",
+    "commercial_subscription",
+    "has_bugs",
+    "has_milestones",
+    "object_with_translation_imports",
+    "HostedFile",
+    "ScalarValue",
+    "sharing_service",
+    "social_account",
+    "structural_subscription",
+    "temporary_blob",
+    "timeline_",
+    "vulnerability",
+    "wiki_name",
+];
+
+/// Check if a method should be included based on its parameters
+fn should_include_method(method: &wadl::ast::Method) -> bool {
+    // Check request parameters
+    for param in &method.request.params {
+        if !should_include_param(param) {
+            return false;
+        }
+    }
+
+    // Check request representations and their params
+    for representation in &method.request.representations {
+        match representation {
+            wadl::ast::Representation::Reference(repr_ref) => {
+                // For references, check the referenced resource
+                if let Some(resource_id) = repr_ref.id() {
+                    if !should_include_resource(resource_id) {
+                        return false;
+                    }
+                }
+            }
+            wadl::ast::Representation::Definition(repr_def) => {
+                // For inline definitions, check params
+                for param in &repr_def.params {
+                    if !should_include_param(param) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Check response parameters and representations
+    for response in &method.responses {
+        // Check response params
+        for param in &response.params {
+            if !should_include_param(param) {
+                return false;
+            }
+        }
+
+        // Check response representations
+        for representation in &response.representations {
+            match representation {
+                wadl::ast::Representation::Reference(repr_ref) => {
+                    // For references (href="..."), extract the resource ID from the fragment
+                    if let Some(resource_id) = repr_ref.id() {
+                        if !should_include_resource(resource_id) {
+                            return false;
+                        }
+                    }
+                }
+                wadl::ast::Representation::Definition(repr_def) => {
+                    // For inline definitions, check the element type and params
+                    if let Some(element) = &repr_def.element {
+                        if let Some(hash_pos) = element.rfind('#') {
+                            let resource_id = &element[hash_pos + 1..];
+                            if !should_include_resource(resource_id) {
+                                return false;
+                            }
+                        }
+                    }
+
+                    // Check representation params
+                    for param in &repr_def.params {
+                        if !should_include_param(param) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    true
+}
+
+/// Check if a param should be included based on its type and links
+fn should_include_param(param: &wadl::ast::Param) -> bool {
+    // Check the param's type first
+    if !param.r#type.is_empty() {
+        if let Some(hash_pos) = param.r#type.rfind('#') {
+            let resource_id = &param.r#type[hash_pos + 1..];
+            if !should_include_resource(resource_id) {
+                return false;
+            }
+        }
+    }
+
+    // Check links - if any link references a filtered resource, filter the param
+    for link in &param.links {
+        if let Some(rt) = link.resource_type.as_ref() {
+            if let Some(resource_id) = rt.id() {
+                if !should_include_resource(resource_id) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Param is OK to include
+    true
+}
+
+/// Check if a feature is enabled via CARGO_FEATURE_ environment variables
+fn is_feature_enabled(feature: &str) -> bool {
+    let var_name = format!("CARGO_FEATURE_{}", feature.to_uppercase());
+    std::env::var(&var_name).is_ok()
+}
+
+/// Check if a resource type should be included based on enabled features
+fn should_include_resource(id: &str) -> bool {
+    let mut required_features = Vec::new();
+
+    // Collect all features that this resource belongs to
+    // A resource can belong to multiple pillars (e.g., bug_branch)
+    for prefix in BUGS_PREFIXES {
+        if id.starts_with(prefix) {
+            required_features.push("bugs");
+            break; // Only add each pillar once
+        }
+    }
+
+    for prefix in ANSWERS_PREFIXES {
+        if id.starts_with(prefix) {
+            required_features.push("answers");
+            break;
+        }
+    }
+
+    for prefix in BLUEPRINTS_PREFIXES {
+        if id.starts_with(prefix) {
+            required_features.push("blueprints");
+            break;
+        }
+    }
+
+    for prefix in CODE_PREFIXES {
+        if id.starts_with(prefix) {
+            required_features.push("code");
+            break;
+        }
+    }
+
+    for prefix in TRANSLATIONS_PREFIXES {
+        if id.starts_with(prefix) {
+            required_features.push("translations");
+            break;
+        }
+    }
+
+    for prefix in PACKAGES_PREFIXES {
+        if id.starts_with(prefix) {
+            required_features.push("packages");
+            break;
+        }
+    }
+
+    // If it belongs to at least one pillar, check if ALL of those pillars are enabled
+    // This is AND logic - a cross-pillar resource needs all its pillars
+    if !required_features.is_empty() {
+        return required_features.iter().all(|f| is_feature_enabled(f));
+    }
+
+    // Check if it's a core resource
+    for prefix in CORE_PREFIXES {
+        if id.starts_with(prefix) {
+            return true;
+        }
+    }
+
+    // Unknown resource type - warn and include it
+    println!(
+        "cargo:warning=Unknown resource type '{}' - not categorized, including by default",
+        id
+    );
+    true
+}
+
 fn main() {
     for is_async in [true, false] {
         let config = wadl::codegen::Config {
@@ -675,6 +916,9 @@ fn main() {
             options_enum_name: Some(Box::new(options_enum_name)),
             reformat_docstring: Some(Box::new(reformat_docstring)),
             convert_to_multipart: Some(Box::new(convert_to_multipart)),
+            filter_by_id: Some(Box::new(should_include_resource)),
+            filter_param: Some(Box::new(should_include_param)),
+            filter_method: Some(Box::new(should_include_method)),
             r#async: is_async,
             ..Default::default()
         };
