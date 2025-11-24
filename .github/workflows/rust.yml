@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: cargo install cargo-all-features
       - name: Build
         run: cargo build-all-features
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: cargo install cargo-minimal-versions cargo-hack
       - name: Check minimal versions
         run: cargo minimal-versions --direct test
