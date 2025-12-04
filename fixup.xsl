@@ -203,4 +203,23 @@
     <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
+
+  <!-- Add String return type to getArchiveSubscriptionURL methods -->
+  <xsl:template match="wadl:method[@id='person-getArchiveSubscriptionURL' or @id='team-getArchiveSubscriptionURL']">
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="wadl:doc"/>
+      <xsl:apply-templates select="wadl:request"/>
+      <xsl:element name="wadl:response">
+        <xsl:element name="wadl:representation">
+          <xsl:attribute name="mediaType">text/plain</xsl:attribute>
+          <xsl:element name="wadl:param">
+            <xsl:attribute name="name">return</xsl:attribute>
+            <xsl:attribute name="type">xsd:string</xsl:attribute>
+            <xsl:attribute name="style">plain</xsl:attribute>
+          </xsl:element>
+        </xsl:element>
+      </xsl:element>
+    </xsl:copy>
+  </xsl:template>
 </xsl:stylesheet>

@@ -197,6 +197,11 @@
         <wadl:link resource_type="https://api.launchpad.net/devel/#translation_import_queue_entries"/>
       </wadl:param>
     
+    
+      <wadl:param style="plain" name="vulnerabilities_collection_link" path="$['vulnerabilities_collection_link']">
+        <wadl:link resource_type="https://api.launchpad.net/devel/#vulnerabilities"/>
+      </wadl:param>
+    
     <wadl:param style="plain" name="resource_type_link" path="$['resource_type_link']">
       <wadl:doc>The link to the WADL description of this resource.</wadl:doc>
       <wadl:link/>
@@ -980,6 +985,30 @@ The project that this charm recipe is associated with
 </wadl:doc>
               
             </wadl:param>
+            <wadl:param style="query" name="git_repository" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository</p>
+<p>A Git repository with a branch containing a charm recipe.</p>
+
+</wadl:doc>
+              <wadl:link resource_type="https://api.launchpad.net/devel/#git_repository"/>
+            </wadl:param>
+            <wadl:param style="query" name="git_repository_url" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository URL</p>
+<p>The URL of a Git repository with a branch containing a charmcraft.yaml at the top level.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_path" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch path</p>
+<p>The path of the Git branch containing a charm recipe.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
             <wadl:param style="query" name="git_ref" required="false">
              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git branch</p>
@@ -1008,7 +1037,7 @@ The project that this charm recipe is associated with
              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels for automatic builds</p>
 <p>A dictionary mapping snap names to channels to use when building this charm recipe.
-Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24'</p>
+Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24', 'core26'</p>
 
 </wadl:doc>
               
@@ -1036,6 +1065,24 @@ Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core2
 
 </wadl:doc>
               
+            </wadl:param>
+            <wadl:param style="query" name="use_fetch_service" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Charm builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="fetch_service_policy" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False. The “strict” mode only allows certain resources and formats, and errors out in any case the restrictions are violated. The “permissive” mode works similarly, but only logs a warning when encountering any violations.</p>
+
+</wadl:doc>
+              
+              <wadl:option value="strict"/>
+              <wadl:option value="permissive"/>
             </wadl:param>
             <wadl:param style="query" name="information_type" required="false">
              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -1309,6 +1356,24 @@ The project that this craft recipe is associated with
 </wadl:doc>
               
             </wadl:param>
+            <wadl:param style="query" name="use_fetch_service" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Craft builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="fetch_service_policy" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+              
+              <wadl:option value="strict"/>
+              <wadl:option value="permissive"/>
+            </wadl:param>
             <wadl:param style="query" name="information_type" required="false">
              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Information type</p>
@@ -1347,6 +1412,53 @@ The set of ICve objects.
         </wadl:response>
       </wadl:method>
 
+      <wadl:method id="cves-advancedSearch" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Return cve sequences that matches the given filters.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="advancedSearch">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="in_distribution" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Distributions linked to the cve
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="not_in_distribution" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Distributions not linked to the cve
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="modified_since" required="false" type="xsd:dateTime">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Minimum cve.datemodified</p>
+<p>Ignore cves that are older than this.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="offset" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Offset of cves to return
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="limit" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Maximum number of cves to return
+</wadl:doc>
+              
+            </wadl:param>
+          
+        </wadl:request>
+        
+      </wadl:method>
     </wadl:resource_type>
 
   
@@ -3328,6 +3440,18 @@ Sort
               <wadl:option value="oldest first"/>
               <wadl:option value="recently updated first"/>
             </wadl:param>
+            <wadl:param style="query" name="created_before" required="false" type="xsd:dateTime">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for questions that were created before the given date.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="created_since" required="false" type="xsd:dateTime">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for questions that were created since the given date.
+</wadl:doc>
+              
+            </wadl:param>
           
         </wadl:request>
         <wadl:response>
@@ -3623,6 +3747,24 @@ The project that this rock recipe is associated with
 
 </wadl:doc>
               
+            </wadl:param>
+            <wadl:param style="query" name="use_fetch_service" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Rock builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="fetch_service_policy" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+
+</wadl:doc>
+              
+              <wadl:option value="strict"/>
+              <wadl:option value="permissive"/>
             </wadl:param>
             <wadl:param style="query" name="information_type" required="false">
              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -4127,6 +4269,24 @@ The project that this Snap is associated with
 </wadl:doc>
               <wadl:link resource_type="https://api.launchpad.net/devel/#project"/>
             </wadl:param>
+            <wadl:param style="query" name="use_fetch_service" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Snap builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="fetch_service_policy" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. The “strict” mode only allows certain resources and formats, and errors out in any case the restrictions are violated. The “permissive” mode works similarly, but only logs a warning when encountering any violations.</p>
+
+</wadl:doc>
+              
+              <wadl:option value="strict"/>
+              <wadl:option value="permissive"/>
+            </wadl:param>
             <wadl:param style="query" name="information_type" required="false">
              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Information type</p>
@@ -4521,6 +4681,156 @@ The status of the import.
           
           <wadl:representation href="https://api.launchpad.net/devel/#object_with_translation_imports-page"/>
         </wadl:response>
+      </wadl:method>
+    </wadl:resource_type>
+
+  
+  
+    <wadl:resource_type id="vulnerabilities">
+      <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The set of all vulnerabilities.
+</wadl:doc>
+      <wadl:method name="GET" id="vulnerabilities-get">
+        <wadl:response>
+          <wadl:representation href="https://api.launchpad.net/devel/#vulnerability-page"/>
+          <wadl:representation mediaType="application/vnd.sun.wadl+xml" id="vulnerabilities-wadl"/>
+        </wadl:response>
+      </wadl:method>
+
+      <wadl:method id="vulnerabilities-getImports" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Return the latest 10 import jobs done and their statuses.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getImports">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="handler" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The handler to import or export vulnerability data
+</wadl:doc>
+              
+              <wadl:option value="SOSS Handler"/>
+              <wadl:option value="UCT Handler"/>
+            </wadl:param>
+          
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="vulnerabilities-getExports" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Return the latest 10 export jobs done and link to their librarian
+files.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getExports">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="handler" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The handler to import or export vulnerability data
+</wadl:doc>
+              
+              <wadl:option value="SOSS Handler"/>
+              <wadl:option value="UCT Handler"/>
+            </wadl:param>
+          
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="vulnerabilities-importData" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Trigger a vulnerability data import</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="importData">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="handler" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The handler to import or export vulnerability data
+</wadl:doc>
+              
+              <wadl:option value="SOSS Handler"/>
+              <wadl:option value="UCT Handler"/>
+            </wadl:param>
+            <wadl:param style="query" name="git_repository" required="true">
+             
+              <wadl:link resource_type="https://api.launchpad.net/devel/#git_repository"/>
+            </wadl:param>
+            <wadl:param style="query" name="git_ref" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The git reference to import from.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="git_paths" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The list of paths to import from.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="information_type" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Information type</p>
+<p>Indicates the privacy of the vulnerability.</p>
+
+</wadl:doc>
+              
+              <wadl:option value="Public"/>
+              <wadl:option value="Public Security"/>
+              <wadl:option value="Private Security"/>
+              <wadl:option value="Private"/>
+              <wadl:option value="Proprietary"/>
+              <wadl:option value="Embargoed"/>
+            </wadl:param>
+            <wadl:param style="query" name="import_since_commit_sha1" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Commit sha1 from which to do the import. All files added or modified since this commit will be imported.
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="vulnerabilities-exportData" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Trigger a vulnerability data export</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="exportData">
+              <wadl:doc>The name of the operation being invoked.</wadl:doc>
+            </wadl:param>
+            <wadl:param style="query" name="handler" required="true">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The handler to import or export vulnerability data
+</wadl:doc>
+              
+              <wadl:option value="SOSS Handler"/>
+              <wadl:option value="UCT Handler"/>
+            </wadl:param>
+            <wadl:param style="query" name="sources" required="false">
+             <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+List of objects to get data from. If null, import all data.
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        
       </wadl:method>
     </wadl:resource_type>
 
@@ -5851,6 +6161,50 @@ Authorization token names
         </wadl:request>
         
       </wadl:method>
+      <wadl:method id="archive-newWebhook" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Create a new webhook.
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="newWebhook"/>
+            <wadl:param style="query" name="delivery_url" required="true">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Delivery URL
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="active" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Active</p>
+<p>Deliver details of subscribed events.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="event_types" required="true">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Event types
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="secret" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Secret</p>
+<p>An optional string used to sign delivery bodies with HMAC-SHA1 in the X-Hub-Signature header. This must be less than 200 bytes long.</p>
+
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        <wadl:response>
+          <wadl:param name="Location" style="header">
+            <wadl:link resource_type="https://api.launchpad.net/devel/#webhook"/>
+          </wadl:param>
+          
+        </wadl:response>
+      </wadl:method>
       <wadl:method id="archive-newPackageUploader" name="POST">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Add permission for a person to upload a package to this archive.</p>
@@ -7068,6 +7422,12 @@ Status of archive.
 
 </wadl:doc>
         
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="webhooks_collection_link" path="$['webhooks_collection_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Webhooks for this target.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#webhook-page-resource"/>
       </wadl:param>
     </wadl:representation>
 
@@ -8899,7 +9259,7 @@ Return matching BranchMergeProposals.
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
 </wadl:doc>
               
             </wadl:param>
@@ -9892,6 +10252,34 @@ Return the Bug tasks related to this merge proposal.
           <wadl:representation href="https://api.launchpad.net/devel/#bug_task-page"/>
         </wadl:response>
       </wadl:method>
+      <wadl:method id="branch_merge_proposal-canIMerge" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Check if logged in user has permission to merge this proposal.</p>
+<p>We assume that a person can merge a proposal if they can push to the
+target ref, as that would mean they have the necessary permissions
+to manually merge.</p>
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="canIMerge"/>
+          
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="branch_merge_proposal-getMergeCriteria" name="GET">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Get mergeability status for a merge proposal.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          
+            <wadl:param style="query" name="ws.op" required="true" fixed="getMergeCriteria"/>
+          
+        </wadl:request>
+        
+      </wadl:method>
       <wadl:method id="branch_merge_proposal-getInlineComments" name="GET">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Return a list of inline comments related to this MP.</p>
@@ -10089,6 +10477,59 @@ for some reason.</p>
         <wadl:request>
           <wadl:representation mediaType="application/x-www-form-urlencoded">
             <wadl:param style="query" name="ws.op" required="true" fixed="scheduleDiffUpdates"/>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="branch_merge_proposal-requestMerge" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Request to merge this proposal.</p>
+<p>This will make a request to the git hosting client to trigger a merge.
+A successfull response to this endpoint does not necessarily mean the
+merge was successfull, but rather that it was successfully requested.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="requestMerge"/>
+            <wadl:param style="query" name="commit_message" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Override commit message
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="force" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Whether to skip checks
+</wadl:doc>
+              
+            </wadl:param>
+          </wadl:representation>
+        </wadl:request>
+        
+      </wadl:method>
+      <wadl:method id="branch_merge_proposal-merge" name="POST">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>To be deprecated in favour of requestMerge.</p>
+
+
+</wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/x-www-form-urlencoded">
+            <wadl:param style="query" name="ws.op" required="true" fixed="merge"/>
+            <wadl:param style="query" name="commit_message" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Override commit message
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="force" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Whether to skip checks
+</wadl:doc>
+              
+            </wadl:param>
           </wadl:representation>
         </wadl:request>
         
@@ -13376,6 +13817,14 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="date_deferred" path="$['date_deferred']" type="xsd:dateTime">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Date deferred</p>
+<p>The date on which this task was deferred.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="false" name="date_fix_committed" path="$['date_fix_committed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Fix Committed</p>
@@ -13491,6 +13940,7 @@ Status
         <wadl:option value="Confirmed"/>
         <wadl:option value="Triaged"/>
         <wadl:option value="In Progress"/>
+        <wadl:option value="Deferred"/>
         <wadl:option value="Fix Committed"/>
         <wadl:option value="Fix Released"/>
         <wadl:option value="Does Not Exist"/>
@@ -13576,6 +14026,7 @@ Status
         <wadl:option value="Confirmed"/>
         <wadl:option value="Triaged"/>
         <wadl:option value="In Progress"/>
+        <wadl:option value="Deferred"/>
         <wadl:option value="Fix Committed"/>
         <wadl:option value="Fix Released"/>
         <wadl:option value="Does Not Exist"/>
@@ -16142,6 +16593,14 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="build_metadata_url" path="$['build_metadata_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>URL of the build metadata file</p>
+<p>URL of the metadata file generated by the fetch service, if it exists.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
@@ -16198,8 +16657,14 @@ Architecture tag
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels to use for this build.</p>
 <p>A dictionary mapping snap names to channels to use for this build.
-Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24'</p>
+Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24', 'core26'</p>
 
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="craft_platform" path="$['craft_platform']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Craft platform name
 </wadl:doc>
         
       </wadl:param>
@@ -16388,7 +16853,7 @@ Title
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels to use for this build.</p>
 <p>A dictionary mapping snap names to channels to use for this build.
-Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24'</p>
+Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24', 'core26'</p>
 
 </wadl:doc>
         
@@ -16754,8 +17219,14 @@ C{builds} collection will return the resulting builds.</p>
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels to use for these builds.</p>
 <p>A dictionary mapping snap names to channels to use for these builds.
-Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24'</p>
+Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24', 'core26'</p>
 
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="architectures" required="false">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The list of architectures to build for this recipe.
 </wadl:doc>
               
             </wadl:param>
@@ -16805,7 +17276,7 @@ Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core2
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels for automatic builds</p>
 <p>A dictionary mapping snap names to channels to use when building this charm recipe.
-Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24'</p>
+Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24', 'core26'</p>
 
 </wadl:doc>
         
@@ -16868,6 +17339,24 @@ Failed build requests for this charm recipe.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#charm_recipe_build_request-page-resource"/>
       </wadl:param>
+      <wadl:param style="plain" required="true" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False. The “strict” mode only allows certain resources and formats, and errors out in any case the restrictions are violated. The “permissive” mode works similarly, but only logs a warning when encountering any violations.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_path" path="$['git_path']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git branch path</p>
+<p>The path of the Git branch containing a charm recipe.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="git_ref_link" path="$['git_ref_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git branch</p>
@@ -16875,6 +17364,22 @@ Failed build requests for this charm recipe.
 
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#git_ref"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_repository_link" path="$['git_repository_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository</p>
+<p>A Git repository with a branch containing a charm recipe.</p>
+
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/devel/#git_repository"/>
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="git_repository_url" path="$['git_repository_url']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Git repository URL</p>
+<p>The URL of a Git repository with a branch containing a charmcraft.yaml at the top level.</p>
+
+</wadl:doc>
+        
       </wadl:param>
       <wadl:param style="plain" required="true" name="information_type" path="$['information_type']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -16980,6 +17485,14 @@ The project that this charm recipe is associated with
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Charm builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="webhooks_collection_link" path="$['webhooks_collection_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Webhooks for this target.
@@ -17001,7 +17514,7 @@ Webhooks for this target.
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels for automatic builds</p>
 <p>A dictionary mapping snap names to channels to use when building this charm recipe.
-Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24'</p>
+Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core24', 'core26'</p>
 
 </wadl:doc>
         
@@ -17021,6 +17534,16 @@ Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core2
 
 </wadl:doc>
         
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="fetch_service_policy" path="$['fetch_service_policy']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Fetch service policy</p>
+<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False. The “strict” mode only allows certain resources and formats, and errors out in any case the restrictions are violated. The “permissive” mode works similarly, but only logs a warning when encountering any violations.</p>
+
+</wadl:doc>
+        
+        <wadl:option value="strict"/>
+        <wadl:option value="permissive"/>
       </wadl:param>
       <wadl:param style="plain" required="false" name="git_ref_link" path="$['git_ref_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -17102,6 +17625,14 @@ The project that this charm recipe is associated with
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Automatically upload to store</p>
 <p>Whether builds of this charm recipe are automatically uploaded to the store.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="use_fetch_service" path="$['use_fetch_service']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Use fetch service</p>
+<p>If set, Charm builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
 
 </wadl:doc>
         
@@ -19368,6 +19899,14 @@ Date Modified
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="metadata" path="$['metadata']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>metadata</p>
+<p>CVE metadata.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="sequence" path="$['sequence']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>CVE Sequence Number</p>
@@ -19386,6 +19925,7 @@ Date Modified
         <wadl:option value="Candidate"/>
         <wadl:option value="Entry"/>
         <wadl:option value="Deprecated"/>
+        <wadl:option value="Rejected"/>
       </wadl:param>
       <wadl:param style="plain" required="true" name="title" path="$['title']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -19406,63 +19946,6 @@ Date Modified
     </wadl:representation>
 
     <wadl:representation mediaType="application/json" id="cve-diff">
-      <wadl:param style="plain" required="false" name="date_modified" path="$['date_modified']" type="xsd:dateTime">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-Date Modified
-</wadl:doc>
-        
-      </wadl:param>
-      <wadl:param style="plain" required="false" name="description" path="$['description']">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Title</p>
-<p>A description of the CVE issue. This will be updated regularly from the CVE database.</p>
-
-</wadl:doc>
-        
-      </wadl:param>
-      <wadl:param style="plain" required="false" name="display_name" path="$['display_name']">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Display Name</p>
-<p>A very brief name describing the ref and state.</p>
-
-</wadl:doc>
-        
-      </wadl:param>
-      <wadl:param style="plain" required="false" name="sequence" path="$['sequence']">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>CVE Sequence Number</p>
-<p>Should take the form XXXX-XXXX, all digits.</p>
-
-</wadl:doc>
-        
-      </wadl:param>
-      <wadl:param style="plain" required="false" name="status" path="$['status']">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Current CVE State</p>
-<p>Whether or not the vulnerability has been reviewed and assigned a full CVE number, or is still considered a Candidate, or is deprecated.</p>
-
-</wadl:doc>
-        
-        <wadl:option value="Candidate"/>
-        <wadl:option value="Entry"/>
-        <wadl:option value="Deprecated"/>
-      </wadl:param>
-      <wadl:param style="plain" required="false" name="title" path="$['title']">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Title</p>
-<p>A title for the CVE</p>
-
-</wadl:doc>
-        
-      </wadl:param>
-      <wadl:param style="plain" required="false" name="url" path="$['url']">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>URL</p>
-<p>Return a URL to the site that has the CVE data for this CVE reference.</p>
-
-</wadl:doc>
-        
-      </wadl:param>
     </wadl:representation>
 
     <!--Collection page for this type of entry-->
@@ -21877,7 +22360,9 @@ HTTPS URL
       </wadl:param>
       <wadl:param style="plain" required="true" name="official_candidate" path="$['official_candidate']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-Apply to be an official mirror of this distribution
+<p>Apply to be an official mirror</p>
+<p>Tick this to have your mirror reviewed for display on the official mirrors page (/ubuntu/+cdmirrors or /ubuntu/+archivemirrors).</p>
+
 </wadl:doc>
         
       </wadl:param>
@@ -22029,7 +22514,9 @@ HTTPS URL
       </wadl:param>
       <wadl:param style="plain" required="false" name="official_candidate" path="$['official_candidate']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-Apply to be an official mirror of this distribution
+<p>Apply to be an official mirror</p>
+<p>Tick this to have your mirror reviewed for display on the official mirrors page (/ubuntu/+cdmirrors or /ubuntu/+archivemirrors).</p>
+
 </wadl:doc>
         
       </wadl:param>
@@ -22578,7 +23065,7 @@ Search for bugs that are linked to blueprints or for bugs that are not linked to
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
 </wadl:doc>
               
             </wadl:param>
@@ -23449,6 +23936,14 @@ Processor
 </wadl:doc>
         
       </wadl:param>
+      <wadl:param style="plain" required="true" name="underlying_architecture_tag" path="$['underlying_architecture_tag']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Underlying Architecture Tag</p>
+<p>If set, identifies architecture_tag as a 'variant' of the specified architecture.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
     </wadl:representation>
 
     <wadl:representation mediaType="application/json" id="distro_arch_series-diff">
@@ -23524,6 +24019,14 @@ The person who registered this port.
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Title</p>
 <p>The title of this distroarchseries.</p>
+
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="underlying_architecture_tag" path="$['underlying_architecture_tag']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Underlying Architecture Tag</p>
+<p>If set, identifies architecture_tag as a 'variant' of the specified architecture.</p>
 
 </wadl:doc>
         
@@ -26253,7 +26756,7 @@ Return matching BranchMergeProposals.
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
 </wadl:doc>
               
             </wadl:param>
@@ -26656,7 +27159,7 @@ Return matching BranchMergeProposals.
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
 </wadl:doc>
               
             </wadl:param>
@@ -34213,16 +34716,26 @@ A list of merge proposal statuses to filter by.
       </wadl:method>
       <wadl:method id="person-getMergeProposals" name="GET">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Returns all merge proposals of a given status.</p>
-
-
+Return matching BranchMergeProposals.
 </wadl:doc>
         <wadl:request>
           
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="created_before" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for merge proposals that were createdbefore the given date.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="created_since" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for merge proposals that were createdsince the given date.
 </wadl:doc>
               
             </wadl:param>
@@ -34274,6 +34787,7 @@ Social Platform Type
 </wadl:doc>
               
               <wadl:option value="Matrix platform"/>
+              <wadl:option value="GitHub platform"/>
             </wadl:param>
           
         </wadl:request>
@@ -34437,6 +34951,18 @@ Sort
               <wadl:option value="newest first"/>
               <wadl:option value="oldest first"/>
               <wadl:option value="recently updated first"/>
+            </wadl:param>
+            <wadl:param style="query" name="created_before" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for questions that were created before the given date.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="created_since" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for questions that were created since the given date.
+</wadl:doc>
+              
             </wadl:param>
           
         </wadl:request>
@@ -34810,8 +35336,7 @@ False, which means the PPA will be public.</wadl:doc></wadl:param>
           
         </wadl:response>
       </wadl:method>
-      <wadl:method id="person-getArchiveSubscriptionURL" name="POST">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+      <wadl:method id="person-getArchiveSubscriptionURL" name="POST"><wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Get a text line that is suitable to be used for a sources.list
 entry.</p>
 <p>It will create a new IArchiveAuthToken if one doesn't already exist.</p>
@@ -34819,8 +35344,7 @@ entry.</p>
 valid subscription for the target archive or the caller is not
 context user itself.</p>
 
-</wadl:doc>
-        <wadl:request>
+</wadl:doc><wadl:request>
           <wadl:representation mediaType="application/x-www-form-urlencoded">
             <wadl:param style="query" name="ws.op" required="true" fixed="getArchiveSubscriptionURL"/>
             <wadl:param style="query" name="archive" required="true">
@@ -34828,9 +35352,7 @@ context user itself.</p>
               <wadl:link resource_type="https://api.launchpad.net/devel/#archive"/>
             </wadl:param>
           </wadl:representation>
-        </wadl:request>
-        
-      </wadl:method>
+        </wadl:request><wadl:response><wadl:representation mediaType="text/plain"><wadl:param name="return" type="xsd:string" style="plain"/></wadl:representation></wadl:response></wadl:method>
       <wadl:method id="person-setAccountStatus" name="POST">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Set the status of this person's account.
@@ -36733,7 +37255,7 @@ Search for bugs that are linked to blueprints or for bugs that are not linked to
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
 </wadl:doc>
               
             </wadl:param>
@@ -37306,7 +37828,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#HostedFile"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -37314,7 +37836,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
@@ -37472,7 +37994,7 @@ the <a class="rst-reference external" href="http://" target="_top">http://</a></
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="license_approved" path="$['license_approved']">
+      <wadl:param style="plain" required="true" name="license_approved" path="$['license_approved']" type="launchpadlib::types::MaybeRedacted&lt;bool&gt;">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Licence approved</p>
 <p>The project is legitimate and its licence appears valid. Not applicable to 'Other/Proprietary'.</p>
@@ -37575,7 +38097,7 @@ languages used for this project.</p>
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#project_group"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="project_reviewed" path="$['project_reviewed']">
+      <wadl:param style="plain" required="true" name="project_reviewed" path="$['project_reviewed']" type="launchpadlib::types::MaybeRedacted&lt;bool&gt;">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Project reviewed</p>
 <p>Whether or not this project has been reviewed. If you looked at the project and how it uses Launchpad, you reviewed it.</p>
@@ -39837,7 +40359,7 @@ Search for bugs that are linked to blueprints or for bugs that are not linked to
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
 </wadl:doc>
               
             </wadl:param>
@@ -43833,6 +44355,8 @@ Key type
         <wadl:option value="DSA"/>
         <wadl:option value="ECDSA"/>
         <wadl:option value="ED25519"/>
+        <wadl:option value="SKED25519"/>
+        <wadl:option value="SKECDSA"/>
       </wadl:param>
     </wadl:representation>
 
@@ -45002,8 +45526,14 @@ The archive from which to build the snap package.
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels to use for this build.</p>
 <p>A dictionary mapping snap names to channels to use for this build.
-Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft', 'snapd'</p>
+Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'core26', 'snapcraft', 'snapd'</p>
 
+</wadl:doc>
+        
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="craft_platform" path="$['craft_platform']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Craft platform name
 </wadl:doc>
         
       </wadl:param>
@@ -45220,7 +45750,7 @@ Title
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels to use for this build.</p>
 <p>A dictionary mapping snap names to channels to use for this build.
-Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft', 'snapd'</p>
+Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'core26', 'snapcraft', 'snapd'</p>
 
 </wadl:doc>
         
@@ -45689,7 +46219,7 @@ Set the architectures for which the snap package should be built.
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels to use for this build.</p>
 <p>A dictionary mapping snap names to channels to use for this build.
-Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft', 'snapd'</p>
+Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'core26', 'snapcraft', 'snapd'</p>
 
 </wadl:doc>
               
@@ -45732,7 +46262,7 @@ C{builds} collection will return the resulting builds.</p>
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels to use for this build.</p>
 <p>A dictionary mapping snap names to channels to use for this build.
-Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft', 'snapd'</p>
+Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'core26', 'snapcraft', 'snapd'</p>
 
 </wadl:doc>
               
@@ -45799,7 +46329,7 @@ Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels for automatic builds</p>
 <p>A dictionary mapping snap names to channels to use when building this snap package.
-Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft', 'snapd'</p>
+Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'core26', 'snapcraft', 'snapd'</p>
 
 </wadl:doc>
         
@@ -45894,7 +46424,7 @@ Failed build requests for this snap package.
       <wadl:param style="plain" required="true" name="fetch_service_policy" path="$['fetch_service_policy']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Fetch service policy</p>
-<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+<p>Which policy to use when using the fetch service. The “strict” mode only allows certain resources and formats, and errors out in any case the restrictions are violated. The “permissive” mode works similarly, but only logs a warning when encountering any violations.</p>
 
 </wadl:doc>
         
@@ -46100,7 +46630,7 @@ Webhooks for this target.
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source snap channels for automatic builds</p>
 <p>A dictionary mapping snap names to channels to use when building this snap package.
-Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft', 'snapd'</p>
+Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'core26', 'snapcraft', 'snapd'</p>
 
 </wadl:doc>
         
@@ -46153,7 +46683,7 @@ Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'snapcraft
       <wadl:param style="plain" required="false" name="fetch_service_policy" path="$['fetch_service_policy']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Fetch service policy</p>
-<p>Which policy to use when using the fetch service. Ignored if use_fetch_service flag is False.</p>
+<p>Which policy to use when using the fetch service. The “strict” mode only allows certain resources and formats, and errors out in any case the restrictions are violated. The “permissive” mode works similarly, but only logs a warning when encountering any violations.</p>
 
 </wadl:doc>
         
@@ -46591,6 +47121,7 @@ Social Platform Type
 </wadl:doc>
         
         <wadl:option value="Matrix platform"/>
+        <wadl:option value="GitHub platform"/>
       </wadl:param>
     </wadl:representation>
 
@@ -46609,6 +47140,7 @@ Social Platform Type
 </wadl:doc>
         
         <wadl:option value="Matrix platform"/>
+        <wadl:option value="GitHub platform"/>
       </wadl:param>
     </wadl:representation>
 
@@ -46948,7 +47480,7 @@ Search for bugs that are linked to blueprints or for bugs that are not linked to
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
 </wadl:doc>
               
             </wadl:param>
@@ -50267,16 +50799,26 @@ A list of merge proposal statuses to filter by.
       </wadl:method>
       <wadl:method id="team-getMergeProposals" name="GET">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-<p>Returns all merge proposals of a given status.</p>
-
-
+Return matching BranchMergeProposals.
 </wadl:doc>
         <wadl:request>
           
             <wadl:param style="query" name="ws.op" required="true" fixed="getMergeProposals"/>
             <wadl:param style="query" name="status" required="false">
               <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
-A list of merge proposal statuses to filter by.
+A list of statuses to filter the merge proposals by.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="created_before" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for merge proposals that were createdbefore the given date.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="created_since" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for merge proposals that were createdsince the given date.
 </wadl:doc>
               
             </wadl:param>
@@ -50328,6 +50870,7 @@ Social Platform Type
 </wadl:doc>
               
               <wadl:option value="Matrix platform"/>
+              <wadl:option value="GitHub platform"/>
             </wadl:param>
           
         </wadl:request>
@@ -50491,6 +51034,18 @@ Sort
               <wadl:option value="newest first"/>
               <wadl:option value="oldest first"/>
               <wadl:option value="recently updated first"/>
+            </wadl:param>
+            <wadl:param style="query" name="created_before" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for questions that were created before the given date.
+</wadl:doc>
+              
+            </wadl:param>
+            <wadl:param style="query" name="created_since" required="false" type="xsd:dateTime">
+              <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+Search for questions that were created since the given date.
+</wadl:doc>
+              
             </wadl:param>
           
         </wadl:request>
@@ -50864,8 +51419,7 @@ False, which means the PPA will be public.</wadl:doc></wadl:param>
           
         </wadl:response>
       </wadl:method>
-      <wadl:method id="team-getArchiveSubscriptionURL" name="POST">
-        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+      <wadl:method id="team-getArchiveSubscriptionURL" name="POST"><wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Get a text line that is suitable to be used for a sources.list
 entry.</p>
 <p>It will create a new IArchiveAuthToken if one doesn't already exist.</p>
@@ -50873,8 +51427,7 @@ entry.</p>
 valid subscription for the target archive or the caller is not
 context user itself.</p>
 
-</wadl:doc>
-        <wadl:request>
+</wadl:doc><wadl:request>
           <wadl:representation mediaType="application/x-www-form-urlencoded">
             <wadl:param style="query" name="ws.op" required="true" fixed="getArchiveSubscriptionURL"/>
             <wadl:param style="query" name="archive" required="true">
@@ -50882,9 +51435,7 @@ context user itself.</p>
               <wadl:link resource_type="https://api.launchpad.net/devel/#archive"/>
             </wadl:param>
           </wadl:representation>
-        </wadl:request>
-        
-      </wadl:method>
+        </wadl:request><wadl:response><wadl:representation mediaType="text/plain"><wadl:param name="return" type="xsd:string" style="plain"/></wadl:representation></wadl:response></wadl:method>
       <wadl:method id="team-setAccountStatus" name="POST">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Set the status of this person's account.
@@ -52550,6 +53101,12 @@ External CVE reference corresponding to this vulnerability, if any.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#cve"/>
       </wadl:param>
+      <wadl:param style="plain" required="true" name="cvss" path="$['cvss']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+List of Common Vulnerability Scoring System.
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="date_coordinated_release" path="$['date_coordinated_release']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Coordinated Release Date.
@@ -52625,6 +53182,14 @@ Used to explain why our importance differs from somebody else's CVSS score.
         <wadl:option value="Proprietary"/>
         <wadl:option value="Embargoed"/>
       </wadl:param>
+      <wadl:param style="plain" required="true" name="metadata" path="$['metadata']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Metadata</p>
+<p>Metadata of Vulnerability</p>
+
+</wadl:doc>
+        
+      </wadl:param>
       <wadl:param style="plain" required="true" name="mitigation" path="$['mitigation']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Explains why we're ignoring this vulnerability.
@@ -52663,6 +53228,12 @@ The status of the vulnerability.
 External CVE reference corresponding to this vulnerability, if any.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/devel/#cve"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="cvss" path="$['cvss']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+List of Common Vulnerability Scoring System.
+</wadl:doc>
+        
       </wadl:param>
       <wadl:param style="plain" required="false" name="date_coordinated_release" path="$['date_coordinated_release']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
@@ -52720,6 +53291,14 @@ Used to explain why our importance differs from somebody else's CVSS score.
         <wadl:option value="Private"/>
         <wadl:option value="Proprietary"/>
         <wadl:option value="Embargoed"/>
+      </wadl:param>
+      <wadl:param style="plain" required="false" name="metadata" path="$['metadata']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+<p>Metadata</p>
+<p>Metadata of Vulnerability</p>
+
+</wadl:doc>
+        
       </wadl:param>
       <wadl:param style="plain" required="false" name="mitigation" path="$['mitigation']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
