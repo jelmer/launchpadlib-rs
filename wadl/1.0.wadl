@@ -3613,7 +3613,7 @@ The distribution that uses or is used by this archive.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distribution"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="external_dependencies" path="$['external_dependencies']">
+      <wadl:param style="plain" required="false" name="external_dependencies" path="$['external_dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>External dependencies</p>
 <p>Newline-separated list of repositories to be used to retrieve any external build-dependencies when building packages in the archive, in the format:
