@@ -17,6 +17,8 @@ fn main() {
                 DSA => "ssh-dss",
                 ECDSA => "ecdsa-sha2-nistp256",
                 ED25519 => "ssh-ed25519",
+                SKECDSA => "sk-ecdsa-sha2-nistp256@openssh.com",
+                SKED25519 => "sk-ssh-ed25519@openssh.com",
             },
             key.keytext,
             key.comment.trim()
