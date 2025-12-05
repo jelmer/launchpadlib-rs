@@ -35,7 +35,6 @@ fn override_type_name(
         "title" => Some("String"),
         "authorized_size" => Some("usize"),
         "display_name" | "displayname" => Some("String"),
-        "external_dependencies" => Some("String"),
         "private" => Some("bool"),
         "publish" => Some("bool"),
         "reference" => Some("String"),

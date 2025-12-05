@@ -177,6 +177,15 @@
     </xsl:copy>
   </xsl:template>
 
+  <!-- Mark external_dependencies as optional in archive-full -->
+  <xsl:template match="wadl:representation[@id='archive-full']/wadl:param[@name='external_dependencies']">
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="required">false</xsl:attribute>
+      <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+
   <!-- Retype various attributes in distribution-full as boolean -->
   <xsl:template match="wadl:representation[@id='distribution-full' or @id='distribution']/wadl:param[
   @name='redirect_default_traversal'
