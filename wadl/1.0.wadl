@@ -9259,7 +9259,7 @@ The target as presented in mail notifications
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_deferred" path="$['date_deferred']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_deferred" path="$['date_deferred']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date deferred</p>
 <p>The date on which this task was deferred.</p>
@@ -32077,6 +32077,12 @@ The archive from which to build the snap package.
 
 </wadl:doc>
         
+      </wadl:param>
+      <wadl:param style="plain" required="true" name="build_request_link" path="$['build_request_link']">
+        <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
+The build request that caused this build to be created.
+</wadl:doc>
+        <wadl:link resource_type="https://api.launchpad.net/1.0/#snap_build_request"/>
       </wadl:param>
       <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
