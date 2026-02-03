@@ -61,6 +61,7 @@ blueprints = []
 code = []
 translations = []
 packages = []
+vulnerabilities = []
 
 [[example]]
 required-features = ["api-v1_0", "blocking"]
