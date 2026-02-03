@@ -32,6 +32,7 @@ The library supports feature flags for Launchpad's different "pillars" to reduce
 * `code` - Code hosting functionality (Git, Branches, Merge Proposals, etc.)
 * `translations` - Translation/localization functionality (POFiles, POTemplates, etc.)
 * `packages` - Package management functionality (Archives, Builds, Snaps, etc.)
+* `vulnerabilities` - Vulnerability tracking functionality (Vulnerability resources, CVSS scoring, etc.)
 
 By default, all pillar features are enabled. To reduce build times, you can disable features you don't need:
 

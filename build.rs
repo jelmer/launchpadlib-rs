@@ -681,6 +681,7 @@ const PACKAGES_PREFIXES: &[&str] = &[
     "build",
     "ci_build",
 ];
+const VULNERABILITIES_PREFIXES: &[&str] = &["vulnerability", "vulnerabilities"];
 
 // Core resource ID prefixes (always included)
 const CORE_PREFIXES: &[&str] = &[
@@ -873,6 +874,13 @@ fn should_include_resource(id: &str) -> bool {
     for prefix in PACKAGES_PREFIXES {
         if id.starts_with(prefix) {
             required_features.push("packages");
+            break;
+        }
+    }
+
+    for prefix in VULNERABILITIES_PREFIXES {
+        if id.starts_with(prefix) {
+            required_features.push("vulnerabilities");
             break;
         }
     }
