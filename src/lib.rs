@@ -208,7 +208,7 @@ pub mod types {
     }
 }
 
-#[cfg(feature = "api-devel")]
+#[cfg(all(feature = "api-devel", feature = "blocking"))]
 pub mod devel {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
@@ -247,7 +247,7 @@ pub mod devel {
     }
 }
 
-#[cfg(feature = "api-beta")]
+#[cfg(all(feature = "api-beta", feature = "blocking"))]
 pub mod beta {
     #![allow(unused_mut)]
     #![allow(clippy::too_many_arguments)]
@@ -286,7 +286,7 @@ pub mod beta {
     }
 }
 
-#[cfg(feature = "api-v1_0")]
+#[cfg(all(feature = "api-v1_0", feature = "blocking"))]
 /// Version 1.0 of the Launchpad API
 pub mod v1_0 {
     #![allow(unused_mut)]
