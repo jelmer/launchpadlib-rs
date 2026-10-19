@@ -288,9 +288,9 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
 name = "debversion"
-version = "0.5.4"
+version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd0855110dc659601a99e89e04b8b51196161b3da5ff33848c47421bb6feeff8"
+checksum = "bafa591c799e23dd22ac6cae679c5c53b9d3f4a0de76290ea5cd079fd3ed1086"
 dependencies = [
  "chrono",
  "lazy-regex",
