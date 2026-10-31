@@ -16,7 +16,7 @@ include = ["wadl/*.wadl", "src/*.rs", "src/blocking/*.rs", "src/async/*.rs", "sr
 
 [workspace.dependencies]
 wadl = { version = "0.5.7", default-features = false }
-reqwest = { version = ">=0.12, <0.14", features = ["json", "multipart", "blocking", "form"] }
+reqwest = { version = ">=0.13, <0.14", features = ["json", "multipart", "blocking", "form"] }
 
 [dependencies]
 chrono = { version = "0.4.41", features = ["serde"] }
@@ -43,7 +43,7 @@ reqwest = { workspace = true, features = ["blocking"] }
 
 [dev-dependencies]
 maplit = "1.0.2"
-tokio = { version = "1.13", features = ["full"] }
+tokio = { version = "1.28.1", features = ["full"] }
 
 [features]
 default = ["blocking", "api-v1_0", "bugs", "answers", "blueprints", "code", "translations", "packages"]
