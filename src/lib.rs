@@ -206,6 +206,306 @@ pub mod types {
             }
         }
     }
+
+    /// Implement Display as JSON, which is how Launchpad expects structured
+    /// values to be passed as method parameters.
+    macro_rules! display_as_json {
+        ($t:ty) => {
+            impl std::fmt::Display for $t {
+                fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                    let s = serde_json::to_string(self).map_err(|_| std::fmt::Error)?;
+                    f.write_str(&s)
+                }
+            }
+        };
+    }
+
+    macro_rules! json_map {
+        ($(#[$meta:meta])* $name:ident, $k:ty, $v:ty) => {
+            $(#[$meta])*
+            #[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+            #[serde(transparent)]
+            pub struct $name(pub std::collections::BTreeMap<$k, $v>);
+
+            impl std::ops::Deref for $name {
+                type Target = std::collections::BTreeMap<$k, $v>;
+
+                fn deref(&self) -> &Self::Target {
+                    &self.0
+                }
+            }
+
+            impl From<std::collections::BTreeMap<$k, $v>> for $name {
+                fn from(map: std::collections::BTreeMap<$k, $v>) -> Self {
+                    Self(map)
+                }
+            }
+
+            display_as_json!($name);
+        };
+    }
+
+    json_map!(
+        /// Mapping from snap names (e.g. "core22", "snapcraft") to the channels to
+        /// install them from.
+        SnapChannels,
+        String,
+        String
+    );
+
+    /// Snap channels used for builds against a base.
+    #[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+    pub struct BaseChannels {
+        /// Mapping from snap names to channels.
+        #[serde(flatten)]
+        pub channels: std::collections::BTreeMap<String, String>,
+
+        /// Per-architecture overrides of `channels`.
+        #[serde(
+            rename = "_byarch",
+            default,
+            skip_serializing_if = "std::collections::BTreeMap::is_empty"
+        )]
+        pub by_arch: std::collections::BTreeMap<String, std::collections::BTreeMap<String, String>>,
+    }
+
+    display_as_json!(BaseChannels);
+
+    /// A feature that a snap base can support.
+    #[derive(
+        Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, serde::Serialize, serde::Deserialize,
+    )]
+    pub enum SnapBaseFeature {
+        /// Allow items with duplicate build-on attribute in the list of architectures.
+        #[serde(rename = "allow_duplicate_build_on")]
+        AllowDuplicateBuildOn,
+    }
+
+    json_map!(
+        /// Features supported by a snap base.
+        SnapBaseFeatures,
+        SnapBaseFeature,
+        bool
+    );
+
+    json_map!(
+        /// ARG variables to pass to an OCI image build.
+        BuildArgs,
+        String,
+        String
+    );
+
+    json_map!(
+        /// Free-form metadata about a live filesystem image, passed to the builder.
+        LiveFSMetadata,
+        String,
+        serde_json::Value
+    );
+
+    json_map!(
+        /// Free-form metadata for artifacts attached to a revision status report.
+        RevisionStatusProperties,
+        String,
+        serde_json::Value
+    );
+
+    /// Overrides for the metadata in an archive's Release files.
+    ///
+    /// Values may use a `{series}` placeholder.
+    #[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+    pub struct ArchiveMetadataOverrides {
+        /// Value for the Origin field.
+        #[serde(rename = "Origin", default, skip_serializing_if = "Option::is_none")]
+        pub origin: Option<String>,
+
+        /// Value for the Label field.
+        #[serde(rename = "Label", default, skip_serializing_if = "Option::is_none")]
+        pub label: Option<String>,
+
+        /// Value for the Suite field.
+        #[serde(rename = "Suite", default, skip_serializing_if = "Option::is_none")]
+        pub suite: Option<String>,
+
+        /// Value for the Snapshots field.
+        #[serde(rename = "Snapshots", default, skip_serializing_if = "Option::is_none")]
+        pub snapshots: Option<String>,
+    }
+
+    display_as_json!(ArchiveMetadataOverrides);
+
+    /// Identity of a social account. Which fields are set depends on the platform.
+    #[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+    pub struct SocialAccountIdentity {
+        /// Username on the platform.
+        pub username: String,
+
+        /// Matrix homeserver, for Matrix accounts.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub homeserver: Option<String>,
+    }
+
+    display_as_json!(SocialAccountIdentity);
+
+    /// An error from the last attempt to upload a snap build to the store.
+    #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+    pub struct StoreUploadErrorMessage {
+        /// Description of the error.
+        pub message: String,
+
+        /// External link with more details about the error.
+        #[serde(default)]
+        pub link: Option<url::Url>,
+    }
+
+    /// An error returned by an OCI registry, as described in
+    /// <https://docs.docker.com/registry/spec/api/#errors>.
+    #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+    pub struct RegistryError {
+        /// Error code, e.g. "BLOB_UNKNOWN".
+        pub code: String,
+
+        /// Human readable description of the error.
+        pub message: String,
+
+        /// Unstructured details about the error; the format depends on the code.
+        #[serde(default)]
+        pub detail: Option<serde_json::Value>,
+    }
+
+    /// Type of a landmark in a project series timeline.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+    #[serde(rename_all = "lowercase")]
+    pub enum TimelineLandmarkType {
+        /// A milestone.
+        Milestone,
+        /// A release.
+        Release,
+    }
+
+    /// A milestone or release in a project series timeline.
+    #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+    pub struct TimelineLandmark {
+        /// Name of the milestone.
+        pub name: String,
+
+        /// Code name of the milestone.
+        pub code_name: Option<String>,
+
+        /// Whether this is a milestone or a release.
+        #[serde(rename = "type")]
+        pub landmark_type: TimelineLandmarkType,
+
+        /// Expected date for milestones, release date for releases.
+        pub date: Option<chrono::NaiveDate>,
+
+        /// Path of the milestone or release.
+        pub uri: String,
+    }
+
+    /// A job in a CI build pipeline stage.
+    #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+    pub struct CIJob(
+        /// Name of the job.
+        pub String,
+        /// Index of the job among the jobs with the same name.
+        pub usize,
+    );
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use std::collections::BTreeMap;
+
+        #[test]
+        fn test_base_channels() {
+            let json =
+                r#"{"core22": "latest/stable", "_byarch": {"riscv64": {"core22": "latest/edge"}}}"#;
+            let channels: BaseChannels = serde_json::from_str(json).unwrap();
+            assert_eq!(
+                channels,
+                BaseChannels {
+                    channels: BTreeMap::from([("core22".into(), "latest/stable".into())]),
+                    by_arch: BTreeMap::from([(
+                        "riscv64".into(),
+                        BTreeMap::from([("core22".into(), "latest/edge".into())])
+                    )]),
+                }
+            );
+            assert_eq!(
+                serde_json::from_str::<serde_json::Value>(&channels.to_string()).unwrap(),
+                serde_json::from_str::<serde_json::Value>(json).unwrap()
+            );
+        }
+
+        #[test]
+        fn test_snap_channels_display() {
+            let channels = SnapChannels::from(BTreeMap::from([(
+                "snapcraft".to_string(),
+                "8.x/stable".to_string(),
+            )]));
+            assert_eq!(channels.to_string(), r#"{"snapcraft":"8.x/stable"}"#);
+        }
+
+        #[test]
+        fn test_snap_base_features() {
+            let features: SnapBaseFeatures =
+                serde_json::from_str(r#"{"allow_duplicate_build_on": true}"#).unwrap();
+            assert_eq!(
+                features.get(&SnapBaseFeature::AllowDuplicateBuildOn),
+                Some(&true)
+            );
+        }
+
+        #[test]
+        fn test_archive_metadata_overrides() {
+            let overrides: ArchiveMetadataOverrides =
+                serde_json::from_str(r#"{"Origin": "LP-PPA-foo", "Suite": "{series}"}"#).unwrap();
+            assert_eq!(
+                overrides,
+                ArchiveMetadataOverrides {
+                    origin: Some("LP-PPA-foo".into()),
+                    label: None,
+                    suite: Some("{series}".into()),
+                    snapshots: None,
+                }
+            );
+            assert_eq!(
+                overrides.to_string(),
+                r#"{"Origin":"LP-PPA-foo","Suite":"{series}"}"#
+            );
+        }
+
+        #[test]
+        fn test_timeline_landmark() {
+            let landmark: TimelineLandmark = serde_json::from_str(
+                r#"{"name": "1.0", "code_name": null, "type": "release", "date": "2024-01-02", "uri": "/foo/+milestone/1.0"}"#,
+            )
+            .unwrap();
+            assert_eq!(
+                landmark,
+                TimelineLandmark {
+                    name: "1.0".into(),
+                    code_name: None,
+                    landmark_type: TimelineLandmarkType::Release,
+                    date: chrono::NaiveDate::from_ymd_opt(2024, 1, 2),
+                    uri: "/foo/+milestone/1.0".into(),
+                }
+            );
+        }
+
+        #[test]
+        fn test_ci_stages() {
+            let stages: Vec<Vec<CIJob>> =
+                serde_json::from_str(r#"[[["build", 0]], [["test", 0], ["test", 1]]]"#).unwrap();
+            assert_eq!(
+                stages,
+                vec![
+                    vec![CIJob("build".into(), 0)],
+                    vec![CIJob("test".into(), 0), CIJob("test".into(), 1)],
+                ]
+            );
+        }
+    }
 }
 
 #[cfg(all(feature = "api-devel", feature = "blocking"))]
@@ -363,6 +663,25 @@ pub mod v1_0 {
             let json = include_str!("../testdata/person.json");
             let person: PersonFull = serde_json::from_str(json).unwrap();
             assert_eq!(person.display_name, "Jelmer Vernooij");
+            assert_eq!(person.id, crate::types::MaybeRedacted::Redacted);
+        }
+
+        #[test]
+        fn test_parse_person_nullable_fields() {
+            let mut json: serde_json::Value =
+                serde_json::from_str(include_str!("../testdata/person.json")).unwrap();
+            for field in [
+                "archive_link",
+                "description",
+                "preferred_email_address_link",
+            ] {
+                json[field] = serde_json::Value::Null;
+            }
+            let person: PersonFull = serde_json::from_value(json).unwrap();
+            #[cfg(feature = "packages")]
+            assert_eq!(person.archive_link, None);
+            assert_eq!(person.description, None);
+            assert_eq!(person.preferred_email_address_link, None);
         }
 
         #[test]
@@ -386,6 +705,16 @@ pub mod v1_0 {
             let bug: BugFull = serde_json::from_str(json).unwrap();
             assert_eq!(bug.name, None);
             assert_eq!(bug.id, 2039729);
+        }
+
+        #[test]
+        #[cfg(feature = "bugs")]
+        fn test_parse_bug_without_last_message() {
+            let mut json: serde_json::Value =
+                serde_json::from_str(include_str!("../testdata/bug.json")).unwrap();
+            json["date_last_message"] = serde_json::Value::Null;
+            let bug: BugFull = serde_json::from_value(json).unwrap();
+            assert_eq!(bug.date_last_message, None);
         }
 
         #[test]

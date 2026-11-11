@@ -2127,7 +2127,7 @@ A personal access token for the webservice API.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_expires" path="$['date_expires']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_expires" path="$['date_expires']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Expiry date</p>
 <p>When the token should expire or was revoked.</p>
@@ -2135,7 +2135,7 @@ A personal access token for the webservice API.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_used" path="$['date_last_used']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_used" path="$['date_last_used']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date last used</p>
 <p>When the token was last used.</p>
@@ -2159,7 +2159,7 @@ A personal access token for the webservice API.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="revoked_by_link" path="$['revoked_by_link']">
+      <wadl:param style="plain" required="false" name="revoked_by_link" path="$['revoked_by_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Revoked by</p>
 <p>The person who revoked the token, if any.</p>
@@ -2378,7 +2378,7 @@ ArchiveDependency interface.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="archive_link" path="$['archive_link']">
+      <wadl:param style="plain" required="false" name="archive_link" path="$['archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Target archive</p>
 <p>The archive that has this dependency.</p>
@@ -2415,7 +2415,7 @@ Pocket
         <wadl:option value="Proposed"/>
         <wadl:option value="Backports"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="snap_base_link" path="$['snap_base_link']">
+      <wadl:param style="plain" required="false" name="snap_base_link" path="$['snap_base_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Target snap base</p>
 <p>The snap base that has this dependency.</p>
@@ -3577,7 +3577,7 @@ access a private repository.</p>
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="authorized_size" path="$['authorized_size']">
+      <wadl:param style="plain" required="false" name="authorized_size" path="$['authorized_size']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Authorized size</p>
 <p>Maximum size, in MiB, allowed for the archive.</p>
@@ -3591,7 +3591,7 @@ Archive dependencies recorded for this archive.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive_dependency-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="description" path="$['description']">
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Description</p>
 <p>A short description of the archive. URLs are allowed and will be rendered as links.</p>
@@ -3700,7 +3700,7 @@ Repository format
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="signing_key_fingerprint" path="$['signing_key_fingerprint']">
+      <wadl:param style="plain" required="false" name="signing_key_fingerprint" path="$['signing_key_fingerprint']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Archive signing key fingerprint</p>
 <p>A OpenPGP signing key fingerprint (40 chars) for this PPA or None if there is no signing key available.</p>
@@ -4216,7 +4216,7 @@ An interface for archive subscribers.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_expires" path="$['date_expires']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_expires" path="$['date_expires']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date of Expiration</p>
 <p>The timestamp when the subscription will expire.</p>
@@ -4427,7 +4427,7 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -4435,7 +4435,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -4443,7 +4443,7 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#builder"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="buildinfo_url" path="$['buildinfo_url']">
+      <wadl:param style="plain" required="false" name="buildinfo_url" path="$['buildinfo_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>buildinfo file URL</p>
 <p>The URL for the .buildinfo file for this build.</p>
@@ -4495,7 +4495,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="changesfile_url" path="$['changesfile_url']">
+      <wadl:param style="plain" required="false" name="changesfile_url" path="$['changesfile_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Changes file URL</p>
 <p>The URL for the changes file for this build. Will be None if the build was imported by Gina.</p>
@@ -4511,7 +4511,7 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#source_package_publishing_history"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -4519,7 +4519,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -4535,7 +4535,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -4564,7 +4564,7 @@ Architecture tag
         <wadl:option value="Proposed"/>
         <wadl:option value="Backports"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="score" path="$['score']">
+      <wadl:param style="plain" required="false" name="score" path="$['score']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Score of the related job (if any)
 </wadl:doc>
@@ -4588,7 +4588,7 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -4889,13 +4889,13 @@ Component Name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="copied_from_archive_link" path="$['copied_from_archive_link']">
+      <wadl:param style="plain" required="false" name="copied_from_archive_link" path="$['copied_from_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Original archive ID where this package was copied from.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="creator_link" path="$['creator_link']">
+      <wadl:param style="plain" required="false" name="creator_link" path="$['creator_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Publication Creator</p>
 <p>The IPerson who created this publication.</p>
@@ -4911,7 +4911,7 @@ Original archive ID where this package was copied from.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_made_pending" path="$['date_made_pending']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_made_pending" path="$['date_made_pending']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Made Pending</p>
 <p>The date on which this record was set as pending removal</p>
@@ -4919,7 +4919,7 @@ Original archive ID where this package was copied from.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_published" path="$['date_published']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_published" path="$['date_published']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Published</p>
 <p>The date on which this record was published</p>
@@ -4927,7 +4927,7 @@ Original archive ID where this package was copied from.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_removed" path="$['date_removed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_removed" path="$['date_removed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Removed</p>
 <p>The date on which this record was removed from the published set</p>
@@ -4935,7 +4935,7 @@ Original archive ID where this package was copied from.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_superseded" path="$['date_superseded']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_superseded" path="$['date_superseded']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Superseded</p>
 <p>The date on which this record was marked superseded</p>
@@ -4959,7 +4959,7 @@ Original archive ID where this package was copied from.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_arch_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="phased_update_percentage" path="$['phased_update_percentage']">
+      <wadl:param style="plain" required="false" name="phased_update_percentage" path="$['phased_update_percentage']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The percentage of users for whom this package should be recommended, or None to publish the update for everyone
 </wadl:doc>
@@ -4984,7 +4984,7 @@ Priority Name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="removal_comment" path="$['removal_comment']">
+      <wadl:param style="plain" required="false" name="removal_comment" path="$['removal_comment']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Removal Comment</p>
 <p>Reason why this publication is going to be removed.</p>
@@ -4992,7 +4992,7 @@ Priority Name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="removed_by_link" path="$['removed_by_link']">
+      <wadl:param style="plain" required="false" name="removed_by_link" path="$['removed_by_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Removed By</p>
 <p>The Person responsible for the removal</p>
@@ -5000,7 +5000,7 @@ Priority Name
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="scheduled_deletion_date" path="$['scheduled_deletion_date']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="scheduled_deletion_date" path="$['scheduled_deletion_date']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Scheduled Deletion Date</p>
 <p>The date on which this record is scheduled for deletion</p>
@@ -5753,7 +5753,7 @@ Branch Type
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="code_import_link" path="$['code_import_link']">
+      <wadl:param style="plain" required="false" name="code_import_link" path="$['code_import_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The associated CodeImport, if any.
 </wadl:doc>
@@ -5845,25 +5845,25 @@ Date Last Modified
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch_merge_proposal-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="last_mirror_attempt" path="$['last_mirror_attempt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="last_mirror_attempt" path="$['last_mirror_attempt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Last time a mirror of this branch was attempted.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="last_mirrored" path="$['last_mirrored']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="last_mirrored" path="$['last_mirrored']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Last time this branch was successfully mirrored.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="last_scanned" path="$['last_scanned']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="last_scanned" path="$['last_scanned']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Last time this branch was successfully scanned.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="last_scanned_id" path="$['last_scanned_id']">
+      <wadl:param style="plain" required="false" name="last_scanned_id" path="$['last_scanned_id']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Last scanned revision ID</p>
 <p>The head revision ID of the branch when last successfully scanned.</p>
@@ -5888,7 +5888,7 @@ The bugs linked to this branch.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#bug-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="mirror_status_message" path="$['mirror_status_message']">
+      <wadl:param style="plain" required="false" name="mirror_status_message" path="$['mirror_status_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The last message we got when mirroring this branch.
 </wadl:doc>
@@ -5918,7 +5918,7 @@ The last message we got when mirroring this branch.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="project_link" path="$['project_link']">
+      <wadl:param style="plain" required="false" name="project_link" path="$['project_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Project</p>
 <p>The project this branch belongs to.</p>
@@ -5970,7 +5970,7 @@ Repository Format
         <wadl:option value="Bazaar development format - chk repository with bencode revision serialization (needs bzr.dev from 1.16) "/>
         <wadl:option value="Bazaar repository format 2a (needs bzr 1.16 or later) "/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="reviewer_link" path="$['reviewer_link']">
+      <wadl:param style="plain" required="false" name="reviewer_link" path="$['reviewer_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Review Team</p>
 <p>The reviewer of a branch is the person or exclusive team that is responsible for reviewing proposals and merging into this branch.</p>
@@ -5986,7 +5986,7 @@ Repository Format
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="sourcepackage_link" path="$['sourcepackage_link']">
+      <wadl:param style="plain" required="false" name="sourcepackage_link" path="$['sourcepackage_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The ISourcePackage that this branch belongs to. None if not a package branch.
 </wadl:doc>
@@ -6018,7 +6018,7 @@ BranchSubscriptions associated to this branch.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="url" path="$['url']">
+      <wadl:param style="plain" required="false" name="url" path="$['url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Branch URL</p>
 <p>The external location where the Bazaar branch is hosted. It is None when the branch is hosted by Launchpad.</p>
@@ -6032,7 +6032,7 @@ Webhooks for this target.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#webhook-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="whiteboard" path="$['whiteboard']">
+      <wadl:param style="plain" required="false" name="whiteboard" path="$['whiteboard']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Whiteboard</p>
 <p>Notes on the current status of the branch.</p>
@@ -6357,7 +6357,7 @@ All messages discussing this merge proposal
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#code_review_comment-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="commit_message" path="$['commit_message']">
+      <wadl:param style="plain" required="false" name="commit_message" path="$['commit_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Commit message</p>
 <p>The commit message that should be used when merging the source branch.</p>
@@ -6371,7 +6371,7 @@ Date created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_merged" path="$['date_merged']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_merged" path="$['date_merged']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date merged</p>
 <p>The date that the source branch was merged into the target branch</p>
@@ -6379,19 +6379,19 @@ Date created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_review_requested" path="$['date_review_requested']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_review_requested" path="$['date_review_requested']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date review requested
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_reviewed" path="$['date_reviewed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_reviewed" path="$['date_reviewed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date reviewed
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="description" path="$['description']">
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Description</p>
 <p>A detailed description of the changes that are being addressed by the branch being proposed to be merged.</p>
@@ -6399,7 +6399,7 @@ Date reviewed
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="merge_reporter_link" path="$['merge_reporter_link']">
+      <wadl:param style="plain" required="false" name="merge_reporter_link" path="$['merge_reporter_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Merge reporter</p>
 <p>The user that marked the branch as merged.</p>
@@ -6407,7 +6407,7 @@ Date reviewed
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="merged_revision_id" path="$['merged_revision_id']">
+      <wadl:param style="plain" required="false" name="merged_revision_id" path="$['merged_revision_id']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Merged revision ID</p>
 <p>The revision ID on the target branch which contains the merge from the source branch (currently Git only).</p>
@@ -6415,7 +6415,7 @@ Date reviewed
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="merged_revno" path="$['merged_revno']">
+      <wadl:param style="plain" required="false" name="merged_revno" path="$['merged_revno']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Merged revision number</p>
 <p>The revision number on the target branch which contains the merge from the source branch (Bazaar only).</p>
@@ -6423,7 +6423,7 @@ Date reviewed
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="prerequisite_branch_link" path="$['prerequisite_branch_link']">
+      <wadl:param style="plain" required="false" name="prerequisite_branch_link" path="$['prerequisite_branch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Prerequisite branch</p>
 <p>The branch that the source branch branched from. If this branch is the same as the target branch, then leave this field blank.</p>
@@ -6431,7 +6431,7 @@ Date reviewed
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="prerequisite_git_path" path="$['prerequisite_git_path']">
+      <wadl:param style="plain" required="false" name="prerequisite_git_path" path="$['prerequisite_git_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Prerequisite Git branch path</p>
 <p>The path of the Git branch that the source branch branched from. If this branch is the same as the target branch, then leave this field blank.</p>
@@ -6439,7 +6439,7 @@ Date reviewed
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="prerequisite_git_repository_link" path="$['prerequisite_git_repository_link']">
+      <wadl:param style="plain" required="false" name="prerequisite_git_repository_link" path="$['prerequisite_git_repository_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Prerequisite Git repository</p>
 <p>The Git repository containing the branch that the source branch branched from. If this branch is the same as the target branch, then leave this field blank.</p>
@@ -6447,7 +6447,7 @@ Date reviewed
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_repository"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="preview_diff_link" path="$['preview_diff_link']">
+      <wadl:param style="plain" required="false" name="preview_diff_link" path="$['preview_diff_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The current diff of the source branch against the target branch.
 </wadl:doc>
@@ -6491,13 +6491,13 @@ All preview diffs for this merge proposal.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="reviewed_revid" path="$['reviewed_revid']">
+      <wadl:param style="plain" required="false" name="reviewed_revid" path="$['reviewed_revid']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The revision id that has been approved by the reviewer.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="reviewer_link" path="$['reviewer_link']">
+      <wadl:param style="plain" required="false" name="reviewer_link" path="$['reviewer_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Review person or team</p>
 <p>The person that accepted (or rejected) the code for merging.</p>
@@ -6505,7 +6505,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="source_branch_link" path="$['source_branch_link']">
+      <wadl:param style="plain" required="false" name="source_branch_link" path="$['source_branch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source branch</p>
 <p>The branch that has code to land.</p>
@@ -6513,7 +6513,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="source_git_path" path="$['source_git_path']">
+      <wadl:param style="plain" required="false" name="source_git_path" path="$['source_git_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source Git branch path</p>
 <p>The path of the Git branch that has code to land.</p>
@@ -6521,7 +6521,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="source_git_repository_link" path="$['source_git_repository_link']">
+      <wadl:param style="plain" required="false" name="source_git_repository_link" path="$['source_git_repository_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source Git repository</p>
 <p>The Git repository that has code to land.</p>
@@ -6529,7 +6529,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_repository"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="superseded_by_link" path="$['superseded_by_link']">
+      <wadl:param style="plain" required="false" name="superseded_by_link" path="$['superseded_by_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Superseded by</p>
 <p>The branch merge proposal that supersedes this one.</p>
@@ -6537,7 +6537,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch_merge_proposal"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="supersedes_link" path="$['supersedes_link']">
+      <wadl:param style="plain" required="false" name="supersedes_link" path="$['supersedes_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Supersedes</p>
 <p>The branch merge proposal that this one supersedes.</p>
@@ -6545,7 +6545,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch_merge_proposal"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="target_branch_link" path="$['target_branch_link']">
+      <wadl:param style="plain" required="false" name="target_branch_link" path="$['target_branch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Target branch</p>
 <p>The branch that the source branch will be merged into.</p>
@@ -6553,7 +6553,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="target_git_path" path="$['target_git_path']">
+      <wadl:param style="plain" required="false" name="target_git_path" path="$['target_git_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Target Git branch path</p>
 <p>The path of the Git branch that the source branch will be merged into.</p>
@@ -6561,7 +6561,7 @@ The revision id that has been approved by the reviewer.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="target_git_repository_link" path="$['target_git_repository_link']">
+      <wadl:param style="plain" required="false" name="target_git_repository_link" path="$['target_git_repository_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Target Git repository</p>
 <p>The Git repository that the source branch will be merged into.</p>
@@ -6908,7 +6908,7 @@ Bug
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="message" path="$['message']">
+      <wadl:param style="plain" required="false" name="message" path="$['message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Message</p>
 <p>Additional information about what changed.</p>
@@ -6916,7 +6916,7 @@ Bug
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="newvalue" path="$['newvalue']">
+      <wadl:param style="plain" required="false" name="newvalue" path="$['newvalue']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>New Value</p>
 <p>The value after the change.</p>
@@ -6924,7 +6924,7 @@ Bug
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="oldvalue" path="$['oldvalue']">
+      <wadl:param style="plain" required="false" name="oldvalue" path="$['oldvalue']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Old Value</p>
 <p>The value before the change.</p>
@@ -7859,7 +7859,7 @@ Date Created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_message" path="$['date_last_message']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_message" path="$['date_last_message']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date of last bug message
 </wadl:doc>
@@ -8365,7 +8365,7 @@ already DECLINED, this method is a noop.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_decided" path="$['date_decided']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_decided" path="$['date_decided']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Decided</p>
 <p>The date on which this nomination was approved or declined.</p>
@@ -8373,13 +8373,13 @@ already DECLINED, this method is a noop.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="decider_link" path="$['decider_link']">
+      <wadl:param style="plain" required="false" name="decider_link" path="$['decider_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Decided By
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="distroseries_link" path="$['distroseries_link']">
+      <wadl:param style="plain" required="false" name="distroseries_link" path="$['distroseries_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Series
 </wadl:doc>
@@ -8391,7 +8391,7 @@ Submitter
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="productseries_link" path="$['productseries_link']">
+      <wadl:param style="plain" required="false" name="productseries_link" path="$['productseries_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Series
 </wadl:doc>
@@ -8693,7 +8693,7 @@ Structural subscription
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#structural_subscription"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="tags" path="$['tags']">
+      <wadl:param style="plain" required="true" name="tags" path="$['tags']" repeating="true">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The tags interested in
 </wadl:doc>
@@ -9037,7 +9037,7 @@ Omit bugs targeted to a series
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -9045,7 +9045,7 @@ Omit bugs targeted to a series
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
@@ -10229,19 +10229,19 @@ Date Created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_changed" path="$['date_last_changed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_changed" path="$['date_last_changed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Last Changed
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_checked" path="$['date_last_checked']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_checked" path="$['date_last_checked']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Last Checked
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_next_checked" path="$['date_next_checked']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_next_checked" path="$['date_next_checked']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Next Check
 </wadl:doc>
@@ -10280,13 +10280,13 @@ Owner
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="remote_importance" path="$['remote_importance']">
+      <wadl:param style="plain" required="false" name="remote_importance" path="$['remote_importance']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Remote Importance
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="remote_status" path="$['remote_status']">
+      <wadl:param style="plain" required="false" name="remote_status" path="$['remote_status']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Remote Status
 </wadl:doc>
@@ -10465,7 +10465,7 @@ Operations that jobs for the build farm must implement.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -10473,7 +10473,7 @@ Operations that jobs for the build farm must implement.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -10525,7 +10525,7 @@ Operations that jobs for the build farm must implement.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -10533,7 +10533,7 @@ Operations that jobs for the build farm must implement.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -10549,7 +10549,7 @@ Operations that jobs for the build farm must implement.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -10798,7 +10798,7 @@ Source package name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="failnotes" path="$['failnotes']">
+      <wadl:param style="plain" required="false" name="failnotes" path="$['failnotes']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Failure Notes</p>
 <p>The reason for a builder not being ok</p>
@@ -10830,7 +10830,7 @@ Source package name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="open_resources" path="$['open_resources']">
+      <wadl:param style="plain" required="false" name="open_resources" path="$['open_resources']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Open resources</p>
 <p>Resource tags offered by this builder, that can be required by a build and if required must match.</p>
@@ -10846,7 +10846,7 @@ Source package name
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="restricted_resources" path="$['restricted_resources']">
+      <wadl:param style="plain" required="false" name="restricted_resources" path="$['restricted_resources']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Restricted resources</p>
 <p>Resource tags offered by this builder, indicating that the builder may only be used by builds that explicitly require these tags.</p>
@@ -10870,7 +10870,7 @@ Source package name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="version" path="$['version']">
+      <wadl:param style="plain" required="false" name="version" path="$['version']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Version</p>
 <p>The version of launchpad-buildd on the worker.</p>
@@ -10886,7 +10886,7 @@ Source package name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="vm_host" path="$['vm_host']">
+      <wadl:param style="plain" required="false" name="vm_host" path="$['vm_host']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>VM host</p>
 <p>The machine hostname hosting the virtual buildd-worker, e.g.: foobar-host.ppa</p>
@@ -11128,7 +11128,7 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -11136,7 +11136,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -11194,7 +11194,7 @@ The Git commit ID for this CI build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -11202,7 +11202,7 @@ The Git commit ID for this CI build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -11218,7 +11218,7 @@ The Git commit ID for this CI build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -11279,7 +11279,7 @@ A mapping from job IDs to result tokens, retrieved from the builder.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="score" path="$['score']">
+      <wadl:param style="plain" required="false" name="score" path="$['score']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Score of the related build farm job (if any).
 </wadl:doc>
@@ -11297,7 +11297,7 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -11646,7 +11646,7 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -11662,7 +11662,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -11729,7 +11729,7 @@ Craft platform name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -11737,7 +11737,7 @@ Craft platform name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -11753,7 +11753,7 @@ Craft platform name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -11808,7 +11808,7 @@ The person who requested this build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="revision_id" path="$['revision_id']">
+      <wadl:param style="plain" required="false" name="revision_id" path="$['revision_id']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Revision ID</p>
 <p>The revision ID of the branch used for this build, if available.</p>
@@ -11816,13 +11816,13 @@ The person who requested this build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="score" path="$['score']">
+      <wadl:param style="plain" required="false" name="score" path="$['score']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Score of the related build farm job (if any).
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_upload_error_message" path="$['store_upload_error_message']">
+      <wadl:param style="plain" required="false" name="store_upload_error_message" path="$['store_upload_error_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Store upload error message</p>
 <p>The error message, if any, from the last attempt to upload this charm recipe build to Charmhub.</p>
@@ -11830,7 +11830,7 @@ Score of the related build farm job (if any).
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_upload_revision" path="$['store_upload_revision']">
+      <wadl:param style="plain" required="false" name="store_upload_revision" path="$['store_upload_revision']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Store revision</p>
 <p>The revision assigned to this charm recipe build by Charmhub.</p>
@@ -11855,7 +11855,7 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -12064,7 +12064,7 @@ Builds produced by this request
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#charm_recipe_build-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The time when this request finished
 </wadl:doc>
@@ -12076,7 +12076,7 @@ The time when this request was made
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="error_message" path="$['error_message']">
+      <wadl:param style="plain" required="false" name="error_message" path="$['error_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Error message
 </wadl:doc>
@@ -12210,7 +12210,7 @@ Supported snap names: 'charmcraft', 'core', 'core18', 'core20', 'core22', 'core2
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_path" path="$['build_path']">
+      <wadl:param style="plain" required="false" name="build_path" path="$['build_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build path</p>
 <p>Subdirectory within the branch containing metadata.yaml.</p>
@@ -12278,7 +12278,7 @@ Failed build requests for this charm recipe.
         <wadl:option value="strict"/>
         <wadl:option value="permissive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_path" path="$['git_path']">
+      <wadl:param style="plain" required="false" name="git_path" path="$['git_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git branch path</p>
 <p>The path of the Git branch containing a charm recipe.</p>
@@ -12286,7 +12286,7 @@ Failed build requests for this charm recipe.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_ref_link" path="$['git_ref_link']">
+      <wadl:param style="plain" required="false" name="git_ref_link" path="$['git_ref_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git branch</p>
 <p>The Git branch containing a charm recipe.</p>
@@ -12294,7 +12294,7 @@ Failed build requests for this charm recipe.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_ref"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_repository_link" path="$['git_repository_link']">
+      <wadl:param style="plain" required="false" name="git_repository_link" path="$['git_repository_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git repository</p>
 <p>A Git repository with a branch containing a charm recipe.</p>
@@ -12302,7 +12302,7 @@ Failed build requests for this charm recipe.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_repository"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_repository_url" path="$['git_repository_url']">
+      <wadl:param style="plain" required="false" name="git_repository_url" path="$['git_repository_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git repository URL</p>
 <p>The URL of a Git repository with a branch containing a charmcraft.yaml at the top level.</p>
@@ -12398,7 +12398,7 @@ The project that this charm recipe is associated with
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_name" path="$['store_name']">
+      <wadl:param style="plain" required="false" name="store_name" path="$['store_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Registered store name</p>
 <p>The registered name of this charm in the store.</p>
@@ -12414,7 +12414,7 @@ The project that this charm recipe is associated with
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Use fetch service</p>
 <p>If set, Charm builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
@@ -12686,7 +12686,7 @@ thrown in that situation.</p>
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="branch_link" path="$['branch_link']">
+      <wadl:param style="plain" required="false" name="branch_link" path="$['branch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Branch</p>
 <p>The Bazaar branch produced by the import system.</p>
@@ -12694,7 +12694,7 @@ thrown in that situation.</p>
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="cvs_module" path="$['cvs_module']">
+      <wadl:param style="plain" required="false" name="cvs_module" path="$['cvs_module']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Module</p>
 <p>The path to import within the repository. Usually, it is the name of the project.</p>
@@ -12702,7 +12702,7 @@ thrown in that situation.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="cvs_root" path="$['cvs_root']">
+      <wadl:param style="plain" required="false" name="cvs_root" path="$['cvs_root']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Repository</p>
 <p>The CVSROOT. Example: :pserver:anonymous@anoncvs.gnome.org:/cvs/gnome</p>
@@ -12710,13 +12710,13 @@ thrown in that situation.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_successful" path="$['date_last_successful']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_successful" path="$['date_last_successful']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Last successful
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_repository_link" path="$['git_repository_link']">
+      <wadl:param style="plain" required="false" name="git_repository_link" path="$['git_repository_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git repository</p>
 <p>The Git repository produced by the import system.</p>
@@ -12761,7 +12761,7 @@ Last successful
         <wadl:option value="Bazaar"/>
         <wadl:option value="Git"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="url" path="$['url']">
+      <wadl:param style="plain" required="false" name="url" path="$['url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>URL</p>
 <p>The URL of the VCS branch.</p>
@@ -12895,19 +12895,19 @@ Date Created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_deleted" path="$['date_deleted']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_deleted" path="$['date_deleted']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 When this message was deleted
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_edited" path="$['date_last_edited']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_edited" path="$['date_last_edited']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 When this message was last edited
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>DB ID</p>
 <p>The tracking number for this comment.</p>
@@ -12945,7 +12945,7 @@ Review
         <wadl:option value="Disapprove"/>
         <wadl:option value="Needs Resubmitting"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="vote_tag" path="$['vote_tag']">
+      <wadl:param style="plain" required="false" name="vote_tag" path="$['vote_tag']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Vote tag
 </wadl:doc>
@@ -13116,7 +13116,7 @@ The merge proposal that is the subject of this vote
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch_merge_proposal"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="comment_link" path="$['comment_link']">
+      <wadl:param style="plain" required="false" name="comment_link" path="$['comment_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The code review comment that contains the most recent vote.
 </wadl:doc>
@@ -13140,7 +13140,7 @@ The person who originally registered this vote
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="review_type" path="$['review_type']">
+      <wadl:param style="plain" required="false" name="review_type" path="$['review_type']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Review type</p>
 <p>Lowercase keywords describing the type of review.</p>
@@ -13634,7 +13634,7 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -13650,7 +13650,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -13710,7 +13710,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -13718,7 +13718,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -13734,7 +13734,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -13789,7 +13789,7 @@ The person who requested this build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="revision_id" path="$['revision_id']">
+      <wadl:param style="plain" required="false" name="revision_id" path="$['revision_id']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Revision ID</p>
 <p>The revision ID of the branch used for this build, if available.</p>
@@ -13797,7 +13797,7 @@ The person who requested this build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="score" path="$['score']">
+      <wadl:param style="plain" required="false" name="score" path="$['score']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Score of the related build farm job (if any).
 </wadl:doc>
@@ -13809,7 +13809,7 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -14006,7 +14006,7 @@ Builds produced by this request
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#craft_recipe_build-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The time when this request finished
 </wadl:doc>
@@ -14018,7 +14018,7 @@ The time when this request was made
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="error_message" path="$['error_message']">
+      <wadl:param style="plain" required="false" name="error_message" path="$['error_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Error message
 </wadl:doc>
@@ -14151,7 +14151,7 @@ A buildable craft recipe.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_path" path="$['build_path']">
+      <wadl:param style="plain" required="false" name="build_path" path="$['build_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build path</p>
 <p>Subdirectory within the branch containing craft.yaml.</p>
@@ -14339,7 +14339,7 @@ The project that this craft recipe is associated with
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_name" path="$['store_name']">
+      <wadl:param style="plain" required="false" name="store_name" path="$['store_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Registered store name</p>
 <p>The registered name of this craft in the store.</p>
@@ -14355,7 +14355,7 @@ The project that this craft recipe is associated with
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Use fetch service</p>
 <p>If set, Craft builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
@@ -15421,7 +15421,7 @@ A sequence of the distribution's primary, partner and debug archives.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -15429,7 +15429,7 @@ A sequence of the distribution's primary, partner and debug archives.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
@@ -15437,7 +15437,7 @@ A sequence of the distribution's primary, partner and debug archives.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_supervisor_link" path="$['bug_supervisor_link']">
+      <wadl:param style="plain" required="false" name="bug_supervisor_link" path="$['bug_supervisor_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Bug Supervisor</p>
 <p>The Launchpad id of the person or team (preferred) responsible for bug management.</p>
@@ -15451,7 +15451,7 @@ All enabled and official RELEASE mirrors of this Distribution.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distribution_mirror-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="code_admin_link" path="$['code_admin_link']">
+      <wadl:param style="plain" required="false" name="code_admin_link" path="$['code_admin_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Code Administrator</p>
 <p>The distribution source code administrator.</p>
@@ -15483,7 +15483,7 @@ All enabled and official RELEASE mirrors of this Distribution.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="current_series_link" path="$['current_series_link']">
+      <wadl:param style="plain" required="false" name="current_series_link" path="$['current_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Current series</p>
 <p>The current development series of this distribution. Note that all maintainerships refer to the current series. When people ask about the state of packages in the distribution, we should interpret that query in the context of the currentseries.</p>
@@ -15524,7 +15524,7 @@ This Distribution's derivatives
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="development_series_alias" path="$['development_series_alias']">
+      <wadl:param style="plain" required="false" name="development_series_alias" path="$['development_series_alias']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Alias for development series</p>
 <p>If set, an alias for the current development series in this distribution.</p>
@@ -15548,7 +15548,7 @@ This Distribution's derivatives
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="driver_link" path="$['driver_link']">
+      <wadl:param style="plain" required="false" name="driver_link" path="$['driver_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Driver</p>
 <p>The person or team responsible for decisions about features and bugs that will be targeted for any series in this distribution. Note that you can also specify a driver on each series whose permissions will be limited to that specific series.</p>
@@ -15594,7 +15594,7 @@ This Distribution's derivatives
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#HostedFile"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="main_archive_link" path="$['main_archive_link']">
+      <wadl:param style="plain" required="false" name="main_archive_link" path="$['main_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Distribution Main Archive.
 </wadl:doc>
@@ -15718,7 +15718,7 @@ Packages are tracked in Launchpad
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="security_admin_link" path="$['security_admin_link']">
+      <wadl:param style="plain" required="false" name="security_admin_link" path="$['security_admin_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Security Administrator</p>
 <p>The distribution security administrator.</p>
@@ -16270,7 +16270,7 @@ Return True if this is an official mirror.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_reviewed" path="$['date_reviewed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_reviewed" path="$['date_reviewed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date reviewed</p>
 <p>The date on which this mirror was last reviewed by a mirror admin.</p>
@@ -16306,7 +16306,7 @@ This mirror was probed successfully.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="ftp_base_url" path="$['ftp_base_url']">
+      <wadl:param style="plain" required="false" name="ftp_base_url" path="$['ftp_base_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>FTP URL</p>
 <p>e.g.: <a class="rst-reference external" href="ftp://archive.ubuntu.com/ubuntu/" target="_top">ftp://archive.ubuntu.com/ubuntu/</a></p>
@@ -16314,7 +16314,7 @@ This mirror was probed successfully.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="http_base_url" path="$['http_base_url']">
+      <wadl:param style="plain" required="false" name="http_base_url" path="$['http_base_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>HTTP URL</p>
 <p>e.g.: <a class="rst-reference external" href="http://archive.ubuntu.com/ubuntu/" target="_top">http://archive.ubuntu.com/ubuntu/</a></p>
@@ -16322,7 +16322,7 @@ This mirror was probed successfully.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="https_base_url" path="$['https_base_url']">
+      <wadl:param style="plain" required="false" name="https_base_url" path="$['https_base_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 HTTPS URL
 </wadl:doc>
@@ -16352,7 +16352,7 @@ HTTPS URL
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="reviewer_link" path="$['reviewer_link']">
+      <wadl:param style="plain" required="false" name="reviewer_link" path="$['reviewer_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Reviewer</p>
 <p>The person who last reviewed this mirror.</p>
@@ -16360,7 +16360,7 @@ HTTPS URL
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="rsync_base_url" path="$['rsync_base_url']">
+      <wadl:param style="plain" required="false" name="rsync_base_url" path="$['rsync_base_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Rsync URL</p>
 <p>e.g.: rsync://archive.ubuntu.com/ubuntu/</p>
@@ -16401,7 +16401,7 @@ Link Speed
         <wadl:option value="Official"/>
         <wadl:option value="Broken"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="whiteboard" path="$['whiteboard']">
+      <wadl:param style="plain" required="false" name="whiteboard" path="$['whiteboard']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Whiteboard</p>
 <p>Notes on the current status of the mirror (only visible to admins and the mirror's registrant).</p>
@@ -17073,7 +17073,7 @@ Owner of the resulting branch
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -17081,7 +17081,7 @@ Owner of the resulting branch
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
@@ -17129,7 +17129,7 @@ Title for this package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upstream_product_link" path="$['upstream_product_link']">
+      <wadl:param style="plain" required="false" name="upstream_product_link" path="$['upstream_product_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The upstream product to which this package is linked.
 </wadl:doc>
@@ -17335,7 +17335,7 @@ Source package name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="chroot_url" path="$['chroot_url']">
+      <wadl:param style="plain" required="false" name="chroot_url" path="$['chroot_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build chroot URL</p>
 <p>The URL to the current build chroot for this distroarchseries.</p>
@@ -17417,7 +17417,7 @@ Processor
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="underlying_architecture_tag" path="$['underlying_architecture_tag']">
+      <wadl:param style="plain" required="false" name="underlying_architecture_tag" path="$['underlying_architecture_tag']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Underlying Architecture Tag</p>
 <p>If set, identifies architecture_tag as a 'variant' of the specified architecture.</p>
@@ -17951,7 +17951,7 @@ Comment text
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="base_version" path="$['base_version']">
+      <wadl:param style="plain" required="false" name="base_version" path="$['base_version']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Base version</p>
 <p>The common base version of the package for differences with different versions in the parent and derived series.</p>
@@ -17978,7 +17978,7 @@ Comment text
         <wadl:option value="Completed"/>
         <wadl:option value="Failed"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="package_diff_url" path="$['package_diff_url']">
+      <wadl:param style="plain" required="false" name="package_diff_url" path="$['package_diff_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Package diff url</p>
 <p>The url for the diff between the base version and the derived version.</p>
@@ -17997,7 +17997,7 @@ Comment text
         <wadl:option value="Completed"/>
         <wadl:option value="Failed"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="parent_package_diff_url" path="$['parent_package_diff_url']">
+      <wadl:param style="plain" required="false" name="parent_package_diff_url" path="$['parent_package_diff_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Parent package diff url</p>
 <p>The url for the diff between the base version and the parent version.</p>
@@ -18013,7 +18013,7 @@ Comment text
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="parent_source_version" path="$['parent_source_version']">
+      <wadl:param style="plain" required="false" name="parent_source_version" path="$['parent_source_version']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Parent source version</p>
 <p>The version of the most recent source publishing in the parent series.</p>
@@ -18021,7 +18021,7 @@ Comment text
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="source_version" path="$['source_version']">
+      <wadl:param style="plain" required="false" name="source_version" path="$['source_version']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source version</p>
 <p>The version of the most recent source publishing in the derived series.</p>
@@ -18894,7 +18894,7 @@ automatically upgrade within backports, but not into it.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -18902,7 +18902,7 @@ automatically upgrade within backports, but not into it.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
@@ -18910,7 +18910,7 @@ automatically upgrade within backports, but not into it.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="changeslist" path="$['changeslist']">
+      <wadl:param style="plain" required="false" name="changeslist" path="$['changeslist']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Email changes to</p>
 <p>The mailing list or other email address that Launchpad should notify about new uploads.</p>
@@ -19022,7 +19022,7 @@ merge all those changes in the base pack.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="main_archive_link" path="$['main_archive_link']">
+      <wadl:param style="plain" required="false" name="main_archive_link" path="$['main_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Distribution Main Archive
 </wadl:doc>
@@ -19036,7 +19036,7 @@ Distribution Main Archive
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="nominatedarchindep_link" path="$['nominatedarchindep_link']">
+      <wadl:param style="plain" required="false" name="nominatedarchindep_link" path="$['nominatedarchindep_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 DistroArchSeries designed to build architecture-independent packages within this distroseries context.
 </wadl:doc>
@@ -20063,7 +20063,7 @@ The branch references present in this repository.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_ref-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="code_import_link" path="$['code_import_link']">
+      <wadl:param style="plain" required="false" name="code_import_link" path="$['code_import_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The associated CodeImport, if any.
 </wadl:doc>
@@ -20081,7 +20081,7 @@ Date last modified
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_repacked" path="$['date_last_repacked']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_repacked" path="$['date_last_repacked']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date last repacked</p>
 <p>The date that this repository was last repacked.</p>
@@ -20089,7 +20089,7 @@ Date last modified
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_scanned" path="$['date_last_scanned']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_scanned" path="$['date_last_scanned']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date last scanned</p>
 <p>The date when pack statistics were last updated for this repository.</p>
@@ -20097,7 +20097,7 @@ Date last modified
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="default_branch" path="$['default_branch']">
+      <wadl:param style="plain" required="false" name="default_branch" path="$['default_branch']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Default branch</p>
 <p>The full path to the default branch for this repository, e.g. refs/heads/master.</p>
@@ -20113,7 +20113,7 @@ Date last modified
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch_merge_proposal-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="description" path="$['description']">
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Description</p>
 <p>A short description of this repository.</p>
@@ -20129,7 +20129,7 @@ Date last modified
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_https_url" path="$['git_https_url']">
+      <wadl:param style="plain" required="false" name="git_https_url" path="$['git_https_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>HTTPS URL</p>
 <p>An HTTPS URL for this repository, or None in the case of private repositories.</p>
@@ -20153,7 +20153,7 @@ Date last modified
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 ID
 </wadl:doc>
@@ -20268,7 +20268,7 @@ The references present in this repository.
         <wadl:option value="Imported"/>
         <wadl:option value="Remote"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="reviewer_link" path="$['reviewer_link']">
+      <wadl:param style="plain" required="false" name="reviewer_link" path="$['reviewer_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Review Team</p>
 <p>The reviewer of a repository is the person or exclusive team that is responsible for reviewing proposals and merging into this repository.</p>
@@ -21412,7 +21412,7 @@ The English name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="plural_expression" path="$['plural_expression']">
+      <wadl:param style="plain" required="false" name="plural_expression" path="$['plural_expression']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Plural form expression</p>
 <p>The expression that relates a number of items to the appropriate plural form.</p>
@@ -21420,7 +21420,7 @@ The English name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="plural_forms" path="$['plural_forms']">
+      <wadl:param style="plain" required="false" name="plural_forms" path="$['plural_forms']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Number of plural forms</p>
 <p>The number of plural forms this language has.</p>
@@ -21600,7 +21600,7 @@ The archive from which to build the live filesystem.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -21608,7 +21608,7 @@ The archive from which to build the live filesystem.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -21660,7 +21660,7 @@ The archive from which to build the live filesystem.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -21668,7 +21668,7 @@ The archive from which to build the live filesystem.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -21684,7 +21684,7 @@ The archive from which to build the live filesystem.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -21720,7 +21720,7 @@ The live filesystem to build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#livefs"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="metadata_override" path="$['metadata_override']">
+      <wadl:param style="plain" required="false" name="metadata_override" path="$['metadata_override']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 A dict of data about the image; this will be merged into the metadata dict for the live filesystem.
 </wadl:doc>
@@ -21743,7 +21743,7 @@ The person who requested this build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="score" path="$['score']">
+      <wadl:param style="plain" required="false" name="score" path="$['score']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Score of the related build farm job (if any).
 </wadl:doc>
@@ -21755,13 +21755,13 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="unique_key" path="$['unique_key']">
+      <wadl:param style="plain" required="false" name="unique_key" path="$['unique_key']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 An optional unique key; if set, this identifies a class of builds for this live filesystem.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -21769,7 +21769,7 @@ An optional unique key; if set, this identifies a class of builds for this live 
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="version" path="$['version']">
+      <wadl:param style="plain" required="false" name="version" path="$['version']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 A version string for this build.
 </wadl:doc>
@@ -21973,13 +21973,13 @@ Date last modified
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 ID
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="keep_binary_files_days" path="$['keep_binary_files_days']">
+      <wadl:param style="plain" required="false" name="keep_binary_files_days" path="$['keep_binary_files_days']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Binary file retention period</p>
 <p>Keep binary files attached to builds of this live filesystem for at least this many days.  If unset, disable pruning.</p>
@@ -22226,13 +22226,13 @@ Date Created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_deleted" path="$['date_deleted']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_deleted" path="$['date_deleted']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 When this message was deleted
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_last_edited" path="$['date_last_edited']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_last_edited" path="$['date_last_edited']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 When this message was last edited
 </wadl:doc>
@@ -22244,7 +22244,7 @@ Person
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="parent_link" path="$['parent_link']">
+      <wadl:param style="plain" required="false" name="parent_link" path="$['parent_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Parent
 </wadl:doc>
@@ -22702,7 +22702,7 @@ Person to unsubscribe. If omitted, the requesting user will be unsubscribed.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="code_name" path="$['code_name']">
+      <wadl:param style="plain" required="false" name="code_name" path="$['code_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Code name</p>
 <p>An alternative name for the milestone.</p>
@@ -22710,7 +22710,7 @@ Person to unsubscribe. If omitted, the requesting user will be unsubscribed.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_targeted" path="$['date_targeted']" type="xsd:date">
+      <wadl:param style="plain" required="false" name="date_targeted" path="$['date_targeted']" type="xsd:date">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Targeted</p>
 <p>Example: 2005-11-24</p>
@@ -22742,7 +22742,7 @@ Person to unsubscribe. If omitted, the requesting user will be unsubscribed.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="release_link" path="$['release_link']">
+      <wadl:param style="plain" required="false" name="release_link" path="$['release_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The release for this milestone.
 </wadl:doc>
@@ -22754,7 +22754,7 @@ The productseries or distroseries of this milestone.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#has_milestones"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="summary" path="$['summary']">
+      <wadl:param style="plain" required="false" name="summary" path="$['summary']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Summary</p>
 <p>A summary of the features and status of this milestone.</p>
@@ -22922,7 +22922,7 @@ A translation file.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The translation file id.
 </wadl:doc>
@@ -23066,7 +23066,7 @@ File format for the source file
         <wadl:option value="XPI PO format"/>
         <wadl:option value="Changes from imported translations in partial PO format"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The translation template id.
 </wadl:doc>
@@ -23106,7 +23106,7 @@ Path of the template in the source tree, including filename.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="priority" path="$['priority']">
+      <wadl:param style="plain" required="true" name="priority" path="$['priority']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Priority</p>
 <p>A number that describes how important this template is. Often there are multiple templates, and you can use this as a way of indicating which are more important and should be translated first. Pick any number - higher priority templates will generally be listed first.</p>
@@ -23779,7 +23779,7 @@ A list of package set names.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 ID
 </wadl:doc>
@@ -24679,7 +24679,7 @@ List of this team's admins.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="archive_link" path="$['archive_link']">
+      <wadl:param style="plain" required="false" name="archive_link" path="$['archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Default PPA</p>
 <p>The PPA named 'ppa' owned by this person.</p>
@@ -24707,7 +24707,7 @@ Former members of the team.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="description" path="$['description']">
+      <wadl:param style="plain" required="false" name="description" path="$['description']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Description</p>
 <p>Details about interests and goals. Use plain text, paragraphs are preserved and URLs are linked.</p>
@@ -24749,7 +24749,7 @@ Hide my email addresses from other Launchpad users
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="launchpadlib::types::MaybeRedacted&lt;i32&gt;">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>ID</p>
 <p>Internal immutable identifier for this person.  Only visible by privileged users.</p>
@@ -24904,7 +24904,7 @@ All TeamMemberships for Teams this Team or Person is an active member of.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="preferred_email_address_link" path="$['preferred_email_address_link']">
+      <wadl:param style="plain" required="false" name="preferred_email_address_link" path="$['preferred_email_address_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Preferred email address</p>
 <p>The preferred email address for this person. The one we'll use to communicate with them.</p>
@@ -25706,7 +25706,7 @@ Statistics about this diff
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>DB ID</p>
 <p>The tracking number for this diff.</p>
@@ -26614,7 +26614,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_supervisor_link" path="$['bug_supervisor_link']">
+      <wadl:param style="plain" required="false" name="bug_supervisor_link" path="$['bug_supervisor_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Bug Supervisor</p>
 <p>The Launchpad id of the person or team (preferred) responsible for bug management.</p>
@@ -26622,13 +26622,13 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_tracker_link" path="$['bug_tracker_link']">
+      <wadl:param style="plain" required="false" name="bug_tracker_link" path="$['bug_tracker_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Bugs are tracked
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#bug_tracker"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="commercial_subscription_link" path="$['commercial_subscription_link']">
+      <wadl:param style="plain" required="false" name="commercial_subscription_link" path="$['commercial_subscription_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Commercial subscriptions</p>
 <p>An object which contains the timeframe and the voucher code of a subscription.</p>
@@ -26693,7 +26693,7 @@ paragraph.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="download_url" path="$['download_url']">
+      <wadl:param style="plain" required="false" name="download_url" path="$['download_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Download URL</p>
 <p>The full URL where downloads for this project
@@ -26702,7 +26702,7 @@ are located, if available. Please include the <a class="rst-reference external" 
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="driver_link" path="$['driver_link']">
+      <wadl:param style="plain" required="false" name="driver_link" path="$['driver_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Driver</p>
 <p>This person or team will be able to set feature goals for and approve bug targeting or backporting for ANY major series in this project. You might want to leave this blank and just appoint a team for each specific series, rather than having one project team that does it all.</p>
@@ -26710,7 +26710,7 @@ are located, if available. Please include the <a class="rst-reference external" 
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="freshmeat_project" path="$['freshmeat_project']">
+      <wadl:param style="plain" required="false" name="freshmeat_project" path="$['freshmeat_project']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Freshmeat Project</p>
 <p>The Freshmeat project name for
@@ -26719,7 +26719,7 @@ this project, if it is in freshmeat. [DEPRECATED]</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="homepage_url" path="$['homepage_url']">
+      <wadl:param style="plain" required="false" name="homepage_url" path="$['homepage_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Homepage URL</p>
 <p>The project home page. Please include
@@ -26766,7 +26766,7 @@ the <a class="rst-reference external" href="http://" target="_top">http://</a></
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="license_info" path="$['license_info']">
+      <wadl:param style="plain" required="false" name="license_info" path="$['license_info']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Description of additional licences</p>
 <p>Description of licences that do not appear in the list above.</p>
@@ -26774,7 +26774,7 @@ the <a class="rst-reference external" href="http://" target="_top">http://</a></
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="licenses" path="$['licenses']">
+      <wadl:param style="plain" required="true" name="licenses" path="$['licenses']" repeating="true">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Licences
 </wadl:doc>
@@ -26852,7 +26852,7 @@ Code for this project is published in Bazaar branches on Launchpad
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="programming_language" path="$['programming_language']">
+      <wadl:param style="plain" required="false" name="programming_language" path="$['programming_language']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Programming Languages</p>
 <p>A comma delimited list of programming
@@ -26861,7 +26861,7 @@ languages used for this project.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="project_group_link" path="$['project_group_link']">
+      <wadl:param style="plain" required="false" name="project_group_link" path="$['project_group_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Part of</p>
 <p>Project group. This is an overarching initiative that includes several related projects. For example, the Mozilla Project produces Firefox, Thunderbird and Gecko. This information is used to group those projects in a coherent way. If you make this project part of a group, the group preferences and decisions around bug tracking, translation and security policy will apply to this project.</p>
@@ -26905,7 +26905,7 @@ An iterator over the ProductReleases for this product.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#project_release-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="remote_product" path="$['remote_product']">
+      <wadl:param style="plain" required="false" name="remote_product" path="$['remote_product']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Remote bug tracker project id</p>
 <p>Some bug trackers host multiple projects at the same URL and require an identifier for the specific project.</p>
@@ -26913,7 +26913,7 @@ An iterator over the ProductReleases for this product.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="reviewer_whiteboard" path="$['reviewer_whiteboard']">
+      <wadl:param style="plain" required="false" name="reviewer_whiteboard" path="$['reviewer_whiteboard']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Notes for the project reviewer</p>
 <p>Notes on the project's licence, editable only by reviewers (Admins and Commercial Admins).</p>
@@ -26921,7 +26921,7 @@ An iterator over the ProductReleases for this product.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="screenshots_url" path="$['screenshots_url']">
+      <wadl:param style="plain" required="false" name="screenshots_url" path="$['screenshots_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Screenshots URL</p>
 <p>The full URL for screenshots of this project,
@@ -26942,7 +26942,7 @@ if available. Please include the <a class="rst-reference external" href="http://
         
         <wadl:link resource_type="https://api.launchpad.net/1.0/#project_series-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="sourceforge_project" path="$['sourceforge_project']">
+      <wadl:param style="plain" required="false" name="sourceforge_project" path="$['sourceforge_project']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Sourceforge Project</p>
 <p>The SourceForge project name for
@@ -26967,7 +26967,7 @@ this project, if it is in sourceforge.</p>
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="translation_focus_link" path="$['translation_focus_link']">
+      <wadl:param style="plain" required="false" name="translation_focus_link" path="$['translation_focus_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Translation focus</p>
 <p>Project series that translators should focus on.</p>
@@ -26991,7 +26991,7 @@ Webhooks for this target.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#webhook-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="wiki_url" path="$['wiki_url']">
+      <wadl:param style="plain" required="false" name="wiki_url" path="$['wiki_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Wiki URL</p>
 <p>The full URL of this project's wiki, if it has
@@ -27494,7 +27494,7 @@ release files associated with it.</p>
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="changelog" path="$['changelog']">
+      <wadl:param style="plain" required="false" name="changelog" path="$['changelog']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Changelog</p>
 <p>A description of every change in the release.</p>
@@ -27554,7 +27554,7 @@ The project that made this release.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#project"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="release_notes" path="$['release_notes']">
+      <wadl:param style="plain" required="false" name="release_notes" path="$['release_notes']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Release notes</p>
 <p>A description of important new features (though the changelog below might repeat some of this information).</p>
@@ -28345,7 +28345,7 @@ All milestones associated with this project series, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#milestone-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="branch_link" path="$['branch_link']">
+      <wadl:param style="plain" required="false" name="branch_link" path="$['branch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Branch</p>
 <p>The Bazaar branch for this series.  Leave blank if this series is not maintained in Bazaar.</p>
@@ -28353,7 +28353,7 @@ All milestones associated with this project series, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -28361,7 +28361,7 @@ All milestones associated with this project series, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
@@ -28391,7 +28391,7 @@ Date Registered
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="driver_link" path="$['driver_link']">
+      <wadl:param style="plain" required="false" name="driver_link" path="$['driver_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Release manager</p>
 <p>The person or team responsible for decisions about features and bugs that will be targeted to this series. If you don't nominate someone here, then the owners and drivers of the project and project group will automatically have those permissions.</p>
@@ -28435,7 +28435,7 @@ Project
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#project"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="release_finder_url_pattern" path="$['release_finder_url_pattern']">
+      <wadl:param style="plain" required="false" name="release_finder_url_pattern" path="$['release_finder_url_pattern']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Release URL pattern</p>
 <p>A URL pattern that matches releases that are part of this series.  Launchpad automatically scans this site to import new releases.  Example: <a class="rst-reference external" href="http://ftp.gnu.org/gnu/emacs/emacs-21.*.tar.gz" target="_top">http://ftp.gnu.org/gnu/emacs/emacs-21.*.tar.gz</a></p>
@@ -29087,7 +29087,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#project_group_milestone-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -29095,7 +29095,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>If I’m reporting a bug, I should include, if possible</p>
 <p>These guidelines will be shown to anyone reporting a bug.</p>
@@ -29103,7 +29103,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_tracker_link" path="$['bug_tracker_link']">
+      <wadl:param style="plain" required="false" name="bug_tracker_link" path="$['bug_tracker_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Bug Tracker</p>
 <p>The bug tracker the projects in this project group use.</p>
@@ -29143,7 +29143,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="driver_link" path="$['driver_link']">
+      <wadl:param style="plain" required="false" name="driver_link" path="$['driver_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Driver</p>
 <p>This is a project group-wide appointment. Think carefully here! This person or team will be able to set feature goals and approve bug targeting and backporting for ANY series in ANY project in this group. You can also appoint drivers at the level of a specific project or series. So you may just want to leave this space blank, and instead let the individual projects and series have drivers.</p>
@@ -29151,7 +29151,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="freshmeat_project" path="$['freshmeat_project']">
+      <wadl:param style="plain" required="false" name="freshmeat_project" path="$['freshmeat_project']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Freshmeat Project Name</p>
 <p>The Freshmeat project name for this project group, if it is in Freshmeat. [DEPRECATED]</p>
@@ -29167,7 +29167,7 @@ All milestones associated with this object, ordered by date expected.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="homepage_url" path="$['homepage_url']">
+      <wadl:param style="plain" required="false" name="homepage_url" path="$['homepage_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Homepage URL</p>
 <p>The project group home page. Please include the <a class="rst-reference external" href="http://" target="_top">http://</a></p>
@@ -29245,7 +29245,7 @@ List of active projects for this project group.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="sourceforge_project" path="$['sourceforge_project']">
+      <wadl:param style="plain" required="false" name="sourceforge_project" path="$['sourceforge_project']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>SourceForge Project Name</p>
 <p>The SourceForge project name for this project group, if it is in SourceForge.</p>
@@ -29269,7 +29269,7 @@ List of active projects for this project group.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="wiki_url" path="$['wiki_url']">
+      <wadl:param style="plain" required="false" name="wiki_url" path="$['wiki_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Wiki URL</p>
 <p>The URL of this project group's wiki, if it has one. Please include the <a class="rst-reference external" href="http://" target="_top">http://</a></p>
@@ -29891,7 +29891,7 @@ Person to unsubscribe. If omitted, the requesting user will be unsubscribed.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="code_name" path="$['code_name']">
+      <wadl:param style="plain" required="false" name="code_name" path="$['code_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Code name</p>
 <p>An alternative name for the milestone.</p>
@@ -29899,7 +29899,7 @@ Person to unsubscribe. If omitted, the requesting user will be unsubscribed.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_targeted" path="$['date_targeted']" type="xsd:date">
+      <wadl:param style="plain" required="false" name="date_targeted" path="$['date_targeted']" type="xsd:date">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date Targeted</p>
 <p>Example: 2005-11-24</p>
@@ -29931,7 +29931,7 @@ Person to unsubscribe. If omitted, the requesting user will be unsubscribed.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="release_link" path="$['release_link']">
+      <wadl:param style="plain" required="false" name="release_link" path="$['release_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The release for this milestone.
 </wadl:doc>
@@ -29943,7 +29943,7 @@ The productseries or distroseries of this milestone.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#has_milestones"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="summary" path="$['summary']">
+      <wadl:param style="plain" required="false" name="summary" path="$['summary']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Summary</p>
 <p>A summary of the features and status of this milestone.</p>
@@ -30207,7 +30207,7 @@ An revision status report for a Git commit.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="ci_build_link" path="$['ci_build_link']">
+      <wadl:param style="plain" required="false" name="ci_build_link" path="$['ci_build_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The CI build that produced this report.
 </wadl:doc>
@@ -30225,19 +30225,19 @@ When the report was created.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 When the report has finished.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_started" path="$['date_started']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_started" path="$['date_started']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 When the report was started.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="distro_arch_series_link" path="$['distro_arch_series_link']">
+      <wadl:param style="plain" required="false" name="distro_arch_series_link" path="$['distro_arch_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The series and architecture for the CI build job that produced this report.
 </wadl:doc>
@@ -30249,7 +30249,7 @@ The Git repository for which this report is built.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_repository"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="properties" path="$['properties']">
+      <wadl:param style="plain" required="false" name="properties" path="$['properties']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Metadata for artifacts attached to this report
 </wadl:doc>
@@ -30267,7 +30267,7 @@ Result of the report
         <wadl:option value="Skipped"/>
         <wadl:option value="Cancelled"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="result_summary" path="$['result_summary']">
+      <wadl:param style="plain" required="false" name="result_summary" path="$['result_summary']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 A short summary of the result.
 </wadl:doc>
@@ -30279,7 +30279,7 @@ A short title for the report.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="url" path="$['url']">
+      <wadl:param style="plain" required="false" name="url" path="$['url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>URL</p>
 <p>The external url of the report.</p>
@@ -30569,7 +30569,7 @@ Architecture tag
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -30585,7 +30585,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -30645,7 +30645,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -30653,7 +30653,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -30669,7 +30669,7 @@ Architecture tag
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -30724,7 +30724,7 @@ The person who requested this build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="revision_id" path="$['revision_id']">
+      <wadl:param style="plain" required="false" name="revision_id" path="$['revision_id']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Revision ID</p>
 <p>The revision ID of the branch used for this build, if available.</p>
@@ -30732,7 +30732,7 @@ The person who requested this build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="score" path="$['score']">
+      <wadl:param style="plain" required="false" name="score" path="$['score']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Score of the related build farm job (if any).
 </wadl:doc>
@@ -30744,7 +30744,7 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -30935,7 +30935,7 @@ A request to build a rock recipe.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="architectures" path="$['architectures']">
+      <wadl:param style="plain" required="false" name="architectures" path="$['architectures']" repeating="true">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 If set, this request is limited to these architecture tags
 </wadl:doc>
@@ -30947,7 +30947,7 @@ Builds produced by this request
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#rock_recipe_build-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The time when this request finished
 </wadl:doc>
@@ -30959,7 +30959,7 @@ The time when this request was made
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="error_message" path="$['error_message']">
+      <wadl:param style="plain" required="false" name="error_message" path="$['error_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Error message
 </wadl:doc>
@@ -31092,7 +31092,7 @@ A buildable rock recipe.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_path" path="$['build_path']">
+      <wadl:param style="plain" required="false" name="build_path" path="$['build_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build path</p>
 <p>Subdirectory within the branch containing rockcraft.yaml.</p>
@@ -31280,7 +31280,7 @@ The project that this rock recipe is associated with
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_name" path="$['store_name']">
+      <wadl:param style="plain" required="false" name="store_name" path="$['store_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Registered store name</p>
 <p>The registered name of this rock in the store.</p>
@@ -31296,7 +31296,7 @@ The project that this rock recipe is associated with
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Use fetch service</p>
 <p>If set, Rock builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
@@ -31882,7 +31882,7 @@ Distro series
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="features" path="$['features']">
+      <wadl:param style="plain" required="false" name="features" path="$['features']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Features supported by this base</p>
 <p>A dictionary designating the features supported by the base. Key is the name of a feature, value is a boolean indicating whether the feature is supported or not.</p>
@@ -32062,7 +32062,7 @@ The archive from which to build the snap package.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -32084,7 +32084,7 @@ The build request that caused this build to be created.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#snap_build_request"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -32151,7 +32151,7 @@ Craft platform name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -32159,7 +32159,7 @@ Craft platform name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -32175,7 +32175,7 @@ Craft platform name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -32224,7 +32224,7 @@ The person who requested this build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="revision_id" path="$['revision_id']">
+      <wadl:param style="plain" required="false" name="revision_id" path="$['revision_id']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Revision ID</p>
 <p>The revision ID of the branch used for this build, if available.</p>
@@ -32232,7 +32232,7 @@ The person who requested this build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="score" path="$['score']">
+      <wadl:param style="plain" required="false" name="score" path="$['score']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Score of the related build farm job (if any).
 </wadl:doc>
@@ -32244,13 +32244,13 @@ The snap package to build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#snap"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="snap_base_link" path="$['snap_base_link']">
+      <wadl:param style="plain" required="false" name="snap_base_link" path="$['snap_base_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The snap base to use for this build.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#snap_base"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_upload_error_message" path="$['store_upload_error_message']">
+      <wadl:param style="plain" required="false" name="store_upload_error_message" path="$['store_upload_error_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Store upload error message</p>
 <p>The error message, if any, from the last attempt to upload this snap build to the store.  (Deprecated; use store_upload_error_messages instead.)</p>
@@ -32258,7 +32258,7 @@ The snap base to use for this build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_upload_error_messages" path="$['store_upload_error_messages']">
+      <wadl:param style="plain" required="false" name="store_upload_error_messages" path="$['store_upload_error_messages']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Store upload error messages</p>
 <p>A list of dict(message, link) where message is an error description and link, if any, is an external link to extra details, from the last attempt to upload this snap build to the store.</p>
@@ -32266,7 +32266,7 @@ The snap base to use for this build.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_upload_revision" path="$['store_upload_revision']">
+      <wadl:param style="plain" required="false" name="store_upload_revision" path="$['store_upload_revision']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Store revision</p>
 <p>The revision assigned to this package by the store.</p>
@@ -32305,7 +32305,7 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -32501,7 +32501,7 @@ Builds produced by this request
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#snap_build-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_finished" path="$['date_finished']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The time when this request finished
 </wadl:doc>
@@ -32513,7 +32513,7 @@ The time when this request was made
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="error_message" path="$['error_message']">
+      <wadl:param style="plain" required="false" name="error_message" path="$['error_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Error message
 </wadl:doc>
@@ -32646,7 +32646,7 @@ A buildable snap package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="auto_build_archive_link" path="$['auto_build_archive_link']">
+      <wadl:param style="plain" required="false" name="auto_build_archive_link" path="$['auto_build_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Source archive for automatic builds</p>
 <p>The archive from which automatic builds of this snap package should be built.</p>
@@ -32676,7 +32676,7 @@ Supported snap names: 'core', 'core18', 'core20', 'core22', 'core24', 'core26', 
         <wadl:option value="Proposed"/>
         <wadl:option value="Backports"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="branch_link" path="$['branch_link']">
+      <wadl:param style="plain" required="false" name="branch_link" path="$['branch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Bazaar branch</p>
 <p>A Bazaar branch containing a snap/snapcraft.yaml, build-aux/snap/snapcraft.yaml, snapcraft.yaml, or .snapcraft.yaml recipe at the top level.</p>
@@ -32736,7 +32736,7 @@ Date last modified
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="distro_series_link" path="$['distro_series_link']">
+      <wadl:param style="plain" required="false" name="distro_series_link" path="$['distro_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Distro Series</p>
 <p>The series for which the snap package should be built.  If not set, Launchpad will infer an appropriate series from snapcraft.yaml.</p>
@@ -32760,7 +32760,7 @@ Failed build requests for this snap package.
         <wadl:option value="strict"/>
         <wadl:option value="permissive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_path" path="$['git_path']">
+      <wadl:param style="plain" required="false" name="git_path" path="$['git_path']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git branch path</p>
 <p>The path of the Git branch containing a snap/snapcraft.yaml, build-aux/snap/snapcraft.yaml, snapcraft.yaml, or .snapcraft.yaml recipe at the top level.</p>
@@ -32768,7 +32768,7 @@ Failed build requests for this snap package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_ref_link" path="$['git_ref_link']">
+      <wadl:param style="plain" required="false" name="git_ref_link" path="$['git_ref_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git branch</p>
 <p>The Git branch containing a snap/snapcraft.yaml, build-aux/snap/snapcraft.yaml, snapcraft.yaml, or .snapcraft.yaml recipe at the top level.</p>
@@ -32776,7 +32776,7 @@ Failed build requests for this snap package.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_ref"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_repository_link" path="$['git_repository_link']">
+      <wadl:param style="plain" required="false" name="git_repository_link" path="$['git_repository_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git repository</p>
 <p>A Git repository with a branch containing a snap/snapcraft.yaml, build-aux/snap/snapcraft.yaml, snapcraft.yaml, or .snapcraft.yaml recipe at the top level.</p>
@@ -32784,7 +32784,7 @@ Failed build requests for this snap package.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#git_repository"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_repository_url" path="$['git_repository_url']">
+      <wadl:param style="plain" required="false" name="git_repository_url" path="$['git_repository_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git repository URL</p>
 <p>The URL of a Git repository with a branch containing a snap/snapcraft.yaml, build-aux/snap/snapcraft.yaml, snapcraft.yaml, or .snapcraft.yaml recipe at the top level.</p>
@@ -32850,7 +32850,7 @@ Pending build requests for this snap package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="pro_enable" path="$['pro_enable']">
+      <wadl:param style="plain" required="true" name="pro_enable" path="$['pro_enable']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Enable Ubuntu Pro</p>
 <p>Allow building this snap recipe using dependencies from Ubuntu Pro, if configured for the corresponding snap base.</p>
@@ -32890,7 +32890,7 @@ Pending build requests for this snap package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_name" path="$['store_name']">
+      <wadl:param style="plain" required="false" name="store_name" path="$['store_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Registered store package name</p>
 <p>The registered name of this snap package in the store.</p>
@@ -32898,7 +32898,7 @@ Pending build requests for this snap package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="store_series_link" path="$['store_series_link']">
+      <wadl:param style="plain" required="false" name="store_series_link" path="$['store_series_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Store series</p>
 <p>The series in which this snap package should be published in the store.</p>
@@ -32914,7 +32914,7 @@ Pending build requests for this snap package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']">
+      <wadl:param style="plain" required="true" name="use_fetch_service" path="$['use_fetch_service']" type="boolean">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Use fetch service</p>
 <p>If set, Snap builds will use the fetch-service instead of the builder-proxy to access external resources.</p>
@@ -33993,7 +33993,7 @@ Owner of the resulting branch
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
+      <wadl:param style="plain" required="false" name="bug_reported_acknowledgement" path="$['bug_reported_acknowledgement']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>After reporting a bug, I can expect the following.</p>
 <p>This message of acknowledgement will be displayed to anyone after reporting a bug.</p>
@@ -34001,7 +34001,7 @@ Owner of the resulting branch
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
+      <wadl:param style="plain" required="false" name="bug_reporting_guidelines" path="$['bug_reporting_guidelines']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Helpful guidelines for reporting a bug</p>
 <p>These guidelines will be shown to everyone reporting a bug and should be text or a bulleted list with your particular requirements, if any.</p>
@@ -34041,7 +34041,7 @@ Owner of the resulting branch
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="latest_published_component_name" path="$['latest_published_component_name']">
+      <wadl:param style="plain" required="false" name="latest_published_component_name" path="$['latest_published_component_name']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The name of the component in which the package was last published.
 </wadl:doc>
@@ -34063,7 +34063,7 @@ The name of the component in which the package was last published.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="productseries_link" path="$['productseries_link']">
+      <wadl:param style="plain" required="false" name="productseries_link" path="$['productseries_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Project series</p>
 <p>The registered project series that this source package is based on. This series may be the same as the one that earlier versions of this source packages were based on.</p>
@@ -34325,13 +34325,13 @@ Component Name
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="copied_from_archive_link" path="$['copied_from_archive_link']">
+      <wadl:param style="plain" required="false" name="copied_from_archive_link" path="$['copied_from_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Original archive ID where this package was copied from.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="creator_link" path="$['creator_link']">
+      <wadl:param style="plain" required="false" name="creator_link" path="$['creator_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Publication Creator</p>
 <p>The IPerson who created this publication.</p>
@@ -34345,25 +34345,25 @@ The date on which this record was created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_made_pending" path="$['date_made_pending']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_made_pending" path="$['date_made_pending']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The date on which this record was set as pending removal
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_published" path="$['date_published']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_published" path="$['date_published']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The date on which this record was published
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_removed" path="$['date_removed']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_removed" path="$['date_removed']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The date on which this record was removed from the published set
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_superseded" path="$['date_superseded']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_superseded" path="$['date_superseded']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The date on which this record was marked superseded
 </wadl:doc>
@@ -34399,7 +34399,7 @@ The distro series being published into
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="package_signer_link" path="$['package_signer_link']">
+      <wadl:param style="plain" required="false" name="package_signer_link" path="$['package_signer_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Package Signer</p>
 <p>The IPerson who signed the source package.</p>
@@ -34407,7 +34407,7 @@ The distro series being published into
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="packageupload_link" path="$['packageupload_link']">
+      <wadl:param style="plain" required="false" name="packageupload_link" path="$['packageupload_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Package upload</p>
 <p>The Package Upload that caused the creation of this publication.</p>
@@ -34428,19 +34428,19 @@ The distro series being published into
         <wadl:option value="Proposed"/>
         <wadl:option value="Backports"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="removal_comment" path="$['removal_comment']">
+      <wadl:param style="plain" required="false" name="removal_comment" path="$['removal_comment']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Reason why this publication is going to be removed.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="removed_by_link" path="$['removed_by_link']">
+      <wadl:param style="plain" required="false" name="removed_by_link" path="$['removed_by_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The IPerson responsible for the removal
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#person"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="scheduled_deletion_date" path="$['scheduled_deletion_date']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="scheduled_deletion_date" path="$['scheduled_deletion_date']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The date on which this record is scheduled for deletion
 </wadl:doc>
@@ -34464,7 +34464,7 @@ Source Package Version
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="sponsor_link" path="$['sponsor_link']">
+      <wadl:param style="plain" required="false" name="sponsor_link" path="$['sponsor_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Publication sponsor</p>
 <p>The IPerson who sponsored the creation of this publication.</p>
@@ -34664,7 +34664,7 @@ A build of a source package.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#archive"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="build_log_url" path="$['build_log_url']">
+      <wadl:param style="plain" required="false" name="build_log_url" path="$['build_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Build Log URL</p>
 <p>A URL for the build log. None if there is no log available.</p>
@@ -34672,7 +34672,7 @@ A build of a source package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="builder_link" path="$['builder_link']">
+      <wadl:param style="plain" required="false" name="builder_link" path="$['builder_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Builder</p>
 <p>The builder assigned to this job.</p>
@@ -34724,7 +34724,7 @@ A build of a source package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_dispatched" path="$['date_first_dispatched']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The actual build start time. Set when the build is dispatched the first time and not changed in subsequent build attempts.</p>
@@ -34732,7 +34732,7 @@ A build of a source package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="datebuilt" path="$['datebuilt']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date finished</p>
 <p>The timestamp when the build farm job was finished.</p>
@@ -34748,7 +34748,7 @@ A build of a source package.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="dependencies" path="$['dependencies']">
+      <wadl:param style="plain" required="false" name="dependencies" path="$['dependencies']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Dependencies</p>
 <p>Debian-like dependency line that must be satisfied before attempting to build this request.</p>
@@ -34791,7 +34791,7 @@ Title
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="upload_log_url" path="$['upload_log_url']">
+      <wadl:param style="plain" required="false" name="upload_log_url" path="$['upload_log_url']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Upload Log URL</p>
 <p>A URL for failed upload logs.Will be None if there was no failure.</p>
@@ -35036,13 +35036,13 @@ Set the text of the recipe.
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="base_branch_link" path="$['base_branch_link']">
+      <wadl:param style="plain" required="false" name="base_branch_link" path="$['base_branch_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The base branch used by this recipe.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#branch"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="base_git_repository_link" path="$['base_git_repository_link']">
+      <wadl:param style="plain" required="false" name="base_git_repository_link" path="$['base_git_repository_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The base Git repository used by this recipe.
 </wadl:doc>
@@ -35072,7 +35072,7 @@ The base Git repository used by this recipe.
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#source_package_recipe_build-page-resource"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="daily_build_archive_link" path="$['daily_build_archive_link']">
+      <wadl:param style="plain" required="false" name="daily_build_archive_link" path="$['daily_build_archive_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The archive to use for daily builds.
 </wadl:doc>
@@ -35112,7 +35112,7 @@ Recipe is stale.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="last_build_link" path="$['last_build_link']">
+      <wadl:param style="plain" required="false" name="last_build_link" path="$['last_build_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The the most recent build of this recipe.
 </wadl:doc>
@@ -36770,7 +36770,7 @@ Hide my email addresses from other Launchpad users
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="launchpadlib::types::MaybeRedacted&lt;i32&gt;">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>ID</p>
 <p>Internal immutable identifier for this person.  Only visible by privileged users.</p>
@@ -37381,13 +37381,13 @@ Do not send notifications of status change.  For use by Launchpad administrators
           The value of the HTTP ETag for this resource.
         </wadl:doc>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_expires" path="$['date_expires']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_expires" path="$['date_expires']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Date expires
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_joined" path="$['date_joined']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_joined" path="$['date_joined']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date joined</p>
 <p>The date in which this membership was made active for the first time.</p>
@@ -37395,7 +37395,7 @@ Date expires
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="last_change_comment" path="$['last_change_comment']">
+      <wadl:param style="plain" required="false" name="last_change_comment" path="$['last_change_comment']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Comment on the last change
 </wadl:doc>
@@ -37977,13 +37977,13 @@ The timestamp when the status was changed.
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="distroseries_link" path="$['distroseries_link']">
+      <wadl:param style="plain" required="false" name="distroseries_link" path="$['distroseries_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Series
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#distro_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="error_output" path="$['error_output']">
+      <wadl:param style="plain" required="false" name="error_output" path="$['error_output']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Error output</p>
 <p>Output from most recent import attempt.</p>
@@ -38003,7 +38003,7 @@ The file format of the import.
         <wadl:option value="XPI PO format"/>
         <wadl:option value="Changes from imported translations in partial PO format"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="id" path="$['id']">
+      <wadl:param style="plain" required="true" name="id" path="$['id']" type="int">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The entry ID
 </wadl:doc>
@@ -38017,13 +38017,13 @@ The entry ID
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="productseries_link" path="$['productseries_link']">
+      <wadl:param style="plain" required="false" name="productseries_link" path="$['productseries_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 Series
 </wadl:doc>
         <wadl:link resource_type="https://api.launchpad.net/1.0/#project_series"/>
       </wadl:param>
-      <wadl:param style="plain" required="true" name="sourcepackage_link" path="$['sourcepackage_link']">
+      <wadl:param style="plain" required="false" name="sourcepackage_link" path="$['sourcepackage_link']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 The sourcepackage associated with this entry.
 </wadl:doc>
@@ -38270,7 +38270,7 @@ Date created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_first_sent" path="$['date_first_sent']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_first_sent" path="$['date_first_sent']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date first sent</p>
 <p>Timestamp of the first delivery attempt.</p>
@@ -38278,7 +38278,7 @@ Date created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_scheduled" path="$['date_scheduled']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_scheduled" path="$['date_scheduled']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date scheduled</p>
 <p>Timestamp of the next delivery attempt.</p>
@@ -38286,7 +38286,7 @@ Date created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="date_sent" path="$['date_sent']" type="xsd:dateTime">
+      <wadl:param style="plain" required="false" name="date_sent" path="$['date_sent']" type="xsd:dateTime">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Date sent</p>
 <p>Timestamp of the last delivery attempt.</p>
@@ -38294,7 +38294,7 @@ Date created
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="error_message" path="$['error_message']">
+      <wadl:param style="plain" required="false" name="error_message" path="$['error_message']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Error message</p>
 <p>Details of the error encountered by the most recent delivery attempt.</p>
@@ -38322,7 +38322,7 @@ Event payload
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="successful" path="$['successful']">
+      <wadl:param style="plain" required="false" name="successful" path="$['successful']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Successful</p>
 <p>Whether the most recent delivery attempt succeeded, or null if no attempts have been made yet.</p>
@@ -38470,7 +38470,7 @@ Event types
 </wadl:doc>
         
       </wadl:param>
-      <wadl:param style="plain" required="true" name="git_ref_pattern" path="$['git_ref_pattern']">
+      <wadl:param style="plain" required="false" name="git_ref_pattern" path="$['git_ref_pattern']">
         <wadl:doc xmlns="http://www.w3.org/1999/xhtml">
 <p>Git ref pattern</p>
 <p>Pattern to match against git-ref/branch name of an event, to filter webhook triggers</p>

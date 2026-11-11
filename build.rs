@@ -22,6 +22,26 @@ fn override_type_name(
         };
     }
 
+    // Types set by fixup.xsl that refer to types defined in this crate
+    if let Some(local_type) = type_name.strip_prefix("launchpadlib::") {
+        return Some(format!("crate::{}", local_type));
+    }
+
+    // Lists of links, which fixup.xsl can't express
+    if let wadl::codegen::ParamContainer::Representation(rd) = container {
+        if matches!(
+            (rd.id.as_deref(), param_name),
+            (Some("builder-full"), "processors")
+                | (Some("source_package_recipe-full"), "distroseries")
+        ) {
+            return Some("Vec<url::Url>".to_string());
+        }
+    }
+
+    if let Some(t) = structured_type_name(container, param_name) {
+        return Some(t.to_string());
+    }
+
     match param_name {
         n if n.ends_with("_count") => Some("usize"),
         n if n.ends_with("_url") => Some("url::Url"),
@@ -50,7 +70,6 @@ fn override_type_name(
         "arch_tag" => Some("String"),
         "as_quoted_email" => Some("String"),
         "auto_build" => Some("bool"),
-        "auto_build_channels" => Some("Vec<String>"),
         "backports_not_automatic" => Some("bool"),
         "base_url_aliases" => Some("Vec<url::Url>"),
         "base_version" => Some("debversion::Version"),
@@ -61,11 +80,9 @@ fn override_type_name(
         "bug_reporting_guidelines" => Some("String"),
         "bug_target_display_name" => Some("String"),
         "bug_target_name" => Some("String"),
-        "build_channels" => Some("Vec<String>"),
         "build_daily" => Some("bool"),
         "build_path" => Some("String"),
-        "build_snap_channels" => Some("Vec<String>"),
-        "build_source_tarball" => Some("url::Url"),
+        "build_source_tarball" => Some("bool"),
         "bzr_identity" => Some("String"),
         "can_be_cancelled" => Some("bool"),
         "can_be_rescored" => Some("bool"),
@@ -75,7 +92,6 @@ fn override_type_name(
         "can_upload_to_store" => Some("bool"),
         "changelog" => Some("String"),
         "changeslist" => Some("String"),
-        "channels" => Some("Vec<String>"),
         "code" => Some("String"),
         "code_name" => Some("String"),
         "comment" => Some("String"),
@@ -83,12 +99,12 @@ fn override_type_name(
         "commit_message" => Some("String"),
         "commit_sha1" => Some("String"),
         "component_names" => Some("Vec<String>"),
-        "conflicts" => Some("Vec<String>"),
+        "conflicts" => Some("String"),
         "contact_details" => Some("String"),
         "content" => Some("String"),
         "content_type" => Some("String"),
         "count" => Some("usize"),
-        "country_dns_mirror" => Some("String"),
+        "country_dns_mirror" => Some("bool"),
         "custom_file_urls" => Some("Vec<url::Url>"),
         "cvs_module" => Some("String"),
         "cvs_root" => Some("String"),
@@ -103,7 +119,7 @@ fn override_type_name(
         "default_branch" => Some("String"),
         "default_membership_period" => Some("usize"),
         "default_renewal_period" => Some("usize"),
-        "dependencies" => Some("Vec<String>"),
+        "dependencies" => Some("String"),
         "development_series_alias" => Some("String"),
         "diffstat" => Some("String"),
         "display_arches" => Some("crate::types::PackageUploadArches"),
@@ -121,7 +137,6 @@ fn override_type_name(
         "explicitly_private" => Some("bool"),
         "exported_in_languagepacks" => Some("bool"),
         "failnotes" => Some("String"),
-        "features" => Some("Vec<String>"),
         "filename" | "file_extension" => Some("String"),
         "file_content" => {
             if config.r#async {
@@ -153,21 +168,17 @@ fn override_type_name(
         "keep_binary_files_days" => Some("usize"),
         "keyid" => Some("String"),
         "keytext" => Some("String"),
-        "landmarks" => Some("Vec<String>"),
         "language_pack_full_export_requested" => Some("bool"),
         "last_change_comment" => Some("String"),
-        "last_scanned_id" => Some("i64"),
+        "last_scanned_id" => Some("String"),
         "latest_published_component_name" => Some("String"),
         "latitude" | "longitude" => Some("Option<f64>"),
-        "license_approved" => Some("bool"),
         "license_info" => Some("String"),
-        "manual" => Some("String"),
+        "manual" => Some("bool"),
         "merged_revision_id" => Some("String"),
         "merged_revno" => Some("i64"),
         "message" => Some("String"),
         "message_body" => Some("String"),
-        "metadata" => Some("String"),
-        "metadata_override" => Some("String"),
         "mirror_status_message" => Some("String"),
         "network" => Some("String"),
         "newvalue" => Some("String"),
@@ -193,15 +204,12 @@ fn override_type_name(
         "permission" => Some("String"),
         "phased_update_percentage" => Some("usize"),
         "plural_expression" => Some("String"),
-        "plural_forms" => Some("String"),
+        "plural_forms" => Some("usize"),
         "prerequisite_git_path" => Some("String"),
         "prerequisite_revision_id" => Some("String"),
-        "priority" => Some("String"),
         "priority_name" => Some("String"),
         "private_bugs" => Some("bool"),
         "programming_lang" | "programming_language" => Some("String"),
-        "project_reviewed" => Some("bool"),
-        "properties" => Some("Vec<String>"),
         "proposition" => Some("String"),
         "qualifies_for_free_hosting" => Some("bool"),
         "recipe_text" => Some("String"),
@@ -214,7 +222,6 @@ fn override_type_name(
         "removal_comment" => Some("String"),
         "require_virtualized" => Some("bool"),
         "restricted_resources" => Some("bool"),
-        "results" => Some("Vec<String>"),
         "result_summary" => Some("String"),
         "reviewed" => Some("bool"),
         "reviewed_revid" => Some("String"),
@@ -225,7 +232,7 @@ fn override_type_name(
         "section_name" => Some("String"),
         "security_contact" => Some("String"),
         "security_related" => Some("bool"),
-        "sequence" => Some("usize"),
+        "sequence" => Some("String"),
         "send_notifications" => Some("bool"),
         "signing_key_fingerprint" => Some("String"),
         "sourceforge_project" => Some("String"),
@@ -235,15 +242,13 @@ fn override_type_name(
         "source_package_version" => Some("debversion::Version"),
         "source_revision_id" => Some("String"),
         "source_version" => Some("String"),
-        "stages" => Some("Vec<String>"),
         "stale" => Some("bool"),
         "statuses" => Some("Vec<String>"),
         "store_channels" => Some("Vec<String>"),
         "store_name" => Some("String"),
-        "store_upload" => Some("String"),
+        "store_upload" => Some("bool"),
         "store_upload_error_message" => Some("String"),
-        "store_upload_error_messages" => Some("Vec<String>"),
-        "store_upload_revision" => Some("String"),
+        "store_upload_revision" => Some("usize"),
         "subject" => Some("String"),
         "successful" => Some("bool"),
         "suite_names" => Some("Vec<String>"),
@@ -265,7 +270,7 @@ fn override_type_name(
         "unique_name" => Some("String"),
         "uri" => Some("url::Url"),
         "url" => Some("url::Url"),
-        "usable_distro_series" => Some("bool"),
+        "usable_distro_series" => Some("Vec<url::Url>"),
         "users_affected_count_with_dupes" => Some("usize"),
         "version" => Some("debversion::Version"),
         "virtualized" => Some("bool"),
@@ -279,6 +284,51 @@ fn override_type_name(
         _ => None,
     }
     .map(|s| s.to_string())
+}
+
+/// Types for params that hold JSON objects or lists of them.
+fn structured_type_name(
+    container: &wadl::codegen::ParamContainer,
+    param_name: &str,
+) -> Option<&'static str> {
+    use wadl::codegen::ParamContainer;
+    let owner = match container {
+        ParamContainer::Representation(rd) => rd.id.as_deref().unwrap_or_default(),
+        ParamContainer::Request(m, _) | ParamContainer::Response(m, _) => m.id.as_str(),
+    };
+    Some(match param_name {
+        "auto_build_channels" | "channels" => "crate::types::SnapChannels",
+        "build_channels" | "build_snap_channels" => "crate::types::BaseChannels",
+        "features" => "crate::types::SnapBaseFeatures",
+        "build_args" => "crate::types::BuildArgs",
+        "metadata_overrides" => "crate::types::ArchiveMetadataOverrides",
+        "identity" => "crate::types::SocialAccountIdentity",
+        "store_upload_error_messages" => "Vec<crate::types::StoreUploadErrorMessage>",
+        "registry_upload_errors" => "Vec<crate::types::RegistryError>",
+        "landmarks" => "Vec<crate::types::TimelineLandmark>",
+        "stages" => "Vec<Vec<crate::types::CIJob>>",
+        // Keys are job ids ("JOB_NAME:JOB_INDEX").
+        // TODO: use an enum once the set of result tokens is confirmed
+        "results" => "std::collections::BTreeMap<String, String>",
+        "properties" => "crate::types::RevisionStatusProperties",
+        "metadata_override" => "crate::types::LiveFSMetadata",
+        // Method parameters live in a representation without an id; the only
+        // method that takes metadata is livefses.new.
+        "metadata" if owner.is_empty() || owner.starts_with("livefs") => {
+            "crate::types::LiveFSMetadata"
+        }
+        "metadata" if owner.starts_with("cve") => "std::collections::BTreeMap<String, String>",
+        "metadata" if owner.starts_with("vulnerabilit") => {
+            "std::collections::BTreeMap<String, serde_json::Value>"
+        }
+        "cvss" if owner.starts_with("cve") => "Vec<String>",
+        // TODO: Launchpad doesn't define the element type of this list
+        "cvss" if owner.starts_with("vulnerabilit") => "Vec<serde_json::Value>",
+        "metadata" | "cvss" => {
+            panic!("Unknown owner {} for {}", owner, param_name)
+        }
+        _ => return None,
+    })
 }
 
 fn accessor_rename(param_name: &str, type_name: &str) -> Option<String> {
